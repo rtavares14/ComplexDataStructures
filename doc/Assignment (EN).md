@@ -71,7 +71,7 @@ The application must include the following implementations:
   Scanner*.
 
 ## Preconditions
-* Create documentation in Markdown. use [this template](Documentation.md). 
+* Create documentation in Markdown. use [this template](Documentatie.md). 
   * For all algorithms and classes mentioned in section Implementation:
     * There is a link to the source code
     * For algorithms, include a Big-Oh qualification and a brief explanation 
@@ -95,6 +95,6 @@ The application must include the following implementations:
 ## Submission
 A correct submission contains:
 * The code of the developed program; create a zip export from GitLab, test this export (does everything still work?) and ensure that there are no build artifacts (out folder) or the .git folder, and that there are no absolute path names in the code.
-* The [documentation as Markdown file](Documentation.md) described above.
+* The [documentation as Markdown file](Documentatie.md) described above.
 
 **An incomplete submission (code and/or documentation and/or code references are missing) will NOT be graded.**

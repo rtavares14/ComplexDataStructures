@@ -1,4 +1,4 @@
-package nl.saxion.cds.collection.exceptions;
+package nl.saxion.cds.collection;
 
 public class ValueNotFoundException extends RuntimeException {
     public ValueNotFoundException(String value) {

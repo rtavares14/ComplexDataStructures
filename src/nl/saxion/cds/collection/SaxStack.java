@@ -1,6 +1,4 @@
-package nl.saxion.cds.collection.saxion;
-
-import nl.saxion.cds.collection.exceptions.EmptyCollectionException;
+package nl.saxion.cds.collection;
 
 /**
  * A SaxStack is a collection which acts as a stack; pushing values on top and popping from that

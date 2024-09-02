@@ -1,4 +1,4 @@
-package nl.saxion.cds.collection.saxion;
+package nl.saxion.cds.collection;
 
 public interface SaxCollection<V> {
     /**

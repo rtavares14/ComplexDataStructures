@@ -1,7 +1,4 @@
-package nl.saxion.cds.collection.saxion;
-
-import nl.saxion.cds.collection.exceptions.EmptyCollectionException;
-import nl.saxion.cds.collection.exceptions.ValueNotFoundException;
+package nl.saxion.cds.collection;
 
 /**
  * A SaxList is a list, a linear data structure, which allows data to be accessed at every position.

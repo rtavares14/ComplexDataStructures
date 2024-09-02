@@ -1,6 +1,4 @@
-package nl.saxion.cds.collection.saxion;
-
-import nl.saxion.cds.collection.exceptions.KeyNotFoundException;
+package nl.saxion.cds.collection;
 
 /**
  * A directed, weighted graph data structure with nodes and edges. The graph CAN be disconnected.
@@ -21,7 +19,6 @@ public interface SaxGraph<V> extends SaxCollection<V>, Iterable<V> {
      */
     public void addEdge(V fromValue, V toValue, double weight) throws KeyNotFoundException;
 
-    //TODO
     /**
      * Add two edges (see addEdge()), effectively connecting from and to in both directions.
      * @param fromValue

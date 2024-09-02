@@ -1,10 +1,6 @@
-package nl.saxion.cds.collection;
+package nl.saxion.cds.solution;
 
-import nl.saxion.cds.collection.exceptions.EmptyCollectionException;
-import nl.saxion.cds.collection.exceptions.ValueNotFoundException;
-import nl.saxion.cds.collection.saxion.SaxList;
-import nl.saxion.cds.collection.saxion.SaxSearchable;
-import nl.saxion.cds.collection.saxion.SaxSortable;
+import nl.saxion.cds.collection.*;
 
 import java.util.Comparator;
 import java.util.Iterator;

@@ -108,7 +108,7 @@ Een juiste inlevering bevat:
   test deze export (werkt het allemaal nog?) en zorg dat er geen build 
   artefacts (out map) of de .git map in zit en er geen absolute pad-namen in
   de code zitten.
-* De hiervoor beschreven [documentatie als Markdown bestand](Documentation.md). 
+* De hiervoor beschreven [documentatie als Markdown bestand](Documentatie.md). 
 
 **Een incomplete inlevering (ontbreken van code en/of documentatie en/of 
 code verwijzingen) wordt NIET beoordeeld.**

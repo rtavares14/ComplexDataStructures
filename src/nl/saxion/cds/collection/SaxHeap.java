@@ -1,4 +1,4 @@
-package nl.saxion.cds.collection.saxion;
+package nl.saxion.cds.collection;
 
 /**
  * A heap where each parent node is either bigger (max-heap) or smaller (min-heap) than all its

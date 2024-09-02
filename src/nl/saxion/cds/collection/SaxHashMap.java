@@ -1,16 +1,12 @@
-package nl.saxion.cds.collection.saxion;
-
-import nl.saxion.cds.collection.exceptions.DuplicateKeyException;
-import nl.saxion.cds.collection.exceptions.KeyNotFoundException;
+package nl.saxion.cds.collection;
 
 /**
- * A binary tree interface for implementing a map (dictionary) based on a binary search tree,
- * in which a value is connected to a key, used to store and retrieve that value.
+ * A dictionary type, in which keys are mapped to values using the object.hashCode() function.
  *
- * @param <K> the key, which implements Comparable
+ * @param <K> the key which is used to retrieve the value (uses k.equals() to compare for equality)
  * @param <V> the value to store
  */
-public interface SaxBinaryTree<K extends Comparable<K>, V> extends SaxCollection<V> {
+public interface SaxHashMap<K, V> extends SaxCollection<V> {
     /**
      * Check if the key is part of this map.
      * Uses K.equals() to check for equality.

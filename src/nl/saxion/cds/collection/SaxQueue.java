@@ -1,6 +1,4 @@
-package nl.saxion.cds.collection.saxion;
-
-import nl.saxion.cds.collection.exceptions.EmptyCollectionException;
+package nl.saxion.cds.collection;
 
 /**
  * A SaxQueue is a queue which only allows data to add at one end (enqueue) and to remove data
