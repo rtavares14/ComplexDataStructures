@@ -40,7 +40,7 @@ with the following tasks:
 
 Create a (console) application with a menu to invoke all functionalities.
 
-## Implementatie
+## Implementation
 The application must include the following implementations:
 * A list implementation based on the [SaxList]
   (src/nl/saxion/cds/collection/SaxList.java).
@@ -82,36 +82,19 @@ The application must include the following implementations:
   * There is a Technical Design chapter with
     * a class diagram with a brief description of the different classes and 
       main methods and
-    * Per uitgewerkte requirement een korte beschrijving van de implementatie 
-      en van de gebruikte (eigen) implementaties van de SaxCollection 
-    klasse(n); _voor iedere klasse die er wordt gebruikt een onderbouwde keuze 
-    waarom er juist voor die klasse is gekozen en dus moet er ook altijd 
-    tenminste 1 alternatief in de onderbouwing zijn meegenomen_. 
-    **Neem bij een algoritme altijd de Big-Oh classificatie hierin mee** 
-    (deze mag opgezocht worden).  
-* Er moeten voor tenminste 75% (>90% geeft extra punten) dekkende geslaagde 
-  testcases zijn uitgewerkt met JUnit 5.
-  * **Met dekkend wordt bedoeld het minimum dekkingspercentage van class, 
-    method, line en branch coverage.**
-  * Voor velden met een restrictie moeten de good-weather en bad-weather 
-    tests voorhanden zijn.
-  * Getters en setters mogen worden uitgesloten van testdekking, mits deze 
-    alleen bestaan uit het retourneren van de bijbehorende variabele 
-    respectievelijk het wijzigen van de bijbehorende variabele. Markeer deze 
-    methodes dan al zodanig (zie de sheets), zodat ze niet meetellen in de 
-    dekkingspercentages.
-  * Wanneer een Exception mogelijk is, moet die situatie getest worden; 
-    test minimaal het juiste exceptie type.
-  * **Zorg ervoor dat de voorbeelden die in het lesmateriaal staan in ieder 
-    geval worden meegenomen in de testen**.
+    * for each completed requirement, a brief description of the implementation and of the custom implementations of the `SaxCollection` class(es). _For every class used, include a well-founded reasoning for why that particular class was chosen, and always include at least one alternative in this reasoning_. 
+    **Always include the Big-O classification for any algorithm** (this can be looked up).
 
-## Inlevering
-Een juiste inlevering bevat:
-* De code van het ontwikkelde programma; maak een zip export vanuit GitLab, 
-  test deze export (werkt het allemaal nog?) en zorg dat er geen build 
-  artefacts (out map) of de .git map in zit en er geen absolute pad-namen in
-  de code zitten.
-* De hiervoor beschreven [documentatie als Markdown bestand](Documentation.md). 
+* At least 75% of the test cases must be successfully developed with JUnit 5 (coverage over 90% will result in extra points).
+  * **Coverage refers to the minimum coverage percentage of class, method, line, and branch coverage.**
+  * For fields with restrictions, both good-weather and bad-weather tests must be provided.
+  * Getters and setters may be excluded from test coverage, provided they only consist of returning the corresponding variable or modifying the corresponding variable. Mark these methods accordingly (see the slides) so that they do not count towards the coverage percentages.
+  * When an exception is possible, that situation must be tested; at minimum, test for the correct exception type.
+  * **Ensure that the examples in the course material are included in the tests.**
 
-**Een incomplete inlevering (ontbreken van code en/of documentatie en/of 
-code verwijzingen) wordt NIET beoordeeld.**
+## Submission
+A correct submission contains:
+* The code of the developed program; create a zip export from GitLab, test this export (does everything still work?) and ensure that there are no build artifacts (out folder) or the .git folder, and that there are no absolute path names in the code.
+* The [documentation as Markdown file](Documentation.md) described above.
+
+**An incomplete submission (code and/or documentation and/or code references are missing) will NOT be graded.**
