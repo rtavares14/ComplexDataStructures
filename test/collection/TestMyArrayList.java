@@ -26,13 +26,34 @@ public class TestMyArrayList {
         list.addLast("7a");
     }
 
-
     @Test
     void GivenEmptyList_WhenCallingGetters_ConfirmListIsActuallyEmpty() {
         MyArrayList<Object> myArrayList = new MyArrayList<>();
         assertTrue(myArrayList.isEmpty());
         assertEquals(0, myArrayList.size());
         assertEquals("[ ]", myArrayList.toString());
+        assertFalse(myArrayList.contains("Rafael"));
+        assertFalse(myArrayList.contains(null));
+    }
+
+    @Test
+    void GivenEmptyList_WhenDoingNothing_IsEmptyIsTrue(){
+        MyArrayList<Object> myArrayList = new MyArrayList<>();
+        assertTrue(myArrayList.isEmpty());
+    }
+
+    @Test
+    void GivenEmptyList_WhenAddingSomethingAtTheEnd_IsEmptyIsFalse(){
+        MyArrayList<Object> noLongerEmptyList = new MyArrayList<>();
+        noLongerEmptyList.addLast("Cow");
+        assertFalse(noLongerEmptyList.isEmpty());
+    }
+
+    @Test
+    void GivenEmptyList_WhenAddingSomethingAtTheBeginning_IsEmptyIsFalse(){
+        MyArrayList<Object> noLongerEmptyList = new MyArrayList<>();
+        noLongerEmptyList.addFirst("Cow");
+        assertFalse(noLongerEmptyList.isEmpty());
     }
 
     @Test
