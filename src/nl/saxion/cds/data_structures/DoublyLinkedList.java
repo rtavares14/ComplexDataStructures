@@ -195,9 +195,9 @@ public class DoublyLinkedList<T> implements SaxList<T>, Iterable<T> {
         while (current != null) {
             if (current.getValue().equals(value)) {
                 if (current == head) {
-                    removeFirst(); // The size will be decremented in removeFirst
+                    removeFirst();
                 } else if (current == tail) {
-                    removeLast(); // The size will be decremented in removeLast
+                    removeLast();
                 } else {
                     Node<T> previous = current.getPrevious();
                     Node<T> next = current.getNext();
@@ -214,7 +214,7 @@ public class DoublyLinkedList<T> implements SaxList<T>, Iterable<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return new Iterator<T>() {
+        return new Iterator<>() {
             private Node<T> current = head;
 
             @Override
