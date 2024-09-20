@@ -212,6 +212,59 @@ public class DoublyLinkedList<T> implements SaxList<T>, Iterable<T> {
         throw new ValueNotFoundException("Value not found in the list");
     }
 
+    public void removeAll(T value) throws ValueNotFoundException {
+        Node<T> current = head;
+        boolean found = false;
+
+        while (current != null) {
+            if (current.getValue().equals(value)) {
+                found = true;
+                if (current == head) {
+                    removeFirst();
+                    current = head;
+                } else if (current == tail) {
+                    removeLast();
+                    current = null;
+                } else {
+                    Node<T> previous = current.getPrevious();
+                    Node<T> next = current.getNext();
+                    previous.setNext(next);
+                    next.setPrevious(previous);
+                    current = next;
+                    --size;
+                }
+            } else {
+                current = current.getNext();
+            }
+        }
+
+        if (!found) {
+            throw new ValueNotFoundException("Value not found in the list");
+        }
+    }
+    public void removeLastOccurrence(T value) throws ValueNotFoundException {
+        Node<T> current = tail;
+
+        while (current != null) {
+            if (current.getValue().equals(value)) {
+                if (current == head) {
+                    removeFirst();
+                } else if (current == tail) {
+                    removeLast();
+                } else {
+                    Node<T> previous = current.getPrevious();
+                    Node<T> next = current.getNext();
+                    previous.setNext(next);
+                    next.setPrevious(previous);
+                    --size;
+                }
+                return;
+            }
+            current = current.getPrevious();
+        }
+        throw new ValueNotFoundException("Value not found in the list");
+    }
+
     @Override
     public Iterator<T> iterator() {
         return new Iterator<>() {

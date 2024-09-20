@@ -334,4 +334,53 @@ public class DoublyLinkedListTest {
         assertThrows(IndexOutOfBoundsException.class, () -> list.addAt(-1, "Eevee"));
     }
 
+    @Test
+    public void GivenAListWithMultipleOccurrences_WhenRemoveLastOccurrence_ThenOnlyLastOccurrenceIsRemoved() throws ValueNotFoundException {
+        DoublyLinkedList<String> list = new DoublyLinkedList<>();
+        list.addLast("Pikachu");
+        list.addLast("Bulbasaur");
+        list.addLast("Pikachu");
+        list.addLast("Charmander");
+        list.addLast("Pikachu");
+
+        list.removeLastOccurrence("Pikachu");
+
+        assertEquals(4, list.size());
+        assertEquals("Pikachu", list.get(0)); // First Pikachu remains
+        assertEquals("Pikachu", list.get(2)); // Second Pikachu remains
+        assertEquals("Charmander", list.get(3)); // Charmander remains
+    }
+
+    @Test
+    public void GivenAListWithMultipleOccurrences_WhenRemoveAll_ThenAllOccurrencesAreRemoved() throws ValueNotFoundException {
+        DoublyLinkedList<String> list = new DoublyLinkedList<>();
+        list.addLast("Squirtle");
+        list.addLast("Squirtle");
+        list.addLast("Charmander");
+        list.addLast("Squirtle");
+
+        list.removeAll("Squirtle");
+
+        assertEquals(1, list.size());
+        assertEquals("Charmander", list.get(0)); // Only Charmander remains
+    }
+
+    @Test
+    public void GivenAList_WhenRemoveLastOccurrenceForNonExistingValue_ThenThrowValueNotFoundException() {
+        DoublyLinkedList<String> list = new DoublyLinkedList<>();
+        list.addLast("Bulbasaur");
+        list.addLast("Charmander");
+
+        assertThrows(ValueNotFoundException.class, () -> list.removeLastOccurrence("Pikachu"));
+    }
+
+    @Test
+    public void GivenAList_WhenRemoveAllForNonExistingValue_ThenThrowValueNotFoundException() {
+        DoublyLinkedList<String> list = new DoublyLinkedList<>();
+        list.addLast("Bulbasaur");
+        list.addLast("Charmander");
+
+        assertThrows(ValueNotFoundException.class, () -> list.removeAll("Pikachu"));
+    }
+
 }
