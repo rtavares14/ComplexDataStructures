@@ -383,4 +383,38 @@ public class DoublyLinkedListTest {
         assertThrows(ValueNotFoundException.class, () -> list.removeAll("Pikachu"));
     }
 
+    @Test
+    public void GivenAList_WhenRemoveAllForMiddleValue_ThenCorrectlyRemoveMiddleNode() throws ValueNotFoundException {
+        // Arrange: Create a doubly-linked list with multiple Pokémon
+        DoublyLinkedList<String> list = new DoublyLinkedList<>();
+        list.addLast("Pikachu");
+        list.addLast("Charmander");
+        list.addLast("Bulbasaur");
+        list.addLast("Squirtle");
+
+        // Check initial state
+        assertEquals(4, list.size());
+        assertEquals("Pikachu", list.get(0));
+        assertEquals("Charmander", list.get(1));
+        assertEquals("Bulbasaur", list.get(2));
+        assertEquals("Squirtle", list.get(3));
+
+        // Act: Remove the middle Pokémon ("Charmander")
+        list.removeAll("Charmander");
+    }
+
+    @Test
+    public void testGraphVizSinglePokemon() {
+        DoublyLinkedList<String> pokemonList = new DoublyLinkedList<>();
+        pokemonList.addLast("Pikachu");
+
+        String expectedOutput =
+                "digraph PokemonList {\n" +
+                        "    node0 [label=\"Pikachu\"];\n" +
+                        "}\n";
+
+        assertEquals(expectedOutput, pokemonList.graphViz("PokemonList"));
+    }
+
+
 }

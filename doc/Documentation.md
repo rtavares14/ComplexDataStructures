@@ -1,15 +1,15 @@
-# Algoritmen en klassen
+# Algorithms and classes
 
 ## MijnArrayList
-Implementation: [mijn implementatie](../src/nl/saxion/cds/collection/MyArrayList.java)
+Implementation:
 
 ### My binary search algorithm
-Classificatie: O(Log(N))
+Classification: O(Log(N))
 
 Implementation:
 
 ### My linear search algorithm
-Classificatie: O(N)
+Classification: O(N)
 
 Implementation:
 
@@ -37,12 +37,12 @@ Implementation:
 Implementation:
 
 ### My iterative depth first search algorithms
-Classificatie:
+Classification:
 
 Implementation:
 
 ### My iterative breadth first search algorithm
-Classificatie:
+Classification:
 
 Implementation:
 
@@ -56,7 +56,7 @@ Classification:
 
 Implementation:
 
-### My MCST algorithm  
+### My MCST algorithm
 Classification:
 
 Implementation:
@@ -71,6 +71,6 @@ Implementation:
 
 ## Implementation shortest route
 
-## Implementation minimum cost spanning tree 
+## Implementation minimum cost spanning tree
 
 ## Implementation graphic representation(s)

@@ -1,77 +1,76 @@
 # Algorithms and classes
 
-## MyArrayList
-Implementation: [my implementation](..
-/src/nl/saxion/cds/collection/MyArrayList.java)
+## MijnArrayList
+Implementation:
 
-### Mijn binair zoekalgoritme
-Classificatie: O(Log(N))
+### My binary search algorithm
+Classification: O(Log(N))
 
-Implementatie:
+Implementation:
 
-### Mijn lineair zoekalgoritme
-Classificatie: O(N)
+### My linear search algorithm
+Classification: O(N)
 
-Implementatie:
+Implementation:
 
-### Mijn QuickSort algoritme
+### My QuickSort algorithm
 Classificatie:
 
-Implementatie:
+Implementation:
 
-## MyBST
-Implementatie:
+## My BST
+Implementation:
 
-## MyHashMap
-Implementatie:
+## My HashMap
+Implementation:
 
-## MyMinHeap
-Implementatie:
+## My MinHeap
+Implementation:
 
-## MyStack
-Implementatie:
+## My Stack
+Implementation:
 
-## MyQueue
-Implementatie:
+## My Queue
+Implementation:
 
-## MyGraph
-Implementatie:
+## My Graph
+Implementation:
 
-### Mijn iteratieve depth first search algoritme
-Classificatie:
+### My iterative depth first search algorithms
+Classification:
 
-Implementatie:
+Implementation:
 
-### Mijn iterative breadth first search algoritme
-Classificatie:
+### My iterative breadth first search algorithm
+Classification:
 
-Implementatie:
+Implementation:
 
-### Mijn Dijkstra algoritme
-Classificatie:
+### My Dijkstra algorithm
+Classification:
 
-Implementatie:
+Implementation:
 
-### Mijn A* algoritme
-Classificatie:
+### My A* algorithm
+Classification:
 
-Implementatie:
+Implementation:
 
-### Mijn MCST algoritme  
-Classificatie:
+### My MCST algorithm
+Classification:
 
-Implementatie:
+Implementation:
 
-# Technisch ontwerp Mijn Applicatie
+# Technical design My Application
 
-## Klassendiagram en het inlezen van de data
+## Class diagram and reading the data
 
-# Station zoeken op basis van de stationscode
+# Station search by station code
 
-# Station zoeken op basis van het begin van de naam
+# Station search based on the beginning of the name
 
-## Implementatie kortste route
+## Implementation shortest route
 
-## Implementatie minimum cost spanning tree 
+## Implementation minimum cost spanning tree
 
-## Implementatie grafische representatie(s)
+## Implementation graphic representation(s)

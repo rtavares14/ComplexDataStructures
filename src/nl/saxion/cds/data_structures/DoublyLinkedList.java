@@ -52,8 +52,7 @@ public class DoublyLinkedList<T> implements SaxList<T>, Iterable<T> {
             tail = newNode;
             head.setNext(tail);
             tail.setPrevious(head);
-        }
-        else {
+        } else {
             tail.setNext(newNode);
             newNode.setPrevious(tail);
             tail = newNode;
@@ -74,8 +73,7 @@ public class DoublyLinkedList<T> implements SaxList<T>, Iterable<T> {
             newNode.setNext(head);
             tail = head;
             head = newNode;
-        }
-        else {
+        } else {
             head.setPrevious(newNode);
             newNode.setNext(head);
             head = newNode;
@@ -296,7 +294,32 @@ public class DoublyLinkedList<T> implements SaxList<T>, Iterable<T> {
 
     @Override
     public String graphViz(String name) {
-        return null;
+        StringBuilder result = new StringBuilder();
+        result.append("digraph ").append(name).append(" {\n");
+
+        Node<T> current = head;
+        int index = 0;
+
+        while (current != null) {
+            result.append("    node").append(index).append(" [label=\"").append(current.getValue()).append("\"];\n");
+            current = current.getNext();
+            index++;
+        }
+
+        current = head;
+        index = 0;
+
+        while (current != null) {
+            if (current.getNext() != null) {
+                result.append("    node").append(index).append(" -> node").append(index + 1).append(" [label=\"next\"];\n");
+                result.append("    node").append(index + 1).append(" -> node").append(index).append(" [label=\"previous\"];\n");
+            }
+            current = current.getNext();
+            index++;
+        }
+
+        result.append("}\n");
+        return result.toString();
     }
 
     @Override
