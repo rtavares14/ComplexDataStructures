@@ -76,7 +76,7 @@ public class TestMyArrayList {
         assertEquals("[ 2 23 a dd 7a ]", list.toString());
 
         // Testing GraphViz can best be done manually (copy past to https://dreampuf.github.io/GraphvizOnline)
-        System.out.println(list.graphViz());
+        //System.out.println(list.graphViz());
     }
 
     @Test
@@ -267,5 +267,73 @@ public class TestMyArrayList {
         i = list3.linearSearch(v);
         assertEquals(v, list3.get(i));
         assertEquals(SaxSearchable.NOT_FOUND, list3.linearSearch(-1));
+    }
+
+    @Test
+    void GivenSheetsList_WhenSortedUsingInsertionSort_ThenListIsSorted() {
+        // Sort the initial list using insertionSort
+        list.insertionSort(String::compareTo);
+        assertTrue(list.isSorted(String::compareTo)); // Check if the list is sorted
+        assertEquals("[ 2 23 7a a dd ]", list.toString()); // Confirm the sorted order
+    }
+
+    @Test
+    void GivenReversedList_WhenSortedUsingInsertionSort_ThenListIsSorted() {
+        // Create a new reversed list
+        MyArrayList<String> reversedList = new MyArrayList<>();
+        reversedList.addLast("dd");
+        reversedList.addLast("c");
+        reversedList.addLast("b");
+        reversedList.addLast("a");
+
+        // Sort the reversed list
+        reversedList.insertionSort(String::compareTo);
+        assertTrue(reversedList.isSorted(String::compareTo));
+        assertEquals("[ a b c dd ]", reversedList.toString());
+    }
+
+    @Test
+    void GivenListWithDuplicates_WhenSortedUsingInsertionSort_ThenListIsSorted() {
+        // Create a list with duplicates
+        MyArrayList<String> listWithDuplicates = new MyArrayList<>();
+        listWithDuplicates.addLast("apple");
+        listWithDuplicates.addLast("banana");
+        listWithDuplicates.addLast("apple");
+        listWithDuplicates.addLast("banana");
+        listWithDuplicates.addLast("cherry");
+
+        // Sort the list with duplicates
+        listWithDuplicates.insertionSort(String::compareTo);
+        assertTrue(listWithDuplicates.isSorted(String::compareTo));
+        assertEquals("[ apple apple banana banana cherry ]", listWithDuplicates.toString());
+    }
+
+    @Test
+    void GivenEmptyList_WhenSortedUsingInsertionSort_ThenListIsEmpty() {
+        MyArrayList<String> emptyList = new MyArrayList<>();
+        emptyList.insertionSort(String::compareTo); // Sort the empty list
+        assertTrue(emptyList.isEmpty()); // Check that the list is still empty
+    }
+
+    @Test
+    void GivenSingleElementList_WhenSortedUsingInsertionSort_ThenListIsUnchanged() {
+        MyArrayList<String> singleElementList = new MyArrayList<>();
+        singleElementList.addLast("onlyElement");
+        singleElementList.insertionSort(String::compareTo); // Sort the single-element list
+        assertEquals(1, singleElementList.size()); // Ensure size remains 1
+        assertEquals("[ onlyElement ]", singleElementList.toString()); // Ensure list content is unchanged
+    }
+
+    @Test
+    void GivenLargeList_WhenSortedUsingInsertionSort_ThenListIsSorted() {
+        // Create a large list with 1000 random elements
+        MyArrayList<Integer> largeList = new MyArrayList<>();
+        for (int i = 0; i < 1000; i++) {
+            largeList.addLast((int)(Math.random() * 1000)); // Random values
+        }
+
+        // Sort the large list
+        largeList.insertionSort(Integer::compareTo);
+        assertTrue(largeList.isSorted(Integer::compareTo)); // Check if the list is sorted
     }
 }

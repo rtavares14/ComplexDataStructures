@@ -185,8 +185,23 @@ public class MyArrayList<V> implements SaxList<V>, SaxSearchable<V>, SaxSortable
 
     @Override
     public boolean isSorted(Comparator<V> comparator) {
-        // TODO: implement isSorted()
-        return true;
+        for (int i = 0; i < size - 1; i++) {
+            V currentElement = (V) elements[i];
+            V nextElement = (V) elements[i + 1];
+
+            // Handle null values based on how you want to treat them
+            if (currentElement == null && nextElement != null) {
+                return false; // If current is null and next is not, they are out of order
+            } else if (currentElement != null && nextElement == null) {
+                continue; // If current is not null and next is null, nulls are treated as larger
+            } else if (currentElement != null && nextElement != null) {
+                // Use comparator for non-null values
+                if (comparator.compare(currentElement, nextElement) > 0) {
+                    return false; // Found an out-of-order pair
+                }
+            }
+        }
+        return true; // All elements are in order
     }
 
     /**
@@ -239,6 +254,7 @@ public class MyArrayList<V> implements SaxList<V>, SaxSearchable<V>, SaxSortable
      * @param begin      start of range
      * @param end        end of range
      */
+
     private void quickSort(Comparator<V> comparator, int begin, int end) {
         if (end - begin >= 1) {
             int pivot = splitInPlace(comparator, begin, end);
@@ -258,32 +274,74 @@ public class MyArrayList<V> implements SaxList<V>, SaxSearchable<V>, SaxSortable
      * @return the current index of the pivot
      */
     private int splitInPlace(Comparator<V> comparator, int begin, int end) {
-        V pivot = get(begin); // first element (at begin) as pivot
+        V pivotValue = get(end);  // Using the last element as the pivot
+        int i = begin - 1; // Index of the smaller element
 
-        int left = begin;
-        int right = end;
-        int index = right;
+        for (int j = begin; j < end; j++) {
+            if (comparator.compare(get(j), pivotValue) <= 0) {
+                i++;
+                swap(i, j);  // Move smaller element to the left of the pivot
+            }
+        }
 
-        // TODO: complete splitInPlace()
-
-        return right; // Returns index of pivot
+        swap(i + 1, end);  // Place the pivot element in its correct position
+        return i + 1;       // Return the pivot index
     }
 
     @Override
     public int linearSearch(Object element) {
         for (int i = 0; i < size; ++i) {
-            if (elements[i].equals(element)) {
-                return i;
+            if (element == null) {
+                if (elements[i] == null) {
+                    return i; // Found the null element
+                }
+            } else {
+                if (element.equals(elements[i])) {
+                    return i; // Found the matching element
+                }
             }
         }
-        return SaxSearchable.NOT_FOUND;
+        return SaxSearchable.NOT_FOUND; // Element not found
     }
 
     @Override
     public int binarySearch(Comparator<V> comparator, V element) {
-        // TODO: implement binarySearch()
-        return SaxSearchable.NOT_FOUND;
+        int low = 0;
+        int high = size - 1;
+
+        while (low <= high) {
+            int middlePosition = low + (high - low) / 2;  // To avoid potential overflow
+            int middleNumber = comparator.compare((V) elements[middlePosition], element);
+
+            if (middleNumber == 0) {
+                return middlePosition;  // Element found
+            } else if (middleNumber < 0) {
+                low = middlePosition + 1;  // Search the right half
+            } else {
+                high = middlePosition - 1;  // Search the left half
+            }
+        }
+        return -1;  // Element not found
     }
+
+    public void insertionSort(Comparator<V> comparator) {
+        // Start at the second element since the first is trivially sorted
+        for (int i = 1; i < size; i++) {
+            V currentValue = get(i);
+            int j = i - 1;
+
+            // Shift elements of the sorted part of the array to the right to make room
+            // for the currentValue
+            while (j >= 0 && comparator.compare(get(j), currentValue) > 0) {
+                set(j + 1, get(j));  // Shift the element to the right
+                j--;
+            }
+
+            // Insert currentValue in its correct position
+            set(j + 1, currentValue);
+        }
+    }
+
 
     @Override
     public Iterator<V> iterator() {
