@@ -404,6 +404,29 @@ public class DoublyLinkedListTest {
     }
 
     @Test
+    public void GivenAListWithThreeElements_WhenRemoveLastOccurrenceOfMiddleElement_ThenMiddleElementIsRemoved() throws ValueNotFoundException {
+        // Arrange: Create a doubly-linked list with three elements
+        DoublyLinkedList<String> list = new DoublyLinkedList<>();
+        list.addLast("Pikachu");
+        list.addLast("Bulbasaur"); // This is the middle element we'll remove
+        list.addLast("Charmander");
+
+        // Check initial state
+        assertEquals(3, list.size());
+        assertEquals("Pikachu", list.get(0));
+        assertEquals("Bulbasaur", list.get(1)); // Middle element
+        assertEquals("Charmander", list.get(2));
+
+        // Act: Remove the middle element ("Bulbasaur")
+        list.removeLastOccurrence("Bulbasaur");
+
+        // Assert: Ensure the middle element is removed and the list is properly linked
+        assertEquals(2, list.size());
+        assertEquals("Pikachu", list.get(0)); // First element remains
+        assertEquals("Charmander", list.get(1)); // Last element remains, and it's now the second
+    }
+
+    @Test
     public void testGraphVizSinglePokemon() {
         DoublyLinkedList<String> pokemonList = new DoublyLinkedList<>();
         pokemonList.addLast("Pikachu");
@@ -416,5 +439,27 @@ public class DoublyLinkedListTest {
         assertEquals(expectedOutput, pokemonList.graphViz("PokemonList"));
     }
 
+    @Test
+    public void GivenAListWithThreeElements_WhenGraphVizIsCalled_ThenCorrectNextAndPreviousEdgesAreGenerated() {
+        // Arrange: Create a doubly-linked list with three elements
+        DoublyLinkedList<String> list = new DoublyLinkedList<>();
+        list.addLast("Pikachu");
+        list.addLast("Bulbasaur");
+        list.addLast("Charmander");
 
+        // Act: Generate the Graphviz representation
+        String graphVizOutput = list.graphViz("PokemonList");
+
+        // Assert: Check that the next and previous edges between nodes are correctly generated
+        String expectedNextEdge1 = "    node0 -> node1 [label=\"next\"];\n";
+        String expectedPreviousEdge1 = "    node1 -> node0 [label=\"previous\"];\n";
+        String expectedNextEdge2 = "    node1 -> node2 [label=\"next\"];\n";
+        String expectedPreviousEdge2 = "    node2 -> node1 [label=\"previous\"];\n";
+
+        // Assert that the output contains the expected edges
+        assertTrue(graphVizOutput.contains(expectedNextEdge1));
+        assertTrue(graphVizOutput.contains(expectedPreviousEdge1));
+        assertTrue(graphVizOutput.contains(expectedNextEdge2));
+        assertTrue(graphVizOutput.contains(expectedPreviousEdge2));
+    }
 }
