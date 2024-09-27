@@ -6,11 +6,10 @@ import nl.saxion.cds.collection.SaxHashMap;
 import nl.saxion.cds.collection.SaxList;
 
 public class HashMap<K, V> implements SaxHashMap<K, V> {
-    private static final int INITIAL_CAPACITY = 16; // Default initial capacity
-    private DoublyLinkedList<Entry<K, V>>[] buckets; // Array of DoublyLinkedLists for buckets
-    private int size; // Number of key-value pairs in the map
+    private static final int INITIAL_CAPACITY = 16;
+    private DoublyLinkedList<Entry<K, V>>[] buckets;
+    private int size;
 
-    // Inner class for entries in the HashMap
     private static class Entry<K, V> {
         K key;
         V value;
@@ -25,7 +24,6 @@ public class HashMap<K, V> implements SaxHashMap<K, V> {
     public HashMap() {
         this.buckets = new DoublyLinkedList[INITIAL_CAPACITY];
         this.size = 0;
-        // Initialize each bucket as an empty DoublyLinkedList
         for (int i = 0; i < INITIAL_CAPACITY; i++) {
             buckets[i] = new DoublyLinkedList<>();
         }
@@ -114,14 +112,12 @@ public class HashMap<K, V> implements SaxHashMap<K, V> {
         int index = getBucketIndex(key);
         DoublyLinkedList<Entry<K, V>> bucket = buckets[index];
 
-        // Check if the key already exists in the bucket
         for (Entry<K, V> entry : bucket) {
             if (entry.key.equals(key)) {
                 throw new DuplicateKeyException("Duplicate key: " + key);
             }
         }
 
-        // Add the new key-value pair to the bucket
         bucket.addLast(new Entry<>(key, value));
         size++;
     }
@@ -155,7 +151,6 @@ public class HashMap<K, V> implements SaxHashMap<K, V> {
     public SaxList<K> getKeys() {
         DoublyLinkedList<K> keysList = new DoublyLinkedList<>();
 
-        // Iterate over all buckets to collect keys
         for (DoublyLinkedList<Entry<K, V>> bucket : buckets) {
             for (Entry<K, V> entry : bucket) {
                 keysList.addLast(entry.key);

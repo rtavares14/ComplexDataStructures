@@ -340,6 +340,17 @@ public class DoublyLinkedList<T> implements SaxList<T>, Iterable<T> {
         return result.toString();
     }
 
+    /**
+     * Returns the last element in the list without removing it.
+     *
+     * @return the last element or null if the list is empty
+     */
+    public T peekLast() {
+        if (tail == null) {
+            return null;
+        }
+        return tail.getValue();
+    }
 }
 
 
