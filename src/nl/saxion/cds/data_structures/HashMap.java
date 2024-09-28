@@ -6,6 +6,7 @@ import nl.saxion.cds.collection.SaxHashMap;
 import nl.saxion.cds.collection.SaxList;
 
 public class HashMap<K, V> implements SaxHashMap<K, V> {
+    //aa
     private static final int INITIAL_CAPACITY = 16;
     private DoublyLinkedList<Entry<K, V>>[] buckets;
     private int size;
