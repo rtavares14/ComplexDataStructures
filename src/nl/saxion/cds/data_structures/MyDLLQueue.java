@@ -34,6 +34,9 @@ public class MyDLLQueue<T> extends DoublyLinkedList<T> implements SaxQueue<T> {
      */
     @Override
     public T peek() throws EmptyCollectionException {
+        if (isEmpty()) {
+            throw new EmptyCollectionException();
+        }
         return super.peekLast();
     }
 }

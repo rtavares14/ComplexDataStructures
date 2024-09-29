@@ -6,8 +6,8 @@ import nl.saxion.cds.collection.SaxHashMap;
 import nl.saxion.cds.collection.SaxList;
 
 public class HashMap<K, V> implements SaxHashMap<K, V> {
-    //aa
     private static final int INITIAL_CAPACITY = 16;
+    private static final float LOAD_FACTOR_THRESHOLD = 0.75f; // Threshold for resizing
     private DoublyLinkedList<Entry<K, V>>[] buckets;
     private int size;
 
@@ -30,27 +30,16 @@ public class HashMap<K, V> implements SaxHashMap<K, V> {
         }
     }
 
-    /**
-     * Determines if the collection has no elements
-     * @return if the collection has no elements
-     */
     @Override
     public boolean isEmpty() {
         return size == 0;
     }
 
-    /**
-     * Determines the number of elements in this collection
-     * @return size of this collection
-     */
     @Override
     public int size() {
         return size;
     }
 
-    /**
-     * Create a String representation of the data in GraphViz format.
-     */
     @Override
     public String graphViz(String name) {
         StringBuilder sb = new StringBuilder();
@@ -67,10 +56,6 @@ public class HashMap<K, V> implements SaxHashMap<K, V> {
         return sb.toString();
     }
 
-    /**
-     * Check if the key is part of this map.
-     * Uses K.equals() to check for equality.
-     */
     @Override
     public boolean contains(Object key) {
         int index = getBucketIndex(key);
@@ -81,15 +66,9 @@ public class HashMap<K, V> implements SaxHashMap<K, V> {
                 return true;
             }
         }
-
         return false;
     }
 
-    /**
-     * Get a value which is mapped to the key.
-     * @param key key which is mapped to value to be found
-     * @return the value mapped to the key or null if the key is not found
-     */
     @Override
     public V get(Object key) {
         int index = getBucketIndex(key);
@@ -100,16 +79,15 @@ public class HashMap<K, V> implements SaxHashMap<K, V> {
                 return entry.value;
             }
         }
-
-        return null;
+        return null; // Key not found
     }
 
-    /**
-     * Add the value which will be mapped to the key.
-     * A duplicate key will throw a DuplicateKeyException.
-     */
     @Override
     public void add(K key, V value) throws DuplicateKeyException {
+        if (size >= buckets.length * LOAD_FACTOR_THRESHOLD) {
+            resize(); // Resize if load factor exceeds threshold
+        }
+
         int index = getBucketIndex(key);
         DoublyLinkedList<Entry<K, V>> bucket = buckets[index];
 
@@ -119,16 +97,10 @@ public class HashMap<K, V> implements SaxHashMap<K, V> {
             }
         }
 
-        bucket.addLast(new Entry<>(key, value));
+        bucket.addLast(new Entry<>(key, value)); // Add to the end of the bucket
         size++;
     }
 
-    /**
-     * Remove the value which is mapped with the key from the collection
-     * @param key key which is mapped to value
-     * @return the value which is removed from the collection
-     * @throws KeyNotFoundException if the key is not part of the collection
-     */
     @Override
     public V remove(Object key) throws KeyNotFoundException {
         int index = getBucketIndex(key);
@@ -136,18 +108,14 @@ public class HashMap<K, V> implements SaxHashMap<K, V> {
 
         for (Entry<K, V> entry : bucket) {
             if (entry.key.equals(key)) {
-                bucket.remove(entry);
+                bucket.remove(entry); // Remove from the bucket
                 size--;
-                return entry.value;
+                return entry.value; // Return the removed value
             }
         }
-
         throw new KeyNotFoundException("Key not found: " + key);
     }
 
-    /**
-     * Get a list of all the keys in this map.
-     */
     @Override
     public SaxList<K> getKeys() {
         DoublyLinkedList<K> keysList = new DoublyLinkedList<>();
@@ -161,10 +129,26 @@ public class HashMap<K, V> implements SaxHashMap<K, V> {
         return keysList;
     }
 
-    /**
-     * Helper method to get the index of the bucket where the key should be stored
-     */
     private int getBucketIndex(Object key) {
-        return key == null ? 0 : Math.abs(key.hashCode()) % buckets.length;
+        return key == null ? 0 : Math.abs(key.hashCode()) % buckets.length; // Calculate index
+    }
+
+    private void resize() {
+        int newCapacity = buckets.length * 2;
+        DoublyLinkedList<Entry<K, V>>[] newBuckets = new DoublyLinkedList[newCapacity];
+
+        for (int i = 0; i < newCapacity; i++) {
+            newBuckets[i] = new DoublyLinkedList<>();
+        }
+
+        // Rehash all entries to the new buckets
+        for (DoublyLinkedList<Entry<K, V>> bucket : buckets) {
+            for (Entry<K, V> entry : bucket) {
+                int newIndex = entry.key == null ? 0 : Math.abs(entry.key.hashCode()) % newCapacity;
+                newBuckets[newIndex].addLast(entry);
+            }
+        }
+
+        this.buckets = newBuckets;
     }
 }

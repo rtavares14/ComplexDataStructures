@@ -385,42 +385,35 @@ public class DoublyLinkedListTest {
 
     @Test
     public void GivenAList_WhenRemoveAllForMiddleValue_ThenCorrectlyRemoveMiddleNode() throws ValueNotFoundException {
-        // Arrange: Create a doubly-linked list with multiple Pokémon
         DoublyLinkedList<String> list = new DoublyLinkedList<>();
         list.addLast("Pikachu");
         list.addLast("Charmander");
         list.addLast("Bulbasaur");
         list.addLast("Squirtle");
 
-        // Check initial state
         assertEquals(4, list.size());
         assertEquals("Pikachu", list.get(0));
         assertEquals("Charmander", list.get(1));
         assertEquals("Bulbasaur", list.get(2));
         assertEquals("Squirtle", list.get(3));
 
-        // Act: Remove the middle Pokémon ("Charmander")
         list.removeAll("Charmander");
     }
 
     @Test
     public void GivenAListWithThreeElements_WhenRemoveLastOccurrenceOfMiddleElement_ThenMiddleElementIsRemoved() throws ValueNotFoundException {
-        // Arrange: Create a doubly-linked list with three elements
         DoublyLinkedList<String> list = new DoublyLinkedList<>();
         list.addLast("Pikachu");
         list.addLast("Bulbasaur"); // This is the middle element we'll remove
         list.addLast("Charmander");
 
-        // Check initial state
         assertEquals(3, list.size());
         assertEquals("Pikachu", list.get(0));
         assertEquals("Bulbasaur", list.get(1)); // Middle element
         assertEquals("Charmander", list.get(2));
 
-        // Act: Remove the middle element ("Bulbasaur")
         list.removeLastOccurrence("Bulbasaur");
 
-        // Assert: Ensure the middle element is removed and the list is properly linked
         assertEquals(2, list.size());
         assertEquals("Pikachu", list.get(0)); // First element remains
         assertEquals("Charmander", list.get(1)); // Last element remains, and it's now the second
@@ -441,25 +434,64 @@ public class DoublyLinkedListTest {
 
     @Test
     public void GivenAListWithThreeElements_WhenGraphVizIsCalled_ThenCorrectNextAndPreviousEdgesAreGenerated() {
-        // Arrange: Create a doubly-linked list with three elements
         DoublyLinkedList<String> list = new DoublyLinkedList<>();
         list.addLast("Pikachu");
         list.addLast("Bulbasaur");
         list.addLast("Charmander");
 
-        // Act: Generate the Graphviz representation
         String graphVizOutput = list.graphViz("PokemonList");
 
-        // Assert: Check that the next and previous edges between nodes are correctly generated
         String expectedNextEdge1 = "    node0 -> node1 [label=\"next\"];\n";
         String expectedPreviousEdge1 = "    node1 -> node0 [label=\"previous\"];\n";
         String expectedNextEdge2 = "    node1 -> node2 [label=\"next\"];\n";
         String expectedPreviousEdge2 = "    node2 -> node1 [label=\"previous\"];\n";
 
-        // Assert that the output contains the expected edges
         assertTrue(graphVizOutput.contains(expectedNextEdge1));
         assertTrue(graphVizOutput.contains(expectedPreviousEdge1));
         assertTrue(graphVizOutput.contains(expectedNextEdge2));
         assertTrue(graphVizOutput.contains(expectedPreviousEdge2));
+    }
+
+    @Test
+    public void GivenAList_WhenSetAtInvalidIndex_ThenIndexOutOfBoundsExceptionIsThrown() {
+        DoublyLinkedList<String> list = new DoublyLinkedList<>();
+        list.addLast("Bulbasaur");
+        list.addLast("Charmander");
+
+        assertThrows(IndexOutOfBoundsException.class, () -> list.set(-1, "Pikachu"));
+        assertThrows(IndexOutOfBoundsException.class, () -> list.set(2, "Pikachu"));
+        assertThrows(IndexOutOfBoundsException.class, () -> list.set(10, "Squirtle"));
+    }
+
+    @Test
+    public void testRemoveLast_OneElementList() throws EmptyCollectionException {
+        DoublyLinkedList<String> list = new DoublyLinkedList<>();
+        list.addLast("Pikachu");
+
+        String removedValue = list.removeLast();
+
+        assertEquals("Pikachu", removedValue);
+    }
+
+    @Test
+    public void testRemoveFirst_OneElementList() throws EmptyCollectionException {
+        DoublyLinkedList<String> list = new DoublyLinkedList<>();
+        list.addLast("Charmander");
+
+        String removedValue = list.removeFirst();
+
+        assertEquals("Charmander", removedValue);
+    }
+
+    @Test
+    public void testRemoveLastOccurrence_RemoveFirst() throws ValueNotFoundException, EmptyCollectionException {
+        DoublyLinkedList<String> list = new DoublyLinkedList<>();
+        list.addLast("Charmander");
+        list.addLast("Pikachu");
+        list.addLast("Bulbasaur");
+
+        list.removeLastOccurrence("Charmander");
+
+        assertEquals(2, list.size());
     }
 }
