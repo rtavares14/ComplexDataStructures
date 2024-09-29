@@ -30,23 +30,33 @@ public class HashMap<K, V> implements SaxHashMap<K, V> {
         }
     }
 
+    /**
+     * Determines if the collection has no elements
+     * @return if the collection has no elements
+     */
     @Override
     public boolean isEmpty() {
         return size == 0;
     }
 
+    /**
+     * Determines the number of elements in this collection
+     * @return size of this collection
+     */
     @Override
     public int size() {
         return size;
     }
 
+    /**
+     * Create a String representation of the data in GraphViz format.
+     */
     @Override
     public String graphViz(String name) {
         StringBuilder sb = new StringBuilder();
         sb.append("digraph ").append(name).append(" {\n");
 
-        for (int i = 0; i < buckets.length; i++) {
-            DoublyLinkedList<Entry<K, V>> bucket = buckets[i];
+        for (DoublyLinkedList<Entry<K, V>> bucket : buckets) {
             for (Entry<K, V> entry : bucket) {
                 sb.append("  ").append(entry.key).append(" -> ").append(entry.value).append(";\n");
             }
@@ -56,6 +66,10 @@ public class HashMap<K, V> implements SaxHashMap<K, V> {
         return sb.toString();
     }
 
+    /**
+     * Check if the key is part of this map.
+     * Uses K.equals() to check for equality.
+     */
     @Override
     public boolean contains(Object key) {
         int index = getBucketIndex(key);
@@ -69,6 +83,11 @@ public class HashMap<K, V> implements SaxHashMap<K, V> {
         return false;
     }
 
+    /**
+     * Get a value which is mapped to the key.
+     * @param key key which is mapped to value to be found
+     * @return the value mapped to the key or null if the key is not found
+     */
     @Override
     public V get(Object key) {
         int index = getBucketIndex(key);
