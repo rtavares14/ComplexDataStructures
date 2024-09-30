@@ -196,7 +196,7 @@ public class MyHashMap<K, V> implements SaxHashMap<K, V> {
             newBuckets[i] = new DoublyLinkedList<>();
         }
 
-        // If there's an entry for the null key, place it in the new buckets
+        // entry for the null key,put in the buckets
         if (nullKeyEntry != null) {
             newBuckets[0].addLast(nullKeyEntry);
         }
@@ -209,6 +209,6 @@ public class MyHashMap<K, V> implements SaxHashMap<K, V> {
             }
         }
 
-        this.buckets = newBuckets; // Update  buckets reference
+        this.buckets = newBuckets; // Update buckets reference
     }
 }
