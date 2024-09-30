@@ -2,7 +2,7 @@ package data_structures;
 
 import nl.saxion.cds.collection.EmptyCollectionException;
 import nl.saxion.cds.collection.ValueNotFoundException;
-import nl.saxion.cds.data_structures.DoublyLinkedList;
+import nl.saxion.cds.data_structures.list.DoublyLinkedList;
 import org.junit.jupiter.api.Test;
 
 import java.util.Iterator;

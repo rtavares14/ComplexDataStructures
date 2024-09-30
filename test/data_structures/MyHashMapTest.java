@@ -2,7 +2,7 @@ package data_structures;
 
 import nl.saxion.cds.collection.DuplicateKeyException;
 import nl.saxion.cds.collection.KeyNotFoundException;
-import nl.saxion.cds.data_structures.MyHashMap;
+import nl.saxion.cds.data_structures.map.MyHashMap;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

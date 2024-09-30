@@ -1,9 +1,10 @@
-package nl.saxion.cds.data_structures;
+package nl.saxion.cds.data_structures.map;
 
 import nl.saxion.cds.collection.DuplicateKeyException;
 import nl.saxion.cds.collection.KeyNotFoundException;
 import nl.saxion.cds.collection.SaxHashMap;
 import nl.saxion.cds.collection.SaxList;
+import nl.saxion.cds.data_structures.list.DoublyLinkedList;
 
 public class MyHashMap<K, V> implements SaxHashMap<K, V> {
     private static final int INITIAL_CAPACITY = 14;

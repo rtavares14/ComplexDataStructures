@@ -1,4 +1,4 @@
-package nl.saxion.cds.data_structures;
+package nl.saxion.cds.data_structures.list;
 
 public class Node<T>{
     private T value; //should it be final ?

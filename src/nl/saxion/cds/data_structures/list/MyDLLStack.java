@@ -1,4 +1,4 @@
-package nl.saxion.cds.data_structures;
+package nl.saxion.cds.data_structures.list;
 
 import nl.saxion.cds.collection.EmptyCollectionException;
 import nl.saxion.cds.collection.SaxStack;

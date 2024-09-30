@@ -1,7 +1,7 @@
 package data_structures;
 
 import nl.saxion.cds.collection.EmptyCollectionException;
-import nl.saxion.cds.data_structures.MyDLLQueue;
+import nl.saxion.cds.data_structures.list.MyDLLQueue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
