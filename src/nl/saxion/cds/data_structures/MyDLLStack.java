@@ -34,6 +34,9 @@ public class MyDLLStack<T> extends DoublyLinkedList<T> implements SaxStack<T> {
      */
     @Override
     public T peek() throws EmptyCollectionException {
-        return super.peekLast();
+        if (isEmpty()) {
+            throw new EmptyCollectionException();
+        }
+        return super.peekLast(); // Ensure this returns the last element without removing it
     }
 }
