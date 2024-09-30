@@ -7,10 +7,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class TestMyHashMap {
+public class MyHashMapTest {
+
     private MyHashMap<Integer, String> hashMap;
-
     @BeforeEach
     void setUp() {
         hashMap = new MyHashMap<>();
@@ -19,7 +20,6 @@ class TestMyHashMap {
         hashMap.add(303, "Bulbasaur");
         hashMap.add(404, "Squirtle");
     }
-
     @Test
     void GivenEmptyHashMap_WhenCallingIsEmpty_ThenReturnTrue() {
         MyHashMap<Object, Object> emptyMap = new MyHashMap<>();
