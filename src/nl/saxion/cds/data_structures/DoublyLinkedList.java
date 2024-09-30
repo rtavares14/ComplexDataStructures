@@ -19,12 +19,15 @@ public class DoublyLinkedList<T> implements SaxList<T>, Iterable<T> {
     public boolean contains(T value) {
         Node<T> current = head;
         while (current != null) {
-            if (current.getValue().equals(value)) {
-                return true;
+            if (current.getValue() == null && value == null) {
+                return true; // Both are null
+            }
+            if (current.getValue() != null && current.getValue().equals(value)) {
+                return true; // Match found
             }
             current = current.getNext();
         }
-        return false;
+        return false; // No match found
     }
 
     @Override
