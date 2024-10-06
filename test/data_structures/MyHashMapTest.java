@@ -179,4 +179,14 @@ public class MyHashMapTest {
         assertEquals(6, hashMap.size());
         assertEquals("NullValue", hashMap.get(null));
     }
+
+    @Test
+    void GivenHashMap_WhenRemovingNegativeKey_ThenKeyNotFoundExceptionIsThrown() {
+        assertThrows(KeyNotFoundException.class, () -> hashMap.remove(-101));
+    }
+
+    @Test
+    void GivenHashMap_WhenCheckingContainsNegativeKey_ThenReturnFalse() {
+        assertFalse(hashMap.contains(-101));
+    }
 }

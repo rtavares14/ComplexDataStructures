@@ -5,29 +5,21 @@ import nl.saxion.cds.collection.KeyNotFoundException;
 import nl.saxion.cds.collection.SaxBinaryTree;
 import nl.saxion.cds.data_structures.list.DoublyLinkedList;
 
+import java.util.Comparator;
+
 public class MyBinarySearchTree<K extends Comparable<K>, V> implements SaxBinaryTree<K, V> {
 
-    // trees don't grow without a root.
-    private class Node {
-        K key;
-        V value;
-        Node left, right;
-
-        Node(K key, V value) {
-            this.key = key;
-            this.value = value;
-        }
-    }
-
-    private Node root;
+    private MyBinaryTreeNode<K, V> root;
     private int size;
+    private Comparator<K> comparator;
 
     /**
-     * We all have to start somewhere, even this tree.
+     * Constructor that initializes the tree with a comparator.
      */
-    public MyBinarySearchTree() {
-        root = null;
-        size = 0;
+    public MyBinarySearchTree(Comparator<K> comparator) {
+        this.root = null;
+        this.size = 0;
+        this.comparator = comparator;
     }
 
     /**
@@ -41,7 +33,7 @@ public class MyBinarySearchTree<K extends Comparable<K>, V> implements SaxBinary
     }
 
     /**
-     * How big is this thing, really?
+     * How big is this tree, really?
      *
      * @return size of this collection
      */
@@ -58,15 +50,7 @@ public class MyBinarySearchTree<K extends Comparable<K>, V> implements SaxBinary
      */
     @Override
     public boolean contains(K key) {
-        return containsRecursive(root, key);
-    }
-
-    private boolean containsRecursive(Node node, K key) {
-        if (node == null) return false;
-        int cmp = key.compareTo(node.key);
-        if (cmp < 0) return containsRecursive(node.left, key);
-        if (cmp > 0) return containsRecursive(node.right, key);
-        return true;
+        return get(key) != null;
     }
 
     /**
@@ -77,15 +61,10 @@ public class MyBinarySearchTree<K extends Comparable<K>, V> implements SaxBinary
      */
     @Override
     public V get(K key) {
-        return getRecursive(root, key);
-    }
-
-    private V getRecursive(Node node, K key) {
-        if (node == null) return null;
-        int cmp = key.compareTo(node.key);
-        if (cmp < 0) return getRecursive(node.left, key);
-        if (cmp > 0) return getRecursive(node.right, key);
-        return node.value;
+        if (root == null) {
+            return null;
+        }
+        return root.get(key, comparator);
     }
 
     /**
@@ -97,39 +76,69 @@ public class MyBinarySearchTree<K extends Comparable<K>, V> implements SaxBinary
      */
     @Override
     public void add(K key, V value) throws DuplicateKeyException {
-        root = addRecursive(root, key, value);
-    }
-
-    private Node addRecursive(Node node, K key, V value) throws DuplicateKeyException {
-        if (node == null) {
+        MyBinaryTreeNode<K, V> newNode = new MyBinaryTreeNode<>(value, key);
+        if (root == null) {
+            root = newNode;
             size++;
-            return new Node(key, value);
+            return;
         }
 
-        int cmp = key.compareTo(node.key);
-        if (cmp < 0) {
-            node.left = addRecursive(node.left, key, value);
-        } else if (cmp > 0) {
-            node.right = addRecursive(node.right, key, value);
-        } else {
-            throw new DuplicateKeyException("Key already exists: " + key);
+        // Check if the key already exists
+        if (contains(key)) {
+            throw new DuplicateKeyException("Duplicate key: " + key);
         }
 
-        return node;
+        root.add(newNode, comparator);
+        size++;
     }
 
 
+    /**
+     * Remove the value which is mapped to the key from the collection.
+     *
+     * @param key key which is mapped to the value
+     * @return the value which is removed from the collection
+     * @throws KeyNotFoundException if the key is not part of the collection
+     */
     @Override
     public V remove(K key) throws KeyNotFoundException {
-
-        return null;
-    }
-
-    private Node findMin(Node node) {
-        while (node.left != null) {
-            node = node.left;
+        if (root == null) {
+            throw new KeyNotFoundException("Key not found: " + key);
         }
-        return node;
+
+        // Check if the root itself is the node to remove
+        if (comparator.compare(key, root.getKey()) == 0) {
+            // Special case: Removing the root node
+            V removedValue = root.getValue();
+
+            // Handle different cases of root removal
+            if (root.isLeaf()) {
+                root = null;  // Root is a leaf, so tree becomes empty
+            } else if (root.getLeft() == null) {
+                root = root.getRight();  // Root has only a right child
+            } else if (root.getRight() == null) {
+                root = root.getLeft();  // Root has only a left child
+            } else {
+                // Root has two children, find the in-order successor
+                MyBinaryTreeNode<K, V> minNode = root.findMin(root.getRight());
+                root.setKey(minNode.getKey());
+                root.setValue(minNode.getValue());
+                // Remove the in-order successor from the right subtree
+                root.getRight().remove(minNode.getKey(), comparator, root);
+            }
+
+            size--;
+            return removedValue;
+
+        } else {
+            // Normal case: Delegating to node's remove method
+            V removedValue = root.remove(key, comparator, null);
+            if (removedValue == null) {
+                throw new KeyNotFoundException("Key not found: " + key);
+            }
+            size--;
+            return removedValue;
+        }
     }
 
     /**
@@ -149,12 +158,22 @@ public class MyBinarySearchTree<K extends Comparable<K>, V> implements SaxBinary
      * @param node the current node being visited
      * @param list the doubly linked list to add keys to
      */
-    private void addKeysToList(Node node, DoublyLinkedList<K> list) {
+    private void addKeysToList(MyBinaryTreeNode<K, V> node, DoublyLinkedList<K> list) {
         if (node != null) {
-            addKeysToList(node.left, list);
-            list.addLast(node.key);
-            addKeysToList(node.right, list);
+            addKeysToList(node.getLeft(), list);
+            list.addLast(node.getKey());
+            addKeysToList(node.getRight(), list);
         }
+    }
+
+    /**
+     * Another GraphViz method.
+     *
+     * @return a GraphViz string representation of this collection
+     */
+    @Override
+    public String graphViz() {
+        return graphViz("MyBinarySearchTree");
     }
 
     /**
@@ -165,6 +184,38 @@ public class MyBinarySearchTree<K extends Comparable<K>, V> implements SaxBinary
      */
     @Override
     public String graphViz(String name) {
-        return name;
+        StringBuilder sb = new StringBuilder();
+        sb.append("digraph ").append(name).append(" {\n");
+        graphVizHelper(root, sb);
+        sb.append("}");
+        return sb.toString();
+    }
+
+    private void graphVizHelper(MyBinaryTreeNode<K, V> node, StringBuilder sb) {
+        if (node != null) {
+            if (node.getLeft() != null) {
+                sb.append("\"").append(node.getKey()).append("\" -> \"").append(node.getLeft().getKey()).append("\";\n");
+            }
+            if (node.getRight() != null) {
+                sb.append("\"").append(node.getKey()).append("\" -> \"").append(node.getRight().getKey()).append("\";\n");
+            }
+            graphVizHelper(node.getLeft(), sb);
+            graphVizHelper(node.getRight(), sb);
+        }
+    }
+
+    /**
+     * Print an in-order traversal of the tree.
+     */
+    public void inorder() {
+        inorderRecursive(root);
+    }
+
+    private void inorderRecursive(MyBinaryTreeNode<K, V> node) {
+        if (node != null) {
+            inorderRecursive(node.getLeft());
+            System.out.println(node.getKey() + ": " + node.getValue());
+            inorderRecursive(node.getRight());
+        }
     }
 }

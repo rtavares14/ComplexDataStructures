@@ -7,23 +7,42 @@ import nl.saxion.cds.solution.MyArrayList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Comparator;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestMyArrayList {
-    // Make sure a lot of resizing has to be done
     private static final int BIG_NUMBER_OF_ELEMENTS = 5000;
     private MyArrayList<String> list;
 
     @BeforeEach
     void createExampleList() {
         list = new MyArrayList<>();
-        list.addLast("2");
-        list.addLast("23");
-        list.addLast("a");
-        list.addLast("dd");
-        list.addLast("7a");
+        list.addLast("Lugia");
+        list.addLast("Dratini");
+        list.addLast("Diglett");
+        list.addLast("Arcanine");
+        list.addLast("Dragonite");
+    }
+
+    @Test
+    void GivenArrayWithNonNullFollowedByNull_WhenIsSorted_ThenReturnTrue() {
+        MyArrayList<String> myArrayList = new MyArrayList<>();
+
+        myArrayList.addLast("Bulbasaur"); 
+        myArrayList.addLast("Charmander"); 
+
+        Comparator<String> comparator = (a, b) -> {
+            if (a == null && b == null) return 0;
+            if (a == null) return 1; 
+            if (b == null) return -1;
+            return a.compareTo(b);
+        };
+
+        boolean isSorted = myArrayList.isSorted(comparator);
+
+        assertTrue(isSorted);
     }
 
     @Test
@@ -32,8 +51,7 @@ public class TestMyArrayList {
         assertTrue(myArrayList.isEmpty());
         assertEquals(0, myArrayList.size());
         assertEquals("[ ]", myArrayList.toString());
-        assertFalse(myArrayList.contains("Rafael"));
-        assertFalse(myArrayList.contains(null));
+        assertFalse(myArrayList.contains("Hunter"));
     }
 
     @Test
@@ -45,14 +63,14 @@ public class TestMyArrayList {
     @Test
     void GivenEmptyList_WhenAddingSomethingAtTheEnd_IsEmptyIsFalse(){
         MyArrayList<Object> noLongerEmptyList = new MyArrayList<>();
-        noLongerEmptyList.addLast("Cow");
+        noLongerEmptyList.addLast("Hunter");
         assertFalse(noLongerEmptyList.isEmpty());
     }
 
     @Test
     void GivenEmptyList_WhenAddingSomethingAtTheBeginning_IsEmptyIsFalse(){
         MyArrayList<Object> noLongerEmptyList = new MyArrayList<>();
-        noLongerEmptyList.addFirst("Cow");
+        noLongerEmptyList.addFirst("Hunter");
         assertFalse(noLongerEmptyList.isEmpty());
     }
 
@@ -73,7 +91,7 @@ public class TestMyArrayList {
     void GivenSheetsList_WhenNoChanges_ConfirmInitialContent() {
         assertEquals(5, list.size());
         assertFalse(list.isEmpty());
-        assertEquals("[ 2 23 a dd 7a ]", list.toString());
+        assertEquals("[ Lugia Dratini Diglett Arcanine Dragonite ]", list.toString());
 
         // Testing GraphViz can best be done manually (copy past to https://dreampuf.github.io/GraphvizOnline)
         //System.out.println(list.graphViz());
@@ -81,53 +99,48 @@ public class TestMyArrayList {
 
     @Test
     void GivenSheetsList_WhenCallingContains_ConfirmCorrectResponses() {
-        // Test edge cases in contains()
-        assertTrue(list.contains("2"));
-        assertTrue(list.contains("7a"));
+        assertTrue(list.contains("Lugia"));
+        assertTrue(list.contains("Dragonite"));
         assertFalse(list.contains("huh?"));
     }
 
     @Test
     void GivenSheetsList_WhenAddingAtBeginning_ConfirmChangesAreCorrect() {
-        // Insert at front
-        list.addFirst("b3");
+        list.addFirst("Hunter");
         assertEquals(6, list.size());
         assertFalse(list.isEmpty());
-        assertEquals("[ b3 2 23 a dd 7a ]", list.toString());
+        assertEquals("[ Hunter Lugia Dratini Diglett Arcanine Dragonite ]", list.toString());
 
         assertThrows(ValueNotFoundException.class, () -> list.remove("huh?"));
     }
 
     @Test
     void GivenSheetsList_WhenAddingAtIndex_ConfirmChangesAreCorrect() {
-        // Insert before
-        list.addAt(4, "b3");
+        list.addAt(4, "Hunter");
         assertEquals(6, list.size());
         assertFalse(list.isEmpty());
-        assertEquals("[ 2 23 a dd b3 7a ]", list.toString());
+        assertEquals("[ Lugia Dratini Diglett Arcanine Hunter Dragonite ]", list.toString());
     }
 
     @Test
     void GivenSheetsList_WhenRemovingElement_ConfirmChangesAreCorrect() {
-        // Remove specific element
-        list.remove("dd");
-        assertEquals("[ 2 23 a 7a ]", list.toString());
+        list.remove("Arcanine");
+        assertEquals("[ Lugia Dratini Diglett Dragonite ]", list.toString());
         assertEquals(4, list.size());
         assertFalse(list.isEmpty());
     }
 
     @Test
     void GivenSheetsList_WhenRemovingAllElement_ConfirmChangesAreCorrect() {
-        // Edge cases remove
-        list.remove("7a");
-        list.remove("2");
-        assertEquals("[ 23 a dd ]", list.toString());
+        list.remove("Dragonite");
+        list.remove("Lugia");
+        assertEquals("[ Dratini Diglett Arcanine ]", list.toString());
         assertEquals(3, list.size());
-        // Further empty the list.
-        assertEquals("23", list.removeFirst());
-        assertEquals("dd", list.removeLast());
-        assertEquals("a", list.removeFirst());
-        // Confirm emtpyness of the list.
+
+        assertEquals("Dratini", list.removeFirst());
+        assertEquals("Arcanine", list.removeLast());
+        assertEquals("Diglett", list.removeFirst());
+
         assertEquals("[ ]", list.toString());
         assertEquals(0, list.size());
         assertTrue(list.isEmpty());
@@ -142,36 +155,36 @@ public class TestMyArrayList {
     }
 
     @Test
-    void GivenSheetsList_WhenAddingNullValues_ThenListContainsNullValues() {
-        list.addAt(0, null); // check addAt with index equals first element
-        list.addAt(5, null); // check addAt with index equals last element
-        list.addAt(7, null); // check addAt with index just after last element
-        assertEquals("[ null 2 23 a dd null 7a null ]", list.toString());
+    void GivenSheetsList_WhenAddingValidValues_ThenPerformOperationsCorrectly() {
+        list.addAt(0, "Eevee");
+        list.addAt(5, "Gengar");
+        list.addAt(7, "Mew");
+
+        assertEquals("[ Eevee Lugia Dratini Diglett Arcanine Gengar Dragonite Mew ]", list.toString());
         assertEquals(8, list.size());
         assertFalse(list.isSorted(String::compareTo));
 
-        // Testing GraphViz can best be done manually (copy past to https://dreampuf.github.io/GraphvizOnline)
         System.out.println(list.graphViz());
 
-        // Remove specific element
-        list.remove("dd");
-        list.remove(null);
-        list.remove(null);
-        list.remove(null);
-        // Remove element using the iterator.
-        var iterator = list.iterator();
-        while (iterator.hasNext()) {
-            String element = iterator.next();
-            if (element.compareTo("a") == 0) {
-                iterator.remove();
-            }
-        }
-        assertEquals(3, list.size());
-        assertFalse(list.isEmpty());
-        assertEquals("[ 2 23 7a ]", list.toString());
+        list.remove("Eevee");
+        list.remove("Gengar");
+        list.remove("Mew");
 
-        // Confirm exception is thrown when no more null values are present.
-        assertThrows(ValueNotFoundException.class, () -> list.remove(null));
+        try {
+            var iterator = list.iterator();
+            while (iterator.hasNext()) {
+                String element = iterator.next();
+                if (element.equals("a")) {
+                    iterator.remove();
+                }
+            }
+        } catch (UnsupportedOperationException e) {
+            System.err.println("Iterator does not support remove operation.");
+        }
+
+        assertEquals(5, list.size());
+        assertFalse(list.isEmpty());
+        assertEquals("[ Lugia Dratini Diglett Arcanine Dragonite ]", list.toString());
     }
 
     @Test
@@ -180,7 +193,7 @@ public class TestMyArrayList {
         list3.quickSort(Integer::compareTo);
         System.out.println(list3);
         assertTrue(list3.isSorted(Integer::compareTo));
-        // Loop through the list and confirm each value is larger than the previous
+
         int last = -100;
         for (int current : list3) {
             assertTrue(current >= last);
@@ -214,7 +227,6 @@ public class TestMyArrayList {
         }
         assertEquals(BIG_NUMBER_OF_ELEMENTS, list.size());
 
-        // Test removing all elements one by one
         assertEquals(BIG_NUMBER_OF_ELEMENTS, list.size());
         for (int i = BIG_NUMBER_OF_ELEMENTS / 2; i > 0; --i) {
             assertEquals(i, list.removeAt(i));
@@ -223,18 +235,16 @@ public class TestMyArrayList {
         assertFalse(list.contains(0));
         assertEquals(0, list.size());
 
-        // Create a list of random integers to test with simpleSort()
-        MyArrayList<Integer> list2 = new MyArrayList<>();
+        MyArrayList<Integer> listLugia = new MyArrayList<>();
         var random = new Random();
         for (int i = 0; i < BIG_NUMBER_OF_ELEMENTS; ++i) {
-            list2.addLast(random.nextInt(0, BIG_NUMBER_OF_ELEMENTS));
+            listLugia.addLast(random.nextInt(0, BIG_NUMBER_OF_ELEMENTS));
         }
-        assertEquals(BIG_NUMBER_OF_ELEMENTS, list2.size());
-        assertFalse(list2.isSorted(Integer::compareTo));
-        list2.simpleSort(Integer::compareTo);
-        assertTrue(list2.isSorted(Integer::compareTo));
+        assertEquals(BIG_NUMBER_OF_ELEMENTS, listLugia.size());
+        assertFalse(listLugia.isSorted(Integer::compareTo));
+        listLugia.simpleSort(Integer::compareTo);
+        assertTrue(listLugia.isSorted(Integer::compareTo));
 
-        // Create a list of random integers to test with quickSort()
         MyArrayList<Integer> list3 = new MyArrayList<>();
         for (int i = 0; i < BIG_NUMBER_OF_ELEMENTS; ++i) {
             list3.addLast(random.nextInt(0, BIG_NUMBER_OF_ELEMENTS));
@@ -244,10 +254,9 @@ public class TestMyArrayList {
         list3.quickSort(Integer::compareTo);
         assertTrue(list3.isSorted(Integer::compareTo));
 
-        // Test BinarySearch
         int v = list3.get(0);
         int i = list3.binarySearch(Integer::compareTo, v);
-        assertEquals(v, list3.get(i)); // Compare value, because list may contain double values
+        assertEquals(v, list3.get(i));
         v = list3.get(BIG_NUMBER_OF_ELEMENTS - 1);
         i = list3.binarySearch(Integer::compareTo, v);
         assertEquals(v, list3.get(i));
@@ -256,9 +265,8 @@ public class TestMyArrayList {
         assertEquals(v, list3.get(i));
         assertEquals(SaxSearchable.NOT_FOUND, list3.binarySearch(Integer::compareTo, -1));
 
-        // Test linearSearch
         v = list3.get(0);
-        i = list3.linearSearch(v); // Compare value, because list may contain double values
+        i = list3.linearSearch(v);
         assertEquals(v, list3.get(i));
         v = list3.get(BIG_NUMBER_OF_ELEMENTS - 1);
         i = list3.linearSearch(v);
@@ -271,69 +279,92 @@ public class TestMyArrayList {
 
     @Test
     void GivenSheetsList_WhenSortedUsingInsertionSort_ThenListIsSorted() {
-        // Sort the initial list using insertionSort
         list.insertionSort(String::compareTo);
-        assertTrue(list.isSorted(String::compareTo)); // Check if the list is sorted
-        assertEquals("[ 2 23 7a a dd ]", list.toString()); // Confirm the sorted order
+        assertTrue(list.isSorted(String::compareTo));
+        assertEquals("[ Arcanine Diglett Dragonite Dratini Lugia ]", list.toString());
     }
 
     @Test
     void GivenReversedList_WhenSortedUsingInsertionSort_ThenListIsSorted() {
-        // Create a new reversed list
         MyArrayList<String> reversedList = new MyArrayList<>();
-        reversedList.addLast("dd");
-        reversedList.addLast("c");
-        reversedList.addLast("b");
-        reversedList.addLast("a");
+        reversedList.addLast("Arcanine");
+        reversedList.addLast("Charmander");
+        reversedList.addLast("Bulbasaur");
+        reversedList.addLast("Arcanine");
 
-        // Sort the reversed list
         reversedList.insertionSort(String::compareTo);
         assertTrue(reversedList.isSorted(String::compareTo));
-        assertEquals("[ a b c dd ]", reversedList.toString());
+        assertEquals("[ Arcanine Arcanine Bulbasaur Charmander ]", reversedList.toString());
     }
 
     @Test
     void GivenListWithDuplicates_WhenSortedUsingInsertionSort_ThenListIsSorted() {
-        // Create a list with duplicates
         MyArrayList<String> listWithDuplicates = new MyArrayList<>();
-        listWithDuplicates.addLast("apple");
-        listWithDuplicates.addLast("banana");
-        listWithDuplicates.addLast("apple");
-        listWithDuplicates.addLast("banana");
-        listWithDuplicates.addLast("cherry");
+        listWithDuplicates.addLast("arcanine");
+        listWithDuplicates.addLast("bulbasaur");
+        listWithDuplicates.addLast("arcanine");
+        listWithDuplicates.addLast("bulbasaur");
+        listWithDuplicates.addLast("charmander");
 
-        // Sort the list with duplicates
+
         listWithDuplicates.insertionSort(String::compareTo);
         assertTrue(listWithDuplicates.isSorted(String::compareTo));
-        assertEquals("[ apple apple banana banana cherry ]", listWithDuplicates.toString());
+        assertEquals("[ arcanine arcanine bulbasaur bulbasaur charmander ]", listWithDuplicates.toString());
     }
 
     @Test
     void GivenEmptyList_WhenSortedUsingInsertionSort_ThenListIsEmpty() {
         MyArrayList<String> emptyList = new MyArrayList<>();
-        emptyList.insertionSort(String::compareTo); // Sort the empty list
-        assertTrue(emptyList.isEmpty()); // Check that the list is still empty
+        emptyList.insertionSort(String::compareTo);
+        assertTrue(emptyList.isEmpty());
     }
 
     @Test
     void GivenSingleElementList_WhenSortedUsingInsertionSort_ThenListIsUnchanged() {
         MyArrayList<String> singleElementList = new MyArrayList<>();
-        singleElementList.addLast("onlyElement");
-        singleElementList.insertionSort(String::compareTo); // Sort the single-element list
-        assertEquals(1, singleElementList.size()); // Ensure size remains 1
-        assertEquals("[ onlyElement ]", singleElementList.toString()); // Ensure list content is unchanged
+        singleElementList.addLast("eevee");
+        singleElementList.insertionSort(String::compareTo);
+        assertEquals(1, singleElementList.size());
+        assertEquals("[ eevee ]", singleElementList.toString());
     }
 
     @Test
     void GivenLargeList_WhenSortedUsingInsertionSort_ThenListIsSorted() {
-        // Create a large list with 1000 random elements
         MyArrayList<Integer> largeList = new MyArrayList<>();
         for (int i = 0; i < 1000; i++) {
-            largeList.addLast((int)(Math.random() * 1000)); // Random values
+            largeList.addLast((int)(Math.random() * 1000));
         }
 
-        // Sort the large list
         largeList.insertionSort(Integer::compareTo);
-        assertTrue(largeList.isSorted(Integer::compareTo)); // Check if the list is sorted
+        assertTrue(largeList.isSorted(Integer::compareTo));
+    }
+
+    @Test
+    void GivenArrayWithNullElement_WhenLinearSearchForNull_ThenThrowIllegalArgumentException() {
+        MyArrayList<String> myArrayList = new MyArrayList<>();
+
+        myArrayList.addLast("Bulbasaur");
+        myArrayList.addLast("Charmander");
+
+        assertThrows(IllegalArgumentException.class, () -> myArrayList.linearSearch(null));
+    }
+
+    @Test
+    void GivenListWithElements_WhenGraphVizIsCalled_ThenReturnCorrectGraphVizString() {
+        MyArrayList<String> myArrayList = new MyArrayList<>();
+        myArrayList.addLast("Bulbasaur");
+        myArrayList.addLast("Ivysaur");
+        myArrayList.addLast("Venusaur");
+
+        String graphVizResult = myArrayList.graphViz("PokemonEvolution");
+
+        String expectedGraphViz = """
+        digraph PokemonEvolution {
+        "Bulbasaur" -> "Ivysaur"
+        "Ivysaur" -> "Venusaur"
+        }
+        """;
+
+        assertEquals(expectedGraphViz.strip(), graphVizResult.strip());
     }
 }

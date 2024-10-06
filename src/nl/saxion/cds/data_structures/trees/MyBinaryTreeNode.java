@@ -1,158 +1,195 @@
 package nl.saxion.cds.data_structures.trees;
 
-public class MyBinaryTreeNode<T> {
+import java.util.Comparator;
+import java.util.Random;
 
-    private T value;
-    private MyBinaryTreeNode<T> left;
-    private MyBinaryTreeNode<T> right;
-    private MyBinaryTreeNode<T> parent;
+public class MyBinaryTreeNode<K extends Comparable<K>, V> {
+
+    private V value;
+    private K key;
+    private MyBinaryTreeNode<K, V> left;
+    private MyBinaryTreeNode<K, V> right;
+
 
     /**
      * Constructor to initialize a node with a value.
      * Left, right, and parent are initialized to null.
      */
-    public MyBinaryTreeNode(T value) {
+    public MyBinaryTreeNode(V value, K key) {
         this.value = value;
+        this.key = key;
+        this.left = null;
+        this.right = null;
+    }
+
+    /**
+     * Returns the left child of the node.
+     */
+    public MyBinaryTreeNode<K, V> getLeft() {
+        return left;
+    }
+
+    public void setLeft(MyBinaryTreeNode<K, V> left) {
+        this.left = left;
+    }
+
+    /**
+     * Returns the right child of the node.
+     */
+    public MyBinaryTreeNode<K, V> getRight() {
+        return right;
+    }
+
+    public void setRight(MyBinaryTreeNode<K, V> right) {
+        this.right = right;
     }
 
     /**
      * Returns the value of the node.
      */
-    public T getValue() {
+    public V getValue() {
         return value;
     }
 
     /**
      * Sets a new value for the node.
      */
-    public void setValue(T value) {
+    public void setValue(V value) {
         this.value = value;
     }
 
     /**
-     * Returns the left child of the node.
+     * Returns the key of the node.
      */
-    public MyBinaryTreeNode<T> getLeft() {
-        return left;
+    public K getKey() {
+        return key;
     }
 
     /**
-     * Sets the left child of the node and updates the child's parent reference.
+     * Sets a new key for the node.
      */
-    public void setLeft(MyBinaryTreeNode<T> left) {
-        this.left = left;
-        if (left != null) {
-            this.left.setParent(this);
+    public void setKey(K key) {
+        this.key = key;
+    }
+
+    public void add(MyBinaryTreeNode<K, V> node, Comparator<K> comparator) {
+        int cmp = comparator.compare(node.getKey(), this.getKey());
+        if (cmp < 0) {
+            if (this.getLeft() == null) {
+                this.setLeft(node);
+            } else {
+                this.getLeft().add(node, comparator);
+            }
+        } else if (cmp > 0) {
+            if (this.getRight() == null) {
+                this.setRight(node);
+            } else {
+                this.getRight().add(node, comparator);
+            }
         }
     }
 
-    /**
-     * Returns the right child of the node.
-     */
-    public MyBinaryTreeNode<T> getRight() {
-        return right;
-    }
+    public V remove(K key, Comparator<K> comparator, MyBinaryTreeNode<K, V> parent) {
+        int cmp = comparator.compare(key, this.getKey());
 
-    /**
-     * Sets the right child of the node and updates the child's parent reference.
-     */
-    public void setRight(MyBinaryTreeNode<T> right) {
-        this.right = right;
-        if (right != null) {
-            this.right.setParent(this);
+        if (cmp < 0) {
+            // Key is smaller, go left
+            if (left != null) {
+                return left.remove(key, comparator, this);
+            } else {
+                return null; // Key not found
+            }
+        } else if (cmp > 0) {
+            // Key is larger, go right
+            if (right != null) {
+                return right.remove(key, comparator, this);
+            } else {
+                return null; // Key not found
+            }
+        } else {
+            // Node found (cmp == 0)
+            V removedValue = this.value;
+
+            if (isLeaf()) {
+                // Case 1: No children (Leaf Node)
+                if (parent != null) {
+                    if (parent.getLeft() == this) parent.setLeft(null);
+                    else parent.setRight(null);
+                }
+            } else if (left == null) {
+                // Case 2: One child (right)
+                if (parent != null) {
+                    if (parent.getLeft() == this) parent.setLeft(right);
+                    else parent.setRight(right);
+                }
+            } else if (right == null) {
+                // Case 2: One child (left)
+                if (parent != null) {
+                    if (parent.getLeft() == this) parent.setLeft(left);
+                    else parent.setRight(left);
+                }
+            } else {
+                // Case 3: Two children (replace with inorder successor)
+                MyBinaryTreeNode<K, V> minNode = findMin(right);
+                this.key = minNode.getKey();
+                this.value = minNode.getValue();
+                right.remove(minNode.getKey(), comparator, this); // Remove the in-order successor
+            }
+
+            return removedValue; // Return the value of the removed node
         }
     }
 
-    /**
-     * Returns the parent of the node.
-     */
-    public MyBinaryTreeNode<T> getParent() {
-        return parent;
+    public V get(K key, Comparator<K> comparator) {
+        int cmp = comparator.compare(key, this.getKey());
+
+        if (cmp < 0) {
+            // Key is smaller, search left
+            return (left != null) ? left.get(key, comparator) : null;
+        } else if (cmp > 0) {
+            // Key is larger, search right
+            return (right != null) ? right.get(key, comparator) : null;
+        } else {
+            // Key matches, return the value
+            return this.value;
+        }
     }
 
-    /**
-     * Sets the parent of the node.
-     */
-    public void setParent(MyBinaryTreeNode<T> parent) {
-        this.parent = parent;
-    }
-
-    /**
-     * Checks if the node is the root of the tree.
-     * A node is considered a root if it has no parent.
-     */
-    public boolean isRoot() {
-        return parent == null;
-    }
 
     /**
      * Checks if the node is a leaf.
      * A node is a leaf if it has no children (both left and right are null).
      */
     public boolean isLeaf() {
-        return left == null && right == null;
+        return this.left == null && this.right == null;
     }
 
-    /**
-     * Calculates and returns the height of the subtree rooted at this node.
-     * The height is the number of edges on the longest path from the node to a leaf.
-     * If the node is null, it returns -1.
-     */
-    public int getHeight() {
-        if (this == null) return -1;
-        return 1 + Math.max(
-                (left == null ? -1 : left.getHeight()),
-                (right == null ? -1 : right.getHeight())
-        );
-    }
-
-    /**
-     * Calculates and returns the balance factor of this node.
-     * The balance factor is defined as the height difference between the right and left subtrees.
-     */
-    public int getBalance() {
-        int leftHeight = left == null ? -1 : left.getHeight();
-        int rightHeight = right == null ? -1 : right.getHeight();
-        return rightHeight - leftHeight;
-    }
-
-    /**
-     * Checks whether the subtree rooted at this node is balanced.
-     * A node is balanced if the height difference between its left and right subtrees is at most 1.
-     */
-    public boolean isBalanced() {
-        return Math.abs(
-                (left == null ? -1 : left.getHeight()) -
-                        (right == null ? -1 : right.getHeight())
-        ) <= 1;
-    }
-
-    /**
-     * Calculates and returns the depth of the node in the tree.
-     * Depth is the number of edges from the root to this node.
-     */
-    public int getDepth() {
-        int depth = 0;
-        MyBinaryTreeNode<T> current = this;
-        while (current.parent != null) {
-            depth++;
-            current = current.parent;
+    public MyBinaryTreeNode<K, V> findMin(MyBinaryTreeNode<K, V> node) {
+        if (node == null) return null;
+        while (node.getLeft() != null) {
+            node = node.getLeft();
         }
-        return depth;
+        return node;
     }
 
-    /**
-     * Calculates and returns the size of the subtree rooted at this node.
-     * The size is the total number of nodes in the subtree, including the root.
-     */
-    public int getSize() {
-        int result = 1;
-        if (getLeft() != null) {
-            result += getLeft().getSize();
+    public String toDot() {
+        Random random = new Random();
+        String dot = "";
+        if (left != null) {
+            dot += value + " -> " + left.getValue() + " ";
+            dot += left.toDot();
+        } else {
+            String nullNode = "lfg" + getValue() + random.nextInt(1000);
+            dot += nullNode + " [shape=point];\n" + getValue() + " -> " + nullNode + " ";
         }
-        if (getRight() != null) {
-            result += getRight().getSize();
+        if (right != null) {
+            dot += getValue() + " -> " + right.getValue() + " ";
+            dot += right.toDot();
         }
-        return result;
+        else {
+            String nullNode = "rg" + getValue() + random.nextInt(1000);
+            dot += nullNode + " [shape=point];\n" + getValue() + " -> " + nullNode + " ";
+        }
+        return dot;
     }
 }
