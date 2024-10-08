@@ -22,6 +22,10 @@ public class MyBinarySearchTree<K extends Comparable<K>, V> implements SaxBinary
         this.comparator = comparator;
     }
 
+    public MyBinaryTreeNode<K, V> getRoot() {
+        return root; // Ensure you have a getter to access root
+    }
+
     /**
      * A tree with no leaves isn't much of a tree at all.
      *
@@ -76,6 +80,9 @@ public class MyBinarySearchTree<K extends Comparable<K>, V> implements SaxBinary
      */
     @Override
     public void add(K key, V value) throws DuplicateKeyException {
+        if (key == null) {
+            throw new NullPointerException("Key cannot be null");
+        }
         MyBinaryTreeNode<K, V> newNode = new MyBinaryTreeNode<>(value, key);
         if (root == null) {
             root = newNode;
@@ -83,7 +90,6 @@ public class MyBinarySearchTree<K extends Comparable<K>, V> implements SaxBinary
             return;
         }
 
-        // Check if the key already exists
         if (contains(key)) {
             throw new DuplicateKeyException("Duplicate key: " + key);
         }
@@ -193,12 +199,20 @@ public class MyBinarySearchTree<K extends Comparable<K>, V> implements SaxBinary
 
     private void graphVizHelper(MyBinaryTreeNode<K, V> node, StringBuilder sb) {
         if (node != null) {
+            // Add the node even if it doesn't have any children (single node case)
+            sb.append("\"").append(node.getKey()).append("\";\n");
+
+            // If the node has a left child, create the edge
             if (node.getLeft() != null) {
                 sb.append("\"").append(node.getKey()).append("\" -> \"").append(node.getLeft().getKey()).append("\";\n");
             }
+
+            // If the node has a right child, create the edge
             if (node.getRight() != null) {
                 sb.append("\"").append(node.getKey()).append("\" -> \"").append(node.getRight().getKey()).append("\";\n");
             }
+
+            // Recurse on the left and right children
             graphVizHelper(node.getLeft(), sb);
             graphVizHelper(node.getRight(), sb);
         }

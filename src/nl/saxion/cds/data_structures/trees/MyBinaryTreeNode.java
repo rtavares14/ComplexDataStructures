@@ -94,50 +94,61 @@ public class MyBinaryTreeNode<K extends Comparable<K>, V> {
 
         if (cmp < 0) {
             // Key is smaller, go left
-            if (left != null) {
-                return left.remove(key, comparator, this);
-            } else {
-                return null; // Key not found
-            }
+            return (left != null) ? left.remove(key, comparator, this) : null;
         } else if (cmp > 0) {
             // Key is larger, go right
-            if (right != null) {
-                return right.remove(key, comparator, this);
-            } else {
-                return null; // Key not found
-            }
+            return (right != null) ? right.remove(key, comparator, this) : null;
         } else {
-            // Node found (cmp == 0)
+            // Node to be removed found (cmp == 0)
             V removedValue = this.value;
 
+            // Handling removal based on cases
             if (isLeaf()) {
                 // Case 1: No children (Leaf Node)
-                if (parent != null) {
-                    if (parent.getLeft() == this) parent.setLeft(null);
-                    else parent.setRight(null);
-                }
-            } else if (left == null) {
-                // Case 2: One child (right)
-                if (parent != null) {
-                    if (parent.getLeft() == this) parent.setLeft(right);
-                    else parent.setRight(right);
-                }
-            } else if (right == null) {
-                // Case 2: One child (left)
-                if (parent != null) {
-                    if (parent.getLeft() == this) parent.setLeft(left);
-                    else parent.setRight(left);
-                }
+                removeLeafNode(parent);
+            } else if (left == null || right == null) {
+                // Case 2: One child (either left or right is null)
+                removeSingleChildNode(parent);
             } else {
-                // Case 3: Two children (replace with inorder successor)
-                MyBinaryTreeNode<K, V> minNode = findMin(right);
-                this.key = minNode.getKey();
-                this.value = minNode.getValue();
-                right.remove(minNode.getKey(), comparator, this); // Remove the in-order successor
+                // Case 3: Two children
+                removeNodeWithTwoChildren(comparator);
             }
 
-            return removedValue; // Return the value of the removed node
+            return removedValue;
         }
+    }
+
+    private void removeLeafNode(MyBinaryTreeNode<K, V> parent) {
+        if (parent != null) {
+            if (parent.getLeft() == this) {
+                parent.setLeft(null);
+            } else {
+                parent.setRight(null);
+            }
+        }
+    }
+
+    private void removeSingleChildNode(MyBinaryTreeNode<K, V> parent) {
+        MyBinaryTreeNode<K, V> child = (left != null) ? left : right;
+        if (parent != null) {
+            if (parent.getLeft() == this) {
+                parent.setLeft(child);
+            } else {
+                parent.setRight(child);
+            }
+        }
+    }
+
+    private void removeNodeWithTwoChildren(Comparator<K> comparator) {
+        // Find the minimum node in the right subtree (in-order successor)
+        MyBinaryTreeNode<K, V> minNode = findMin(right);
+
+        // Replace the current node's key and value with the in-order successor
+        this.key = minNode.getKey();
+        this.value = minNode.getValue();
+
+        // Recursively remove the in-order successor from the right subtree
+        right.remove(minNode.getKey(), comparator, this);
     }
 
     public V get(K key, Comparator<K> comparator) {
@@ -173,23 +184,33 @@ public class MyBinaryTreeNode<K extends Comparable<K>, V> {
     }
 
     public String toDot() {
-        Random random = new Random();
-        String dot = "";
+        StringBuilder dot = new StringBuilder();
+        generateDot(dot); // Call without random to simplify
+        return dot.toString();
+    }
+
+    private void generateDot(StringBuilder dot) {
+        // Start with the current node
         if (left != null) {
-            dot += value + " -> " + left.getValue() + " ";
-            dot += left.toDot();
+            // If left child exists, connect and recurse
+            dot.append(value).append(" -> ").append(left.getValue()).append(";\n");
+            left.generateDot(dot);
         } else {
-            String nullNode = "lfg" + getValue() + random.nextInt(1000);
-            dot += nullNode + " [shape=point];\n" + getValue() + " -> " + nullNode + " ";
+            // Create a null left node representation
+            String nullLeftNode = "nullL_" + value;
+            dot.append(nullLeftNode).append(" [shape=point];\n")
+                    .append(value).append(" -> ").append(nullLeftNode).append(";\n");
         }
+
         if (right != null) {
-            dot += getValue() + " -> " + right.getValue() + " ";
-            dot += right.toDot();
+            // If right child exists, connect and recurse
+            dot.append(value).append(" -> ").append(right.getValue()).append(";\n");
+            right.generateDot(dot);
+        } else {
+            // Create a null right node representation
+            String nullRightNode = "nullR_" + value;
+            dot.append(nullRightNode).append(" [shape=point];\n")
+                    .append(value).append(" -> ").append(nullRightNode).append(";\n");
         }
-        else {
-            String nullNode = "rg" + getValue() + random.nextInt(1000);
-            dot += nullNode + " [shape=point];\n" + getValue() + " -> " + nullNode + " ";
-        }
-        return dot;
     }
 }
