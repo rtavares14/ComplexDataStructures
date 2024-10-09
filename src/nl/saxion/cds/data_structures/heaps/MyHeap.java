@@ -4,6 +4,7 @@ import nl.saxion.cds.collection.EmptyCollectionException;
 import nl.saxion.cds.collection.SaxHeap;
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 public class MyHeap<T extends Comparable<T>> implements SaxHeap {
     private final ArrayList<T> heap;
@@ -75,18 +76,22 @@ public class MyHeap<T extends Comparable<T>> implements SaxHeap {
      *
      * @return the popped value
      */
-    @Override
-    public Object dequeue() throws EmptyCollectionException {
-        if (isEmpty()) {
-            throw new EmptyCollectionException();
+    public Object dequeue() {
+        if (heap.isEmpty()) {
+            throw new NoSuchElementException("Heap is empty");
         }
-        T rootValue = heap.get(0);
-        T lastValue = heap.remove(heap.size() - 1);
-        if (!isEmpty()) {
-            heap.set(0, lastValue);
-            bubbleDown(0);
-        }
-        return rootValue;
+
+        // Store the root value to return
+        Object rootValue = heap.get(0);
+
+        // Move the last element to the root
+        heap.set(0, heap.get(heap.size() - 1));
+        heap.remove(heap.size() - 1); // Remove the last element
+
+        // Restore the heap property by bubbling down
+        bubbleDown(0);
+
+        return rootValue; // Return the original root value
     }
 
     /**
@@ -115,17 +120,23 @@ public class MyHeap<T extends Comparable<T>> implements SaxHeap {
         int rightChildIndex = 2 * index + 2;
         int largestIndex = index;
 
+        // Compare left child with the current node
         if (leftChildIndex < heap.size() && compare(heap.get(leftChildIndex), heap.get(largestIndex))) {
-            largestIndex = leftChildIndex;
+            largestIndex = leftChildIndex; // Update largestIndex if left child is larger
         }
+
+        // Compare right child with the largest child found so far
         if (rightChildIndex < heap.size() && compare(heap.get(rightChildIndex), heap.get(largestIndex))) {
-            largestIndex = rightChildIndex;
+            largestIndex = rightChildIndex; // Update largestIndex if right child is larger
         }
+
+        // If largestIndex is not the current index, swap and continue bubbling down
         if (largestIndex != index) {
             swap(index, largestIndex);
-            bubbleDown(largestIndex);
+            bubbleDown(largestIndex); // Recurse down to the affected subtree
         }
     }
+
 
     private boolean compare(T a, T b) {
         return isMinHeap ? a.compareTo(b) < 0 : a.compareTo(b) > 0;

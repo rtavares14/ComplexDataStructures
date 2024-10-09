@@ -23,7 +23,7 @@ public class MyBinarySearchTree<K extends Comparable<K>, V> implements SaxBinary
     }
 
     public MyBinaryTreeNode<K, V> getRoot() {
-        return root; // Ensure you have a getter to access root
+        return root;
     }
 
     /**

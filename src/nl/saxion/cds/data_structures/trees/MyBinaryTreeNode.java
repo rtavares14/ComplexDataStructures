@@ -1,7 +1,6 @@
 package nl.saxion.cds.data_structures.trees;
 
 import java.util.Comparator;
-import java.util.Random;
 
 public class MyBinaryTreeNode<K extends Comparable<K>, V> {
 
@@ -9,7 +8,7 @@ public class MyBinaryTreeNode<K extends Comparable<K>, V> {
     private K key;
     private MyBinaryTreeNode<K, V> left;
     private MyBinaryTreeNode<K, V> right;
-
+    private int height;
 
     /**
      * Constructor to initialize a node with a value.
@@ -20,6 +19,7 @@ public class MyBinaryTreeNode<K extends Comparable<K>, V> {
         this.key = key;
         this.left = null;
         this.right = null;
+        this.height = 0;
     }
 
     /**
@@ -31,6 +31,7 @@ public class MyBinaryTreeNode<K extends Comparable<K>, V> {
 
     public void setLeft(MyBinaryTreeNode<K, V> left) {
         this.left = left;
+        updateHeight();
     }
 
     /**
@@ -42,6 +43,7 @@ public class MyBinaryTreeNode<K extends Comparable<K>, V> {
 
     public void setRight(MyBinaryTreeNode<K, V> right) {
         this.right = right;
+        updateHeight();
     }
 
     /**
@@ -87,6 +89,7 @@ public class MyBinaryTreeNode<K extends Comparable<K>, V> {
                 this.getRight().add(node, comparator);
             }
         }
+        updateHeight();
     }
 
     public V remove(K key, Comparator<K> comparator, MyBinaryTreeNode<K, V> parent) {
@@ -114,6 +117,7 @@ public class MyBinaryTreeNode<K extends Comparable<K>, V> {
                 removeNodeWithTwoChildren(comparator);
             }
 
+            updateHeight();
             return removedValue;
         }
     }
@@ -137,6 +141,7 @@ public class MyBinaryTreeNode<K extends Comparable<K>, V> {
                 parent.setRight(child);
             }
         }
+        parent.updateHeight();
     }
 
     private void removeNodeWithTwoChildren(Comparator<K> comparator) {
@@ -165,7 +170,6 @@ public class MyBinaryTreeNode<K extends Comparable<K>, V> {
             return this.value;
         }
     }
-
 
     /**
      * Checks if the node is a leaf.
@@ -212,5 +216,23 @@ public class MyBinaryTreeNode<K extends Comparable<K>, V> {
             dot.append(nullRightNode).append(" [shape=point];\n")
                     .append(value).append(" -> ").append(nullRightNode).append(";\n");
         }
+    }
+
+    /**
+     * Get the height of the current node.
+     *
+     * @return The height of the node.
+     */
+    public int getHeight() {
+        return height;
+    }
+
+    /**
+     * Update the height of the current node based on its children's heights.
+     */
+    public void updateHeight() {
+        int leftHeight = (left == null) ? -1 : left.getHeight();
+        int rightHeight = (right == null) ? -1 : right.getHeight();
+        this.height = Math.max(leftHeight, rightHeight) + 1;
     }
 }
