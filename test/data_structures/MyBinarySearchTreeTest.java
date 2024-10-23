@@ -2,7 +2,7 @@ package data_structures;
 
 import nl.saxion.cds.collection.DuplicateKeyException;
 import nl.saxion.cds.collection.KeyNotFoundException;
-import nl.saxion.cds.data_structures.list.DoublyLinkedList;
+import nl.saxion.cds.data_structures.list.MyDoublyLinkedList;
 import nl.saxion.cds.data_structures.trees.MyBinarySearchTree;
 import nl.saxion.cds.data_structures.trees.MyBinaryTreeNode;
 import org.junit.jupiter.api.BeforeEach;
@@ -272,7 +272,7 @@ public class MyBinarySearchTreeTest {
         bst.add("Charmander", "Fire Pokémon");
         bst.add("Squirtle", "Water Pokémon");
 
-        DoublyLinkedList<String> keys = bst.getKeys();
+        MyDoublyLinkedList<String> keys = bst.getKeys();
 
         assertEquals(4, keys.size());
         assertEquals("Bulbasaur", keys.get(0));
@@ -283,7 +283,7 @@ public class MyBinarySearchTreeTest {
 
     @Test
     public void GivenEmptyTree_WhenGettingKeys_ThenReturnsEmptyList() {
-        DoublyLinkedList<String> keys = bst.getKeys();
+        MyDoublyLinkedList<String> keys = bst.getKeys();
         assertTrue(keys.isEmpty());
     }
 

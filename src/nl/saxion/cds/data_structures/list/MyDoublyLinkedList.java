@@ -3,14 +3,15 @@ package nl.saxion.cds.data_structures.list;
 import nl.saxion.cds.collection.EmptyCollectionException;
 import nl.saxion.cds.collection.SaxList;
 import nl.saxion.cds.collection.ValueNotFoundException;
+import nl.saxion.cds.solution.MyArrayList;
 
 import java.util.Iterator;
 
-public class DoublyLinkedList<T> implements SaxList<T>, Iterable<T> {
+public class MyDoublyLinkedList<T> implements SaxList<T>, Iterable<T> {
     private Node<T> head,tail;
     private int size;
 
-    public DoublyLinkedList() {
+    public MyDoublyLinkedList() {
         head = tail = null;
         size = 0;
     }
@@ -353,6 +354,16 @@ public class DoublyLinkedList<T> implements SaxList<T>, Iterable<T> {
             return null;
         }
         return tail.getValue();
+    }
+
+    public MyArrayList<T> toArrayList() {
+        MyArrayList<T> list = new MyArrayList<>();
+        Node<T> current = head;
+        while (current != null) {
+            list.addLast(current.getValue());
+            current = current.getNext();
+        }
+        return list;
     }
 }
 

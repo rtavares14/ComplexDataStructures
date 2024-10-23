@@ -1,10 +1,18 @@
 # Algorithms and classes
 
-## MijnArrayList
+## My DoublyLinkedList
+Classification: O(N)
+
+Implementation:
+
+
+## My ArrayList
+Classification: O(N)
+
 Implementation:
 
 ### My binary search algorithm
-Classification: O(Log(N))
+Classification: O(log N)
 
 Implementation:
 
@@ -14,50 +22,62 @@ Classification: O(N)
 Implementation:
 
 ### My QuickSort algorithm
-Classificatie:
+Classification: O(N log N)
 
 Implementation:
 
 ## My BST
+Classification O(log N)
+
 Implementation:
 
 ## My HashMap
+Classification O(1)
+
 Implementation:
 
 ## My MinHeap
+Classification: O(log N)
+
 Implementation:
 
 ## My Stack
+Classification: O(1)
+
 Implementation:
 
 ## My Queue
+Classification: O(1)
+
 Implementation:
 
 ## My Graph
+Classification: O(N)
+
 Implementation:
 
 ### My iterative depth first search algorithms
-Classification:
+Classification: O(N)
 
 Implementation:
 
 ### My iterative breadth first search algorithm
-Classification:
+Classification: O(N)
 
 Implementation:
 
 ### My Dijkstra algorithm
-Classification:
+Classification: O(N log N)
 
 Implementation:
 
 ### My A* algorithm
-Classification:
+Classification: O(N log N)
 
 Implementation:
 
 ### My MCST algorithm
-Classification:
+Classification: O(N log N)
 
 Implementation:
 

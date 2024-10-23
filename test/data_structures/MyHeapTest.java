@@ -120,8 +120,4 @@ public class MyHeapTest {
 
         assertEquals(20, maxHeap.peek(), "The root after bubbling down should be the right child (20)");
     }
-
-
-
 }
-

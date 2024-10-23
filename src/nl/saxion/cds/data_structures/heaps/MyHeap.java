@@ -76,9 +76,9 @@ public class MyHeap<T extends Comparable<T>> implements SaxHeap {
      *
      * @return the popped value
      */
-    public Object dequeue() {
+    public Object dequeue() throws EmptyCollectionException{
         if (heap.isEmpty()) {
-            throw new NoSuchElementException("Heap is empty");
+            throw new EmptyCollectionException();
         }
 
         // Store the root value to return

@@ -3,7 +3,7 @@ package nl.saxion.cds.data_structures.trees;
 import nl.saxion.cds.collection.DuplicateKeyException;
 import nl.saxion.cds.collection.KeyNotFoundException;
 import nl.saxion.cds.collection.SaxBinaryTree;
-import nl.saxion.cds.data_structures.list.DoublyLinkedList;
+import nl.saxion.cds.data_structures.list.MyDoublyLinkedList;
 
 import java.util.Comparator;
 
@@ -152,8 +152,8 @@ public class MyBinarySearchTree<K extends Comparable<K>, V> implements SaxBinary
      *
      * @return a DoublyLinkedList of all the keys in order
      */
-    public DoublyLinkedList<K> getKeys() {
-        DoublyLinkedList<K> keysList = new DoublyLinkedList<>();
+    public MyDoublyLinkedList<K> getKeys() {
+        MyDoublyLinkedList<K> keysList = new MyDoublyLinkedList<>();
         addKeysToList(root, keysList);
         return keysList;
     }
@@ -164,7 +164,7 @@ public class MyBinarySearchTree<K extends Comparable<K>, V> implements SaxBinary
      * @param node the current node being visited
      * @param list the doubly linked list to add keys to
      */
-    private void addKeysToList(MyBinaryTreeNode<K, V> node, DoublyLinkedList<K> list) {
+    private void addKeysToList(MyBinaryTreeNode<K, V> node, MyDoublyLinkedList<K> list) {
         if (node != null) {
             addKeysToList(node.getLeft(), list);
             list.addLast(node.getKey());

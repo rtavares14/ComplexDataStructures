@@ -3,7 +3,7 @@ package nl.saxion.cds.data_structures.list;
 import nl.saxion.cds.collection.EmptyCollectionException;
 import nl.saxion.cds.collection.SaxQueue;
 
-public class MyDLLQueue<T> extends DoublyLinkedList<T> implements SaxQueue<T> {
+public class MyDLLQueue<T> extends MyDoublyLinkedList<T> implements SaxQueue<T> {
 
     /**
      * Adds the value to the front of the list.

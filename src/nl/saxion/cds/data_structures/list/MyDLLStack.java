@@ -3,7 +3,7 @@ package nl.saxion.cds.data_structures.list;
 import nl.saxion.cds.collection.EmptyCollectionException;
 import nl.saxion.cds.collection.SaxStack;
 
-public class MyDLLStack<T> extends DoublyLinkedList<T> implements SaxStack<T> {
+public class MyDLLStack<T> extends MyDoublyLinkedList<T> implements SaxStack<T> {
 
     /**
      * Add the value to the stack (on top).

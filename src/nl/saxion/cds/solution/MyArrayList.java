@@ -235,10 +235,11 @@ public class MyArrayList<V> implements SaxList<V>, SaxSearchable<V>, SaxSortable
     }
 
     @Override
-    public int linearSearch(Object element) {
+    public int linearSearch(V element) {
         checkNull((V) element);
         for (int i = 0; i < size; ++i) {
-            if (element.equals(elements[i])) {
+            V currentElement = (V) elements[i];
+            if (currentElement.equals(element)) {
                 return i;
             }
         }

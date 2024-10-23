@@ -4,12 +4,12 @@ import nl.saxion.cds.collection.DuplicateKeyException;
 import nl.saxion.cds.collection.KeyNotFoundException;
 import nl.saxion.cds.collection.SaxHashMap;
 import nl.saxion.cds.collection.SaxList;
-import nl.saxion.cds.data_structures.list.DoublyLinkedList;
+import nl.saxion.cds.data_structures.list.MyDoublyLinkedList;
 
 public class MyHashMap<K, V> implements SaxHashMap<K, V> {
     private static final int INITIAL_CAPACITY = 14;
     private static final float LOAD_FACTOR_THRESHOLD = 0.75f;
-    private DoublyLinkedList<Entry<K, V>>[] buckets;
+    private MyDoublyLinkedList<Entry<K, V>>[] buckets;
     private int size;
     private Entry<K, V> nullKeyEntry;
 
@@ -24,10 +24,10 @@ public class MyHashMap<K, V> implements SaxHashMap<K, V> {
     }
 
     public MyHashMap() {
-        this.buckets = new DoublyLinkedList[INITIAL_CAPACITY];
+        this.buckets = new MyDoublyLinkedList[INITIAL_CAPACITY];
         this.size = 0;
         for (int i = 0; i < INITIAL_CAPACITY; i++) {
-            buckets[i] = new DoublyLinkedList<>();
+            buckets[i] = new MyDoublyLinkedList<>();
         }
     }
 
@@ -61,7 +61,7 @@ public class MyHashMap<K, V> implements SaxHashMap<K, V> {
             sb.append("  null -> ").append(nullKeyEntry.value).append(";\n");
         }
 
-        for (DoublyLinkedList<Entry<K, V>> bucket : buckets) {
+        for (MyDoublyLinkedList<Entry<K, V>> bucket : buckets) {
             for (Entry<K, V> entry : bucket) {
                 sb.append("  ").append(entry.key).append(" -> ").append(entry.value).append(";\n");
             }
@@ -82,7 +82,7 @@ public class MyHashMap<K, V> implements SaxHashMap<K, V> {
         }
 
         int index = getBucketIndex(key);
-        DoublyLinkedList<Entry<K, V>> bucket = buckets[index];
+        MyDoublyLinkedList<Entry<K, V>> bucket = buckets[index];
 
         for (Entry<K, V> entry : bucket) {
             if (entry.key.equals(key)) {
@@ -105,7 +105,7 @@ public class MyHashMap<K, V> implements SaxHashMap<K, V> {
         }
 
         int index = getBucketIndex(key);
-        DoublyLinkedList<Entry<K, V>> bucket = buckets[index];
+        MyDoublyLinkedList<Entry<K, V>> bucket = buckets[index];
 
         for (Entry<K, V> entry : bucket) {
             if (entry.key.equals(key)) {
@@ -131,7 +131,7 @@ public class MyHashMap<K, V> implements SaxHashMap<K, V> {
         }
 
         int index = getBucketIndex(key);
-        DoublyLinkedList<Entry<K, V>> bucket = buckets[index];
+        MyDoublyLinkedList<Entry<K, V>> bucket = buckets[index];
 
         for (Entry<K, V> entry : bucket) {
             if (entry.key.equals(key)) {
@@ -156,7 +156,7 @@ public class MyHashMap<K, V> implements SaxHashMap<K, V> {
         }
 
         int index = getBucketIndex(key);
-        DoublyLinkedList<Entry<K, V>> bucket = buckets[index];
+        MyDoublyLinkedList<Entry<K, V>> bucket = buckets[index];
 
         for (Entry<K, V> entry : bucket) {
             if (entry.key.equals(key)) {
@@ -170,13 +170,13 @@ public class MyHashMap<K, V> implements SaxHashMap<K, V> {
 
     @Override
     public SaxList<K> getKeys() {
-        DoublyLinkedList<K> keysList = new DoublyLinkedList<>();
+        MyDoublyLinkedList<K> keysList = new MyDoublyLinkedList<>();
 
         if (nullKeyEntry != null) {
             keysList.addLast(null);
         }
 
-        for (DoublyLinkedList<Entry<K, V>> bucket : buckets) {
+        for (MyDoublyLinkedList<Entry<K, V>> bucket : buckets) {
             for (Entry<K, V> entry : bucket) {
                 keysList.addLast(entry.key);
             }
@@ -191,10 +191,10 @@ public class MyHashMap<K, V> implements SaxHashMap<K, V> {
 
     private void resize() {
         int newCapacity = buckets.length * 2;
-        DoublyLinkedList<Entry<K, V>>[] newBuckets = new DoublyLinkedList[newCapacity];
+        MyDoublyLinkedList<Entry<K, V>>[] newBuckets = new MyDoublyLinkedList[newCapacity];
 
         for (int i = 0; i < newCapacity; i++) {
-            newBuckets[i] = new DoublyLinkedList<>();
+            newBuckets[i] = new MyDoublyLinkedList<>();
         }
 
         // entry for the null key,put in the buckets
@@ -203,7 +203,7 @@ public class MyHashMap<K, V> implements SaxHashMap<K, V> {
         }
 
         // Rehash all entries the new buckets
-        for (DoublyLinkedList<Entry<K, V>> bucket : buckets) {
+        for (MyDoublyLinkedList<Entry<K, V>> bucket : buckets) {
             for (Entry<K, V> entry : bucket) {
                 int newIndex = entry.key == null ? 0 : Math.abs(entry.key.hashCode()) % newCapacity;
                 newBuckets[newIndex].addLast(entry); // Ensure rehashing is correct
