@@ -43,28 +43,18 @@ public class Main {
                         showStationInfoByName(stationMap);
                         break;
                     case 2:
-                        System.out.println("Option 2: Show information of a station based on (the beginning of) its name.");
-                        // Call method to show information based on the station name
-                        break;
+                         break;
 
                     case 3:
-                        System.out.println("Option 3: Show all stations of a certain type.");
-                        // Call method to show stations by type
                         break;
 
                     case 4:
-                        System.out.println("Option 4: Determine the shortest route between two stations.");
-                        // Call method to find and display the shortest route
                         break;
 
                     case 5:
-                        System.out.println("Option 5: Determine the minimum number of rail connections (MCST).");
-                        // Call method to determine the MCST
                         break;
 
                     case 6:
-                        System.out.println("Option 6: Show rail network, routes, and MCST (Graphical representation).");
-                        // Call method to show graphical representation
                         break;
 
                     case 0:
@@ -82,10 +72,10 @@ public class Main {
 
     private static void showStationInfoByName(MyHashMap<String, Station> stationMap) {
         Scanner scan = new Scanner(System.in);
-        System.out.print("Enter the station name: ");
-        String stationName = scan.nextLine();
+        System.out.print("Enter the station code: ");
+        String stationCode = scan.nextLine();
 
-      Station station =  stationMap.get(stationName);
+        Station station =  stationMap.get(stationCode);
 
         if (station != null) {
             System.out.println("Station found: " + station);
