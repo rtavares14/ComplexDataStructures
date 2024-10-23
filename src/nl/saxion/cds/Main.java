@@ -1,6 +1,7 @@
 package nl.saxion.cds;
 
 import nl.saxion.cds.data_structures.map.MyHashMap;
+import nl.saxion.cds.model.RailNetworkVisualization;
 import nl.saxion.cds.model.Station;
 import nl.saxion.cds.model.Track;
 import nl.saxion.cds.solution.MyArrayList;
@@ -13,7 +14,8 @@ public class Main {
         private static final Comparator<Track> distanceToNext = Comparator.comparingDouble(Track::getDistanceToNext);
 
         static Scanner scan = new Scanner(System.in);
-        public static void main(String[] args) {
+        //private static boolean isGuiOpen = false;
+    public static void main(String[] args) {
             MyHashMap<String, Station> stationMap = Station.readFromFile("resources/stations.csv");
 
             MyArrayList<Track> tracks = Track.readFromFile("resources/tracks.csv");
@@ -31,6 +33,7 @@ public class Main {
                 System.out.println("4. Determine the shortest route between two stations");
                 System.out.println("5. Determine the minimum number of rail connections (MCST)");
                 System.out.println("6. Show rail network, routes, and MCST (Graphical representation)");
+                //System.out.println("7. Close rail network window");
                 System.out.println("0. Exit application");
                 System.out.println("--------------------------------------------------------------------");
                 System.out.print("Enter your choice: ");
@@ -55,13 +58,21 @@ public class Main {
                         break;
 
                     case 6:
+                        launchGraphicalRepresentation();
                         break;
-
+                    //case 7:
+                    //    if (isGuiOpen) {
+                    //        RailNetworkVisualization.close();
+                    //        isGuiOpen = false;
+                    //        System.out.println("Rail network window closed.");
+                    //    } else {
+                    //        System.out.println("Rail network window is not open.");
+                    //    }
+                    //    break;
                     case 0:
                         System.out.println("Exiting the application. Goodbye!");
                         menu = false;
                         break;
-
                     default:
                         System.out.println("Invalid option. Please try again.");
                         break;
@@ -85,4 +96,7 @@ public class Main {
     }
 
 
+    private static void launchGraphicalRepresentation() {
+        RailNetworkVisualization.main();
+    }
 }
