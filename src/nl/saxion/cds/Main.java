@@ -1,6 +1,7 @@
 package nl.saxion.cds;
 
 import nl.saxion.cds.data_structures.map.MyHashMap;
+import nl.saxion.cds.data_structures.trees.MyBinarySearchTree;
 import nl.saxion.cds.model.RailNetworkVisualization;
 import nl.saxion.cds.model.Station;
 import nl.saxion.cds.model.Track;
@@ -10,13 +11,18 @@ import java.util.*;
 
 public class Main {
 
-        private static final Comparator<Station> stationNameComp = Comparator.comparing(Station::getName);
+    private static final Comparator<String> stationCodeComparator = Comparator.naturalOrder();
         private static final Comparator<Track> distanceToNext = Comparator.comparingDouble(Track::getDistanceToNext);
 
         static Scanner scan = new Scanner(System.in);
         //private static boolean isGuiOpen = false;
     public static void main(String[] args) {
-            MyHashMap<String, Station> stationMap = Station.readFromFile("resources/stations.csv");
+        MyArrayList<Station> stationList = new MyArrayList<>();
+        MyHashMap<String, Station> stationMap = new MyHashMap<>();
+        MyBinarySearchTree<String, Station> stationTree = new MyBinarySearchTree<>(stationCodeComparator);
+
+        Station.readFromFileToHash("resources/stations.csv", stationList, stationMap, stationTree);
+
 
             MyArrayList<Track> tracks = Track.readFromFile("resources/tracks.csv");
 
@@ -25,7 +31,7 @@ public class Main {
             boolean menu = true;
 
             while (menu) {
-                System.out.println("\n--------------------- MY TRAIN APLICATION MENU ---------------------");
+                System.out.println("--------------------- MY TRAIN APLICATION MENU ---------------------");
                 System.out.println("-------------------------- BETTER THAN NS --------------------------");
                 System.out.println("1. Show information of a station based on its station code");
                 System.out.println("2. Show information of a station based on its name");
@@ -46,9 +52,18 @@ public class Main {
                         showStationInfoByName(stationMap);
                         break;
                     case 2:
-                         break;
-
+                        showStationInfoByPartialName(stationList);
+                        break;
                     case 3:
+                        //stoptreinstation-373
+                        //facultatiefStation-2
+                        //megastation-20
+                        //intercitystation-53
+                        //knooppuntIntercitystation-59
+                        //knooppuntStoptreinstation-51
+                        //knooppuntSneltreinstation-6
+                        //sneltreinstation-14
+                        showStationsByType(stationList);
                         break;
 
                     case 4:
@@ -95,6 +110,43 @@ public class Main {
         }
     }
 
+    private static void showStationInfoByPartialName(MyArrayList<Station> stationsList) {
+        System.out.print("Enter the beginning of the station name: ");
+        String searchQuery = scan.nextLine().toLowerCase();
+
+        MyArrayList<Station> matchingStations = new MyArrayList<>();
+
+        for (Station station : stationsList) {
+            if (station.getName().toLowerCase().startsWith(searchQuery)) {
+                matchingStations.addLast(station);
+            }
+        }
+
+        if (matchingStations.size() == 0) {
+            System.out.println("No stations found starting with: " + searchQuery);
+            return;
+        }
+
+        // Display matching stations
+        System.out.println("Matching stations:");
+        for (int i = 0; i < matchingStations.size(); i++) {
+            System.out.println((i + 1) + ". " + matchingStations.get(i).getName());
+        }
+
+        System.out.print("Enter the number of the station you want to view: ");
+        int choice = scan.nextInt();
+        scan.nextLine();  // Consume newline
+
+        if (choice < 1 || choice > matchingStations.size()) {
+            System.out.println("Invalid choice.");
+        } else {
+            Station selectedStation = matchingStations.get(choice - 1);
+            System.out.println("Station found: " + selectedStation);
+        }
+    }
+
+    private static void showStationsByType(MyArrayList<Station> stationsList) {
+    }
 
     private static void launchGraphicalRepresentation() {
         RailNetworkVisualization.main();

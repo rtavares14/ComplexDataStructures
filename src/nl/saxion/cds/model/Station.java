@@ -2,14 +2,14 @@ package nl.saxion.cds.model;
 
 import nl.saxion.cds.data_structures.list.MyDoublyLinkedList;
 import nl.saxion.cds.data_structures.map.MyHashMap;
+import nl.saxion.cds.data_structures.trees.MyBinarySearchTree;
+import nl.saxion.cds.solution.MyArrayList;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-public class Station {
-    //code,name,country,type,latitude,longitude
-
+public class Station implements Comparable<Station> {
     private String code;
 
     private String name;
@@ -43,7 +43,6 @@ public class Station {
         }
         this.type = type.trim();
 
-        // Validate latitude and longitude values
         if (latitude < -90 || latitude > 90) {
             throw new IllegalArgumentException("Latitude must be between -90 and 90.");
         }
@@ -57,8 +56,11 @@ public class Station {
 
 
 
-    public static MyHashMap<String, Station> readFromFile(String filename) {
-        MyHashMap<String, Station> stations = new MyHashMap<>();
+    public static void readFromFileToHash(String filename,
+                                          MyArrayList<Station> stationList,
+                                          MyHashMap<String, Station> stationMap,
+                                          MyBinarySearchTree<String, Station> stationTree) {
+
         try (Scanner scan = new Scanner(new File(filename))) {
             if (scan.hasNextLine()) {
                 scan.nextLine();
@@ -66,28 +68,28 @@ public class Station {
 
             while (scan.hasNextLine()) {
                 String line = scan.nextLine();
-                System.out.println("Reading line: " + line);
                 String[] parts = line.split(",");
 
                 if (parts.length < 6) {
-                    System.err.println("Skipping invalid line: " + line);
+                    // Skip bad lines
                     continue;
                 }
 
                 String stationCode = parts[0];
-
                 Station station = new Station(parts[0], parts[1], parts[2], parts[3],
                         Double.parseDouble(parts[4]),
                         Double.parseDouble(parts[5]));
 
-                stations.add(stationCode, station);
+                stationList.addLast(station);
+
+                stationMap.add(stationCode, station);
+
+                stationTree.add(stationCode, station);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        return stations;
     }
-
 
     public String getCode() {
         return code;
@@ -121,6 +123,11 @@ public class Station {
                 "\nCountry = " + country +
                 "\nType = " + type +
                 "\nLatitude = " + latitude +
-                "\nLongitude = " + longitude;
+                "\nLongitude = " + longitude + "\n";
+    }
+
+    @Override
+    public int compareTo(Station other) {
+        return this.type.compareTo(other.type);
     }
 }
