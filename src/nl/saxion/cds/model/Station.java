@@ -1,9 +1,8 @@
 package nl.saxion.cds.model;
 
-import nl.saxion.cds.data_structures.list.MyDoublyLinkedList;
 import nl.saxion.cds.data_structures.map.MyHashMap;
 import nl.saxion.cds.data_structures.trees.MyBinarySearchTree;
-import nl.saxion.cds.solution.MyArrayList;
+import nl.saxion.cds.data_structures.solution.MyArrayList;
 
 import java.io.File;
 import java.io.FileNotFoundException;

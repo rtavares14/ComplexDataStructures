@@ -1,4 +1,4 @@
-package nl.saxion.cds.solution;
+package nl.saxion.cds.data_structures.solution;
 
 import nl.saxion.cds.collection.*;
 
