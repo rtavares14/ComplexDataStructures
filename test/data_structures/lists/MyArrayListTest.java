@@ -1,9 +1,9 @@
-package collection;
+package data_structures.lists;
 
 import nl.saxion.cds.collection.EmptyCollectionException;
 import nl.saxion.cds.collection.SaxSearchable;
 import nl.saxion.cds.collection.ValueNotFoundException;
-import nl.saxion.cds.data_structures.solution.MyArrayList;
+import nl.saxion.cds.data_structures.list.MyArrayList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +12,7 @@ import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TestMyArrayList {
+public class MyArrayListTest {
     private static final int BIG_NUMBER_OF_ELEMENTS = 5000;
     private MyArrayList<String> list;
 

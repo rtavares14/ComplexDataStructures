@@ -3,7 +3,6 @@ package nl.saxion.cds.data_structures.list;
 import nl.saxion.cds.collection.EmptyCollectionException;
 import nl.saxion.cds.collection.SaxList;
 import nl.saxion.cds.collection.ValueNotFoundException;
-import nl.saxion.cds.data_structures.solution.MyArrayList;
 
 import java.util.Iterator;
 

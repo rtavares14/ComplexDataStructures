@@ -96,24 +96,17 @@ public class MyBinaryTreeNode<K extends Comparable<K>, V> {
         int cmp = comparator.compare(key, this.getKey());
 
         if (cmp < 0) {
-            // Key is smaller, go left
             return (left != null) ? left.remove(key, comparator, this) : null;
         } else if (cmp > 0) {
-            // Key is larger, go right
             return (right != null) ? right.remove(key, comparator, this) : null;
         } else {
-            // Node to be removed found (cmp == 0)
             V removedValue = this.value;
 
-            // Handling removal based on cases
             if (isLeaf()) {
-                // Case 1: No children (Leaf Node)
                 removeLeafNode(parent);
             } else if (left == null || right == null) {
-                // Case 2: One child (either left or right is null)
                 removeSingleChildNode(parent);
             } else {
-                // Case 3: Two children
                 removeNodeWithTwoChildren(comparator);
             }
 
@@ -145,7 +138,6 @@ public class MyBinaryTreeNode<K extends Comparable<K>, V> {
     }
 
     private void removeNodeWithTwoChildren(Comparator<K> comparator) {
-        // Find the minimum node in the right subtree (in-order successor)
         MyBinaryTreeNode<K, V> minNode = findMin(right);
 
         // Replace the current node's key and value with the in-order successor

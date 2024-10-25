@@ -1,4 +1,4 @@
-package data_structures;
+package data_structures.trees;
 
 import nl.saxion.cds.collection.DuplicateKeyException;
 import nl.saxion.cds.collection.KeyNotFoundException;
@@ -289,7 +289,7 @@ public class MyBinarySearchTreeTest {
 
     @Test
     public void GivenTree_WhenGeneratingGraphViz_ThenProducesCorrectString() throws DuplicateKeyException {
-        bst.add("Bulbasaur", "Grass Pokémon"); 
+        bst.add("Bulbasaur", "Grass Pokémon");
         bst.add("Charmander", "Fire Pokémon");
         bst.add("Pikachu", "Electric Pokémon");
         bst.add("Squirtle", "Water Pokémon");
@@ -316,15 +316,15 @@ public class MyBinarySearchTreeTest {
         assertEquals("Grass Pokémon", removedValue);
 
         MyBinaryTreeNode<String, String> newRoot = bst.getRoot();
-        assertEquals("Charmander", newRoot.getKey());  
-        assertNull(newRoot.getLeft());          
+        assertEquals("Charmander", newRoot.getKey());
+        assertNull(newRoot.getLeft());
         assertNull(newRoot.getRight());
     }
 
     @Test
     public void GivenTreeWithLeftChild_WhenGeneratingGraphViz_ThenContainsLeftChildEdge() throws DuplicateKeyException {
         bst.add("Pikachu", "Electric Pokémon");
-        bst.add("Bulbasaur", "Grass Pokémon"); 
+        bst.add("Bulbasaur", "Grass Pokémon");
         String graphVizOutput = bst.graphViz();
         String expectedEdge = "\"Pikachu\" -> \"Bulbasaur\";\n";
         assertTrue(graphVizOutput.contains(expectedEdge), "GraphViz output should contain the edge for left child.");

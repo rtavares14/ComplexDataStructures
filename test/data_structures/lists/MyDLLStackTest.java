@@ -1,4 +1,4 @@
-package data_structures;
+package data_structures.lists;
 
 import nl.saxion.cds.collection.EmptyCollectionException;
 import nl.saxion.cds.data_structures.list.MyDLLStack;

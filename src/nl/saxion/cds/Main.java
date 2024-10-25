@@ -3,7 +3,7 @@ package nl.saxion.cds;
 import nl.saxion.app.SaxionApp;
 import nl.saxion.cds.data_structures.map.MyHashMap;
 import nl.saxion.cds.data_structures.trees.MyBinarySearchTree;
-import nl.saxion.cds.data_structures.solution.MyArrayList;
+import nl.saxion.cds.data_structures.list.MyArrayList;
 import nl.saxion.cds.model.RailNetworkVisualization;
 import nl.saxion.cds.model.Station;
 import nl.saxion.cds.model.Track;

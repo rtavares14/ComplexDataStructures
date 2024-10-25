@@ -2,7 +2,7 @@ package nl.saxion.cds.model;
 
 import nl.saxion.app.SaxionApp;
 import nl.saxion.cds.data_structures.map.MyHashMap;
-import nl.saxion.cds.data_structures.solution.MyArrayList;
+import nl.saxion.cds.data_structures.list.MyArrayList;
 
 import java.awt.*;
 

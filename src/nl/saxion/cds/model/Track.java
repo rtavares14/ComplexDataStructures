@@ -1,6 +1,6 @@
 package nl.saxion.cds.model;
 
-import nl.saxion.cds.data_structures.solution.MyArrayList;
+import nl.saxion.cds.data_structures.list.MyArrayList;
 
 import java.io.File;
 import java.io.FileNotFoundException;

@@ -1,7 +1,7 @@
-package data_structures;
+package data_structures.trees;
 
 import nl.saxion.cds.collection.EmptyCollectionException;
-import nl.saxion.cds.data_structures.heaps.MyHeap;
+import nl.saxion.cds.data_structures.trees.heaps.MyHeap;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -110,14 +110,19 @@ public class MyHeapTest {
     }
 
     @Test
-    void testBubbleDownRightChildLarger() {
-        maxHeap.enqueue(10);
-        maxHeap.enqueue(5);
+    public void givenHeap_whenRightChildIsLarger_thenLargestIndexIsRightChild() {
+        MyHeap<Integer> maxHeap = new MyHeap<>(false);
+        maxHeap.enqueue(30);
         maxHeap.enqueue(20);
-        maxHeap.enqueue(1);
+        maxHeap.enqueue(40);
+        maxHeap.enqueue(10);
+        maxHeap.enqueue(50);
 
-        maxHeap.dequeue();
+        maxHeap.dequeue(); // Removes 50, root should now be 40
+        assertEquals(40, maxHeap.peek(), "Root should be 40 after dequeue.");
 
-        assertEquals(20, maxHeap.peek(), "The root after bubbling down should be the right child (20)");
+        maxHeap.enqueue(25); // Add a new element
+        assertEquals(40, maxHeap.dequeue(), "Max-heap should remove the largest element (40) first.");
+        assertEquals(30, maxHeap.peek(), "Root should be 30 after removing 40.");
     }
 }

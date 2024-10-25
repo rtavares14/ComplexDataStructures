@@ -1,4 +1,4 @@
-package nl.saxion.cds.data_structures.heaps;
+package nl.saxion.cds.data_structures.trees.heaps;
 
 import nl.saxion.cds.collection.EmptyCollectionException;
 import nl.saxion.cds.collection.SaxHeap;
@@ -120,23 +120,19 @@ public class MyHeap<T extends Comparable<T>> implements SaxHeap {
         int rightChildIndex = 2 * index + 2;
         int largestIndex = index;
 
-        // Compare left child with the current node
         if (leftChildIndex < heap.size() && compare(heap.get(leftChildIndex), heap.get(largestIndex))) {
-            largestIndex = leftChildIndex; // Update largestIndex if left child is larger
+            largestIndex = leftChildIndex;
         }
 
-        // Compare right child with the largest child found so far
         if (rightChildIndex < heap.size() && compare(heap.get(rightChildIndex), heap.get(largestIndex))) {
-            largestIndex = rightChildIndex; // Update largestIndex if right child is larger
+            largestIndex = rightChildIndex;
         }
 
-        // If largestIndex is not the current index, swap and continue bubbling down
         if (largestIndex != index) {
             swap(index, largestIndex);
-            bubbleDown(largestIndex); // Recurse down to the affected subtree
+            bubbleDown(largestIndex);
         }
     }
-
 
     private boolean compare(T a, T b) {
         return isMinHeap ? a.compareTo(b) < 0 : a.compareTo(b) > 0;
