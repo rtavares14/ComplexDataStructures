@@ -3,6 +3,7 @@ package data_structures;
 import nl.saxion.cds.collection.DuplicateKeyException;
 import nl.saxion.cds.collection.KeyNotFoundException;
 import nl.saxion.cds.data_structures.map.MyHashMap;
+import nl.saxion.cds.data_structures.solution.MyArrayList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -188,5 +189,20 @@ public class MyHashMapTest {
     @Test
     void GivenHashMap_WhenCheckingContainsNegativeKey_ThenReturnFalse() {
         assertFalse(hashMap.contains(-101));
+    }
+
+    @Test
+    void GivenHashMapWithMultipleEntries_WhenGettingValues_ThenValuesListIsReturnedCorrectly() throws DuplicateKeyException {
+        hashMap.add(1, "Bulbasaur");
+        hashMap.add(2, "Charmander");
+        hashMap.add(3, "Squirtle");
+
+
+        MyArrayList<String> values = hashMap.values(); // Call the values() method
+
+        assertEquals(7, values.size());
+        assertTrue(values.contains("Bulbasaur"));
+        assertTrue(values.contains("Charmander"));
+        assertTrue(values.contains("Squirtle"));
     }
 }

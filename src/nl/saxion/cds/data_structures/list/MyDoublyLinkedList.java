@@ -355,16 +355,4 @@ public class MyDoublyLinkedList<T> implements SaxList<T>, Iterable<T> {
         }
         return tail.getValue();
     }
-
-    public MyArrayList<T> toArrayList() {
-        MyArrayList<T> list = new MyArrayList<>();
-        Node<T> current = head;
-        while (current != null) {
-            list.addLast(current.getValue());
-            current = current.getNext();
-        }
-        return list;
-    }
 }
-
-

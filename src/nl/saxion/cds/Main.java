@@ -1,11 +1,12 @@
 package nl.saxion.cds;
 
+import nl.saxion.app.SaxionApp;
 import nl.saxion.cds.data_structures.map.MyHashMap;
 import nl.saxion.cds.data_structures.trees.MyBinarySearchTree;
+import nl.saxion.cds.data_structures.solution.MyArrayList;
 import nl.saxion.cds.model.RailNetworkVisualization;
 import nl.saxion.cds.model.Station;
 import nl.saxion.cds.model.Track;
-import nl.saxion.cds.data_structures.solution.MyArrayList;
 
 import java.util.*;
 
@@ -16,7 +17,7 @@ public class Main {
 
     static Scanner scan = new Scanner(System.in);
 
-    //private static boolean isGuiOpen = false;
+    private static boolean isGuiOpen = false;
     public static void main(String[] args) {
         MyArrayList<Station> stationList = new MyArrayList<>();
         MyHashMap<String, Station> stationMap = new MyHashMap<>();
@@ -66,7 +67,12 @@ public class Main {
                     break;
 
                 case 6:
-                    launchGraphicalRepresentation(stationList);
+                    if (!isGuiOpen) {
+                        launchGraphicalRepresentation(stationList, tracks);
+
+                    } else {
+                        System.out.println("The graphical representation is already open.");
+                    }
                     break;
                 //case 7:
                 //    if (isGuiOpen) {
@@ -87,6 +93,13 @@ public class Main {
             }
         }
         scan.close();
+    }
+
+
+    // Inside RailNetworkVisualization class
+    public static void close() {
+        SaxionApp.quit();
+        isGuiOpen = false;  // Mark GUI as closed
     }
 
     //option 1
@@ -189,7 +202,8 @@ public class Main {
     }
 
     //option 6
-    private static void launchGraphicalRepresentation(MyArrayList<Station> stationList) {
-        RailNetworkVisualization.main(stationList);
+    private static void launchGraphicalRepresentation(MyArrayList<Station> stationList, MyArrayList<Track> tracks) {
+        Thread guiThread = new Thread(() -> RailNetworkVisualization.main(stationList, tracks));
+        guiThread.start();
     }
 }

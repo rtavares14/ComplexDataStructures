@@ -9,7 +9,7 @@ import java.util.Comparator;
 
 public class MyBinarySearchTree<K extends Comparable<K>, V> implements SaxBinaryTree<K, V> {
 
-    private MyBinaryTreeNode<K, V> root;
+    MyBinaryTreeNode<K, V> root;
     private int size;
     private Comparator<K> comparator;
 

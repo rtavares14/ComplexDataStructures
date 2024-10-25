@@ -19,6 +19,7 @@ public class Track {
         this.distanceToNext = distanceToNext;
     }
 
+
     public static MyArrayList<Track> readFromFile(String filename){
         MyArrayList<Track> tracks = new MyArrayList<>();
         try (Scanner scan = new Scanner(new File(filename))) {
