@@ -92,9 +92,6 @@ public class MyArrayListTest {
         assertEquals(5, list.size());
         assertFalse(list.isEmpty());
         assertEquals("[ Lugia Dratini Diglett Arcanine Dragonite ]", list.toString());
-
-        // Testing GraphViz can best be done manually (copy past to https://dreampuf.github.io/GraphvizOnline)
-        //System.out.println(list.graphViz());
     }
 
     @Test
@@ -164,8 +161,6 @@ public class MyArrayListTest {
         assertEquals(8, list.size());
         assertFalse(list.isSorted(String::compareTo));
 
-        System.out.println(list.graphViz());
-
         list.remove("Eevee");
         list.remove("Gengar");
         list.remove("Mew");
@@ -191,7 +186,6 @@ public class MyArrayListTest {
     void GivenListWithIntegers_WhenQuicksorted_ThenListIsSorted() {
         MyArrayList<Integer> list3 = createIntegerArrayList();
         list3.quickSort(Integer::compareTo);
-        System.out.println(list3);
         assertTrue(list3.isSorted(Integer::compareTo));
 
         int last = -100;

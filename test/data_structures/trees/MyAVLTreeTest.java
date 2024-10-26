@@ -13,12 +13,9 @@ class MyAVLTreeTest {
     @Test
     void GivenAVLTree_WhenAddingElements_ThenTreeIsBalanced() {
         avlTree.add(10, "Bulbasaur");
-        System.out.println(avlTree.getRoot().getValue());
         avlTree.add(20, "Charmander");
-        System.out.println(avlTree.getRoot().getValue());
         avlTree.add(30, "Squirtle");
 
-        System.out.println(avlTree.getRoot().getValue());
         assertEquals("Charmander", avlTree.getRoot().getValue());
         assertEquals("Bulbasaur", avlTree.getRoot().getLeft().getValue());
         assertEquals("Squirtle", avlTree.getRoot().getRight().getValue());

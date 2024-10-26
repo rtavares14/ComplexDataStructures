@@ -99,7 +99,6 @@ public class MyHeapTest {
         minHeap.enqueue(20);
 
         String graphVizOutput = minHeap.graphViz("TestHeap");
-        System.out.println(graphVizOutput); // Print the actual output for inspection
 
         assertTrue(graphVizOutput.contains("digraph TestHeap {"), "GraphViz output should start with the graph name");
 

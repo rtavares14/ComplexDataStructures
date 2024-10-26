@@ -39,8 +39,14 @@ public class Main {
             System.out.println("2. Show information of a station based on its name");
             System.out.println("3. Show all stations of a certain type");
             System.out.println("4. Determine the shortest route between two stations");
+            //list od directed edges
+            //convert the directed edges to nodes
             System.out.println("5. Determine the minimum number of rail connections (MCST)");
+            //prim of kruskal alg
+            //min cost spanning tree
+            //dks alg
             System.out.println("6. Show rail network, routes, and MCST (Graphical representation)");
+            //min cost spanning tree
             //System.out.println("7. Close rail network window");
             System.out.println("0. Exit application");
             System.out.println("--------------------------------------------------------------------");

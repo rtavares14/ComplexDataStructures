@@ -228,7 +228,7 @@ public class MyBinarySearchTree<K extends Comparable<K>, V> implements SaxBinary
     private void inorderRecursive(MyBinaryTreeNode<K, V> node) {
         if (node != null) {
             inorderRecursive(node.getLeft());
-            System.out.println(node.getKey() + ": " + node.getValue());
+            //System.out.println(node.getKey() + ": " + node.getValue());
             inorderRecursive(node.getRight());
         }
     }

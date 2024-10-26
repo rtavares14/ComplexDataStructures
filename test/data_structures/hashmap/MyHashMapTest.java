@@ -86,7 +86,6 @@ public class MyHashMapTest {
     @Test
     void GivenHashMap_WhenGraphVizIsCalled_ThenReturnFormattedGraph() {
         String graphVizOutput = hashMap.graphViz("testHashMap");
-        System.out.println(graphVizOutput);
 
         assertTrue(graphVizOutput.contains("digraph testHashMap {"));
         assertTrue(graphVizOutput.contains("101 -> Pikachu;"));

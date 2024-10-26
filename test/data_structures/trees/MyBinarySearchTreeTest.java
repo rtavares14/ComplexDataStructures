@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class MyBinarySearchTreeTest {
 
     private MyBinarySearchTree<String, String> bst;
+    private MyBinarySearchTree<Integer, String> tree;
 
     @BeforeEach
     public void setUp() {
@@ -41,7 +42,6 @@ public class MyBinarySearchTreeTest {
         assertEquals("Fire Pokémon", bst.get("Charmander"));
         assertEquals("Water Pokémon", bst.get("Squirtle"));
 
-        System.out.println("Tree structure after adding 4 nodes (in-order):");
         bst.inorder();
     }
 
@@ -67,16 +67,16 @@ public class MyBinarySearchTreeTest {
         bst.add("Bulbasaur", "Grass Pokémon");
         bst.add("Charmander", "Fire Pokémon");
         bst.add("Squirtle", "Water Pokémon");
-        bst.add("Jigglypuff", "Normal Pokémon");
+        bst.add("Jigglypuff22", "Normal Pokémon");
 
         assertEquals(5, bst.size());
         assertTrue(bst.contains("Pikachu"));
         assertTrue(bst.contains("Bulbasaur"));
         assertTrue(bst.contains("Charmander"));
         assertTrue(bst.contains("Squirtle"));
-        assertTrue(bst.contains("Jigglypuff"));
+        assertTrue(bst.contains("Jigglypuff22"));
 
-        bst.inorder();
+       bst.inorder();
     }
 
     @Test
@@ -89,7 +89,6 @@ public class MyBinarySearchTreeTest {
         assertEquals(2, bst.size());
         assertFalse(bst.contains("Charmander"));
 
-        System.out.println("In-order traversal after removing a leaf:");
         bst.inorder();
     }
 
@@ -352,12 +351,62 @@ public class MyBinarySearchTreeTest {
 
         String dotOutput = root.toDot();
 
-        System.out.println(dotOutput);
-
         assertTrue(dotOutput.contains("Root -> LeftChild;"));
         assertTrue(dotOutput.contains("Root -> RightChild;"));
         assertTrue(dotOutput.contains("LeftChild -> LeftLeftChild;"));
-        assertTrue(dotOutput.contains("LeftChild -> nullR_LeftChild;")); // null
-        assertTrue(dotOutput.contains("RightChild -> nullL_RightChild;")); // null
+        assertTrue(dotOutput.contains("LeftChild -> nullR_LeftChild;"));
+        assertTrue(dotOutput.contains("RightChild -> nullL_RightChild;"));
+    }
+
+    @Test
+    void GivenTreeWithTwoChildNode_WhenDeletingNonRootNodeWithTwoChildren_ThenSuccessorReplacesNode() throws KeyNotFoundException {
+        tree = new MyBinarySearchTree<>(Integer::compareTo);
+
+            tree.add(10, "Pikachu");
+            tree.add(5, "Charmander");
+            tree.add(15, "Squirtle");
+            tree.add(3, "Bulbasaur");
+            tree.add(7, "Jigglypuff");
+            tree.add(12, "Meowth");
+            tree.add(17, "Psyduck");
+
+
+        tree.remove(5);
+
+        assertFalse(tree.contains(5), "Node with key 5 should be removed.");
+        assertEquals("Jigglypuff", tree.get(7), "In-order successor (7) should replace the deleted node.");
+        assertEquals("Bulbasaur", tree.get(3), "Left subtree should remain consistent.");
+    }
+
+    @Test
+    void GivenNodeWithOnlyRightChild_WhenRemovingNode_ThenParentRightChildIsUpdated() throws KeyNotFoundException {
+        tree = new MyBinarySearchTree<>(Integer::compareTo);
+
+        tree.add(50, "Pikachu");
+        tree.add(30, "Bulbasaur");
+        tree.add(70, "Charmander");
+        tree.add(80, "Squirtle");
+
+
+        tree.remove(70);
+
+        // Assert: Check that 50's right child is now 80 (replacing the removed node 70)
+        assertEquals("Squirtle", tree.getRoot().getRight().getValue());
+        assertNull(tree.getRoot().getRight().getRight());
+    }
+
+    @Test
+    void GivenTreeWithLeftSubtree_WhenFindingMin_ThenLeftmostNodeIsReturned() {
+        tree = new MyBinarySearchTree<>(Integer::compareTo);
+        tree.add(50, "Pikachu");
+        tree.add(30, "Bulbasaur");
+        tree.add(20, "Charmander");
+        tree.add(10, "Squirtle");
+
+        MyBinaryTreeNode<Integer, String> minNode = tree.getRoot().findMin(tree.getRoot());
+
+        assertNotNull(minNode);
+        assertEquals(10, minNode.getKey());
+        assertEquals("Squirtle", minNode.getValue());
     }
 }
