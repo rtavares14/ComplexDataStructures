@@ -1,11 +1,11 @@
 package nl.saxion.cds.data_structures.list;
 
-public class Node<T>{
+public class MyDLLNode<T>{
     private T value; //should it be final ?
-    private Node<T> next;
-    private Node<T> previous;
+    private MyDLLNode<T> next;
+    private MyDLLNode<T> previous;
 
-    public Node(T value) {
+    public MyDLLNode(T value) {
         this.value = value;
     }
 
@@ -17,19 +17,19 @@ public class Node<T>{
         this.value = value;
     }
 
-    public Node<T> getNext() {
+    public MyDLLNode<T> getNext() {
         return next;
     }
 
-    public void setNext(Node<T> next) {
+    public void setNext(MyDLLNode<T> next) {
         this.next = next;
     }
 
-    public Node<T> getPrevious() {
+    public MyDLLNode<T> getPrevious() {
         return previous;
     }
 
-    public void setPrevious(Node<T> previous) {
+    public void setPrevious(MyDLLNode<T> previous) {
         this.previous = previous;
     }
 }

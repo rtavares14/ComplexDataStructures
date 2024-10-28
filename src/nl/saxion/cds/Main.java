@@ -67,6 +67,7 @@ public class Main {
                     break;
 
                 case 4:
+                    showShortestRoute(stationList);
                     break;
 
                 case 5:
@@ -75,9 +76,15 @@ public class Main {
                 case 6:
                     if (!isGuiOpen) {
                         launchGraphicalRepresentation(stationList, tracks);
+                        try {
+                            Thread.sleep(2000);
+                        } catch (InterruptedException e) {
+                            System.err.println("Sleep down: " + e.getMessage());
+                        }
 
+                        System.out.println("Returning to the menu...");
                     } else {
-                        System.out.println("The graphical representation is already open.");
+                        System.out.println("The Saxion Map is already open.");
                     }
                     break;
                 //case 7:
@@ -102,11 +109,10 @@ public class Main {
     }
 
 
-    // Inside RailNetworkVisualization class
-    public static void close() {
-        SaxionApp.quit();
-        isGuiOpen = false;  // Mark GUI as closed
-    }
+    //public static void close() {
+    //    SaxionApp.quit();
+    //    isGuiOpen = false;  // Mark GUI as closed
+    //}
 
     //option 1
     private static void showStationInfoByName(MyHashMap<String, Station> stationMap) {
@@ -205,6 +211,23 @@ public class Main {
         for (int i = 0; i < matchingStations.size(); i++) {
             System.out.println((i + 1) + ". " + matchingStations.get(i).getName() + " ("+matchingStations.get(i).getCode()+")");
         }
+    }
+
+    //option 4
+    private static void showShortestRoute(MyArrayList<Station> stationsList) {
+        System.out.println("Some of my favorite routes are:");
+        System.out.println("1. Deventer to Den Haag Centraal - for a day at the beach (DV - GVC)" );
+        System.out.println("2. Deventer to Schiphol Airport - for a when the weather is bad (DV - SHL)");
+        System.out.println("3. Deventer to Rotterdam Centraal - for a nice day out (DV - RTD)");
+        System.out.println("4. Deventer to Hurdegaryp - for visiting relatives (DV - HRY)");
+
+        System.out.print("Enter the station code of the starting station: ");
+        String startStationCode = scan.nextLine();
+
+        System.out.print("Enter the station code of the destination station: ");
+        String endStationCode = scan.nextLine();
+
+
     }
 
     //option 6

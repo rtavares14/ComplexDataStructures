@@ -7,7 +7,7 @@ import nl.saxion.cds.collection.ValueNotFoundException;
 import java.util.Iterator;
 
 public class MyDoublyLinkedList<T> implements SaxList<T>, Iterable<T> {
-    private Node<T> head,tail;
+    private MyDLLNode<T> head,tail;
     private int size;
 
     public MyDoublyLinkedList() {
@@ -17,7 +17,7 @@ public class MyDoublyLinkedList<T> implements SaxList<T>, Iterable<T> {
 
     @Override
     public boolean contains(T value) {
-        Node<T> current = head;
+        MyDLLNode<T> current = head;
         while (current != null) {
             if (current.getValue() == null && value == null) {
                 return true; // Both are null
@@ -36,7 +36,7 @@ public class MyDoublyLinkedList<T> implements SaxList<T>, Iterable<T> {
             throw new IndexOutOfBoundsException("Invalid Index");
         }
 
-        Node<T> current = head;
+        MyDLLNode<T> current = head;
         for (int i = 0; i < index; i++) {
             current = current.getNext();
         }
@@ -45,41 +45,41 @@ public class MyDoublyLinkedList<T> implements SaxList<T>, Iterable<T> {
 
     @Override
     public void addLast(T value) {
-        Node<T> newNode = new Node<>(value);
+        MyDLLNode<T> newMyDLLNode = new MyDLLNode<>(value);
 
         if(isEmpty()){
-            head = newNode;
+            head = newMyDLLNode;
             tail = head;
         }
         else if (1 == size ){
-            tail = newNode;
+            tail = newMyDLLNode;
             head.setNext(tail);
             tail.setPrevious(head);
         } else {
-            tail.setNext(newNode);
-            newNode.setPrevious(tail);
-            tail = newNode;
+            tail.setNext(newMyDLLNode);
+            newMyDLLNode.setPrevious(tail);
+            tail = newMyDLLNode;
         }
         ++size;
     }
 
     @Override
     public void addFirst(T value) {
-        Node<T> newNode = new Node<>(value);
+        MyDLLNode<T> newMyDLLNode = new MyDLLNode<>(value);
 
         if(isEmpty()){
-            head = newNode;
+            head = newMyDLLNode;
             tail = head;
         }
         else if (size == 1) {
-            head.setPrevious(newNode);
-            newNode.setNext(head);
+            head.setPrevious(newMyDLLNode);
+            newMyDLLNode.setNext(head);
             tail = head;
-            head = newNode;
+            head = newMyDLLNode;
         } else {
-            head.setPrevious(newNode);
-            newNode.setNext(head);
-            head = newNode;
+            head.setPrevious(newMyDLLNode);
+            newMyDLLNode.setNext(head);
+            head = newMyDLLNode;
         }
         ++size;
     }
@@ -97,18 +97,18 @@ public class MyDoublyLinkedList<T> implements SaxList<T>, Iterable<T> {
             addLast(value);
         }
         else{
-            Node<T> current = head;
+            MyDLLNode<T> current = head;
             for (int i = 0; i < index; i++) {
                 current = current.getNext();
             }
 
-            Node<T> newNode = new Node<>(value);
-            Node<T> currentPrev = current.getPrevious();
+            MyDLLNode<T> newMyDLLNode = new MyDLLNode<>(value);
+            MyDLLNode<T> currentPrev = current.getPrevious();
 
-            currentPrev.setNext(newNode);
-            newNode.setPrevious(currentPrev);
-            newNode.setNext(current);
-            current.setPrevious(newNode);
+            currentPrev.setNext(newMyDLLNode);
+            newMyDLLNode.setPrevious(currentPrev);
+            newMyDLLNode.setNext(current);
+            current.setPrevious(newMyDLLNode);
 
             ++size;
         }
@@ -120,7 +120,7 @@ public class MyDoublyLinkedList<T> implements SaxList<T>, Iterable<T> {
             throw new IndexOutOfBoundsException("Invalid Index");
         }
 
-        Node<T> current = head;
+        MyDLLNode<T> current = head;
         for (int i = 0; i < index; i++) {
             current = current.getNext();
         }
@@ -174,13 +174,13 @@ public class MyDoublyLinkedList<T> implements SaxList<T>, Iterable<T> {
         } else if (index == size - 1) {
             return removeLast();
         } else {
-            Node<T> current = head;
+            MyDLLNode<T> current = head;
             for (int i = 0; i < index; i++) {
                 current = current.getNext();
             }
 
-            Node<T> previous = current.getPrevious();
-            Node<T> next = current.getNext();
+            MyDLLNode<T> previous = current.getPrevious();
+            MyDLLNode<T> next = current.getNext();
             previous.setNext(next);
             next.setPrevious(previous);
             --size;
@@ -191,7 +191,7 @@ public class MyDoublyLinkedList<T> implements SaxList<T>, Iterable<T> {
 
     @Override
     public void remove(T value) throws ValueNotFoundException {
-        Node<T> current = head;
+        MyDLLNode<T> current = head;
 
         while (current != null) {
             if (current.getValue().equals(value)) {
@@ -200,8 +200,8 @@ public class MyDoublyLinkedList<T> implements SaxList<T>, Iterable<T> {
                 } else if (current == tail) {
                     removeLast();
                 } else {
-                    Node<T> previous = current.getPrevious();
-                    Node<T> next = current.getNext();
+                    MyDLLNode<T> previous = current.getPrevious();
+                    MyDLLNode<T> next = current.getNext();
                     previous.setNext(next);
                     next.setPrevious(previous);
                     --size; // Decrement size
@@ -214,7 +214,7 @@ public class MyDoublyLinkedList<T> implements SaxList<T>, Iterable<T> {
     }
 
     public void removeAll(T value) throws ValueNotFoundException {
-        Node<T> current = head;
+        MyDLLNode<T> current = head;
         boolean found = false;
 
         while (current != null) {
@@ -227,8 +227,8 @@ public class MyDoublyLinkedList<T> implements SaxList<T>, Iterable<T> {
                     removeLast();
                     current = null;
                 } else {
-                    Node<T> previous = current.getPrevious();
-                    Node<T> next = current.getNext();
+                    MyDLLNode<T> previous = current.getPrevious();
+                    MyDLLNode<T> next = current.getNext();
                     previous.setNext(next);
                     next.setPrevious(previous);
                     current = next;
@@ -244,7 +244,7 @@ public class MyDoublyLinkedList<T> implements SaxList<T>, Iterable<T> {
         }
     }
     public void removeLastOccurrence(T value) throws ValueNotFoundException {
-        Node<T> current = tail;
+        MyDLLNode<T> current = tail;
 
         while (current != null) {
             if (current.getValue().equals(value)) {
@@ -253,8 +253,8 @@ public class MyDoublyLinkedList<T> implements SaxList<T>, Iterable<T> {
                 } else if (current == tail) {
                     removeLast();
                 } else {
-                    Node<T> previous = current.getPrevious();
-                    Node<T> next = current.getNext();
+                    MyDLLNode<T> previous = current.getPrevious();
+                    MyDLLNode<T> next = current.getNext();
                     previous.setNext(next);
                     next.setPrevious(previous);
                     --size;
@@ -269,7 +269,7 @@ public class MyDoublyLinkedList<T> implements SaxList<T>, Iterable<T> {
     @Override
     public Iterator<T> iterator() {
         return new Iterator<>() {
-            private Node<T> current = head;
+            private MyDLLNode<T> current = head;
 
             @Override
             public boolean hasNext() {
@@ -300,7 +300,7 @@ public class MyDoublyLinkedList<T> implements SaxList<T>, Iterable<T> {
         StringBuilder result = new StringBuilder();
         result.append("digraph ").append(name).append(" {\n");
 
-        Node<T> current = head;
+        MyDLLNode<T> current = head;
         int index = 0;
 
         while (current != null) {
@@ -330,7 +330,7 @@ public class MyDoublyLinkedList<T> implements SaxList<T>, Iterable<T> {
         StringBuilder result = new StringBuilder();
         result.append("[");
 
-        Node<T> current = head;
+        MyDLLNode<T> current = head;
         while (current != null) {
             result.append(current.getValue());
             if (current.getNext() != null) {
