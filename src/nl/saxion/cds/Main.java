@@ -214,7 +214,7 @@ public class Main {
     }
 
     //option 4
-    private static void showShortestRoute(MyArrayList<Station> stationsList) {
+    private static void showShortestRoute(MyHashMap<String, Station> stationMap  , MyArrayList<Track> tracks) {
         System.out.println("Some of my favorite routes are:");
         System.out.println("1. Deventer to Den Haag Centraal - for a day at the beach (DV - GVC)" );
         System.out.println("2. Deventer to Schiphol Airport - for a when the weather is bad (DV - SHL)");

@@ -6,7 +6,7 @@ import nl.saxion.cds.collection.SaxHeap;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
-public class MyHeap<T extends Comparable<T>> implements SaxHeap {
+public class MyHeap<T extends Comparable<T>> implements SaxHeap<T> {
     private final ArrayList<T> heap;
     private final boolean isMinHeap;
 
@@ -66,8 +66,8 @@ public class MyHeap<T extends Comparable<T>> implements SaxHeap {
      * @param value the value to push
      */
     @Override
-    public void enqueue(Object value) {
-        heap.add((T) value);
+    public void enqueue(T value) {
+        heap.add( value);
         bubbleUp(heap.size() - 1);
     }
 
@@ -76,13 +76,13 @@ public class MyHeap<T extends Comparable<T>> implements SaxHeap {
      *
      * @return the popped value
      */
-    public Object dequeue() throws EmptyCollectionException{
+    public T dequeue() throws EmptyCollectionException{
         if (heap.isEmpty()) {
             throw new EmptyCollectionException();
         }
 
         // Store the root value to return
-        Object rootValue = heap.get(0);
+        T rootValue = heap.get(0);
 
         // Move the last element to the root
         heap.set(0, heap.get(heap.size() - 1));
@@ -100,7 +100,7 @@ public class MyHeap<T extends Comparable<T>> implements SaxHeap {
      * @return the value or null if the heap is empty
      */
     @Override
-    public Object peek() throws EmptyCollectionException {
+    public T peek() throws EmptyCollectionException {
         if (isEmpty()) {
             throw new EmptyCollectionException();
         }

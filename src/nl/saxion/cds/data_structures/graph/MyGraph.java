@@ -1,9 +1,11 @@
 package nl.saxion.cds.data_structures.graph;
 
+import nl.saxion.cds.collection.EmptyCollectionException;
 import nl.saxion.cds.collection.SaxGraph;
 import nl.saxion.cds.collection.SaxList;
 import nl.saxion.cds.data_structures.list.MyArrayList;
 import nl.saxion.cds.data_structures.map.MyHashMap;
+import nl.saxion.cds.data_structures.trees.heaps.MyHeap;
 
 import java.util.Iterator;
 
@@ -37,10 +39,10 @@ public class MyGraph<T extends Comparable<T>> implements SaxGraph<T> {
 
     @Override
     public SaxList<DirectedEdge<T>> getEdges(T value) {
-        if (!adjacencyList.contains( value)) {
-            return null;
+        if (!adjacencyList.contains(value)) {
+            return new MyArrayList<>(); // Return an empty list instead of null
         }
-        MyArrayList<DirectedEdge<T>> edges = adjacencyList.get( value);
+        MyArrayList<DirectedEdge<T>> edges = adjacencyList.get(value);
         MyArrayList<DirectedEdge<T>> saxEdges = new MyArrayList<>();
         for (int i = 0; i < edges.size(); i++) {
             saxEdges.addLast(edges.get(i));
@@ -65,11 +67,82 @@ public class MyGraph<T extends Comparable<T>> implements SaxGraph<T> {
         return null;
     }
 
+    private class AStarNode implements Comparable<AStarNode> {
+        DirectedEdge<T> edge;
+        double g;
+        double h;
+        AStarNode parent;
+
+        AStarNode(DirectedEdge<T> edge, double g, double h, AStarNode parent) {
+            this.edge = edge;
+            this.g = g;
+            this.h = h;
+            this.parent = parent;
+        }
+
+        @Override
+        public int compareTo(AStarNode other) {
+            return Double.compare(this.g + this.h, other.g + other.h);
+        }
+    }
     @Override
     public SaxList<DirectedEdge<T>> shortestPathAStar(T startNode, T endNode, Estimator<T> estimator) {
-        return null;
+        MyHeap<AStarNode> openList = new MyHeap<>(true);
+        MyHashMap<T, AStarNode> closedList = new MyHashMap<>();
+
+        AStarNode startAStarNode = new AStarNode(new DirectedEdge<>(startNode, startNode, 0), 0, estimator.estimate(startNode, endNode), null);
+        openList.enqueue(startAStarNode);
+
+        while (!openList.isEmpty()) {
+            AStarNode currentNode = openList.dequeue();
+
+            if (currentNode.edge.to().equals(endNode)) {
+                return reconstructPath(currentNode);
+            }
+
+            if (!closedList.contains(currentNode.edge.to())) {
+                closedList.add(currentNode.edge.to(), currentNode);
+
+                for (DirectedEdge<T> neighborEdge : getEdges(currentNode.edge.to())) {
+                    T neighborNode = neighborEdge.to();
+
+                    if (closedList.contains(neighborNode)) continue;
+
+                    double neighborG = currentNode.g + neighborEdge.weight();
+                    double neighborH = estimator.estimate(neighborNode, endNode);
+
+                    AStarNode neighborAStarNode = new AStarNode(neighborEdge, neighborG, neighborH, currentNode);
+
+                    openList.enqueue(neighborAStarNode);
+                }
+            }
+        }
+        return new MyArrayList<>();
     }
 
+    private SaxList<DirectedEdge<T>> reconstructPath(AStarNode goalNode) {
+        MyArrayList<DirectedEdge<T>> path = new MyArrayList<>();
+        AStarNode currentNode = goalNode;
+
+        while (currentNode.parent != null) {
+            path.addFirst(currentNode.edge);
+            currentNode = currentNode.parent;
+        }
+        return path;
+    }
+
+    public SaxList<T> convertEdgesToNodes(SaxList<DirectedEdge<T>> edges) {
+        SaxList<T> nodes = new MyArrayList<>();
+        for (DirectedEdge<T> edge : edges) {
+            if (!nodes.contains(edge.from())) {
+                nodes.addLast(edge.from());
+            }
+            if (!nodes.contains(edge.to())) {
+                nodes.addLast(edge.to());
+            }
+        }
+        return nodes;
+    }
 
     @Override
     public SaxGraph minimumCostSpanningTree() {
