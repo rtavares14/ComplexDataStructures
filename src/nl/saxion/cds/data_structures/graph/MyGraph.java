@@ -16,7 +16,6 @@ public class MyGraph<T extends Comparable<T>> implements SaxGraph<T> {
         this.adjacencyList = new MyHashMap<>();
     }
 
-    //to better organized create the getorcreatelist
     @Override
     public void addEdge(T fromValue, T toValue, double weight) {
         SaxList<DirectedEdge<T>> list = getOrCreateList(fromValue);
@@ -40,7 +39,7 @@ public class MyGraph<T extends Comparable<T>> implements SaxGraph<T> {
     @Override
     public SaxList<DirectedEdge<T>> getEdges(T value) {
         if (!adjacencyList.contains(value)) {
-            return new MyArrayList<>(); // Return an empty list instead of null
+            return new MyArrayList<>();
         }
         MyArrayList<DirectedEdge<T>> edges = adjacencyList.get(value);
         MyArrayList<DirectedEdge<T>> saxEdges = new MyArrayList<>();

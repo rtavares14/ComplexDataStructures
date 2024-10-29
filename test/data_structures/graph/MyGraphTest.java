@@ -3,92 +3,49 @@ package data_structures.graph;
 import nl.saxion.cds.collection.SaxGraph;
 import nl.saxion.cds.collection.SaxList;
 import nl.saxion.cds.data_structures.graph.MyGraph;
+import nl.saxion.cds.data_structures.list.MyArrayList;
 import nl.saxion.cds.data_structures.map.MyHashMap;
 import nl.saxion.cds.data_structures.solution.Coordinate;
+import nl.saxion.cds.data_structures.trees.MyBinarySearchTree;
 import nl.saxion.cds.model.Station;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import nl.saxion.cds.model.Track;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 
 import java.util.Arrays;
+import java.util.Comparator;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class MyGraphTest {
 
+    private static final Comparator<String> stationCodeComparator = Comparator.naturalOrder();
+    MyArrayList<Station> stationList = new MyArrayList<>();
+    MyHashMap<String, Station> stationMap = new MyHashMap<>();
+    MyBinarySearchTree<String, Station> stationTree = new MyBinarySearchTree<>(stationCodeComparator);
     private MyGraph<String> graph;
 
     @BeforeEach
     void setUp() {
         graph = new MyGraph<>();
-    }
 
-    @Test
-    void testAStarAlgorithm() {
-        // Create a simple graph
-        graph.addEdgeBidirectional("A", "B", 1.0);
-        graph.addEdgeBidirectional("A", "C", 4.0);
-        graph.addEdgeBidirectional("B", "C", 2.0);
-        graph.addEdgeBidirectional("B", "D", 5.0);
-        graph.addEdgeBidirectional("C", "D", 1.0);
 
-        // Define a simple estimator for the A* algorithm
-        SaxGraph.Estimator<String> estimator = new SaxGraph.Estimator<>() {
-            @Override
-            public double estimate(String from, String to) {
-                // Simple heuristic: return 0 for testing purposes
-                return 0;
-            }
-        };
+        Station.readFromFileToDataStructures("resources/stations.csv", stationList, stationMap, stationTree);
 
-        // Run the A* algorithm to find the shortest path from A to D
-        SaxList<SaxGraph.DirectedEdge<String>> path = graph.shortestPathAStar("A", "D", estimator);
-
-        // Verify that the path is found
-        assertNotNull(path, "Path should not be null");
-        assertFalse(path.isEmpty(), "Path should not be empty");
-
-        // Convert the list of edges to a list of nodes
-        SaxList<String> nodes = graph.convertEdgesToNodes(path);
-
-        // Verify the nodes list
-        assertNotNull(nodes, "Nodes list should not be null");
-        assertFalse(nodes.isEmpty(), "Nodes list should not be empty");
-
-        // Check the nodes list
-        assertEquals(4, nodes.size(), "Nodes list should have 4 nodes");
-        assertEquals("A", nodes.get(0), "First node should be A");
-        assertEquals("B", nodes.get(1), "Second node should be B");
-        assertEquals("C", nodes.get(2), "Third node should be C");
-        assertEquals("D", nodes.get(3), "Fourth node should be D");
-
-        System.out.println("Shortest path from A to D: " + nodes);
-    }
-
-    @Test
-    void testAddEdgesFromCSVAndFindShortestPath() {
-        String tracksCsvFilePath = "resources/tracks.csv";
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(tracksCsvFilePath))) {
-            String line;
-            reader.readLine();
-            while ((line = reader.readLine()) != null) {
-                String[] values = line.split(",");
-                String fromStation = values[0].trim();
-                String toStation = values[1].trim();
-                double weight = Double.parseDouble(values[3].trim());
-
-                graph.addEdgeBidirectional(fromStation, toStation, weight);
-            }
-        } catch (IOException e) {
-            fail("Error reading tracks CSV file: " + e.getMessage());
+        MyArrayList<Track> trackList = Track.readFromFile("resources/tracks.csv");
+        for (Track track : trackList) {
+            graph.addEdgeBidirectional(track.getCode(), track.getNextCode(), track.getDistanceToNext());
         }
+    }
 
+    @Test
+    void GivenAnFullGraph_WhenCheckingTheShortestPath_ThenReturnPath() {
         SaxGraph.Estimator<String> estimator = (current, goal) -> {
-            return 0;
+            Station currentStation = stationMap.get(current);
+            Station goalStation = stationMap.get(goal);
+
+            return Coordinate.haversineDistance(currentStation.getCoordinate(), goalStation.getCoordinate());
         };
 
         String startStation = "DV";

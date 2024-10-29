@@ -1,7 +1,11 @@
 package nl.saxion.cds;
 
 import nl.saxion.app.SaxionApp;
+import nl.saxion.cds.collection.SaxGraph;
+import nl.saxion.cds.collection.SaxList;
+import nl.saxion.cds.data_structures.graph.MyGraph;
 import nl.saxion.cds.data_structures.map.MyHashMap;
+import nl.saxion.cds.data_structures.solution.Coordinate;
 import nl.saxion.cds.data_structures.trees.MyBinarySearchTree;
 import nl.saxion.cds.data_structures.list.MyArrayList;
 import nl.saxion.cds.model.RailNetworkVisualization;
@@ -23,10 +27,10 @@ public class Main {
         MyHashMap<String, Station> stationMap = new MyHashMap<>();
         MyBinarySearchTree<String, Station> stationTree = new MyBinarySearchTree<>(stationCodeComparator);
 
-        Station.readFromFileToHash("resources/stations.csv", stationList, stationMap, stationTree);
+        Station.readFromFileToDataStructures("resources/stations.csv", stationList, stationMap, stationTree);
 
 
-        MyArrayList<Track> tracks = Track.readFromFile("resources/tracks.csv");
+        MyArrayList<Track> trackList = Track.readFromFile("resources/tracks.csv");
 
         int option;
 
@@ -39,8 +43,6 @@ public class Main {
             System.out.println("2. Show information of a station based on its name");
             System.out.println("3. Show all stations of a certain type");
             System.out.println("4. Determine the shortest route between two stations");
-            //list od directed edges
-            //convert the directed edges to nodes
             System.out.println("5. Determine the minimum number of rail connections (MCST)");
             //prim of kruskal alg
             //min cost spanning tree
@@ -67,7 +69,7 @@ public class Main {
                     break;
 
                 case 4:
-                    showShortestRoute(stationList);
+                    showShortestRoute(stationMap, trackList);
                     break;
 
                 case 5:
@@ -75,7 +77,7 @@ public class Main {
 
                 case 6:
                     if (!isGuiOpen) {
-                        launchGraphicalRepresentation(stationList, tracks);
+                        launchGraphicalRepresentation(stationList, trackList);
                         try {
                             Thread.sleep(2000);
                         } catch (InterruptedException e) {
@@ -155,7 +157,7 @@ public class Main {
 
         System.out.print("Enter the number of the station you want to view: ");
         int choice = scan.nextInt();
-        scan.nextLine();  // Consume newline
+        scan.nextLine();
 
         if (choice < 1 || choice > matchingStations.size()) {
             System.out.println("Invalid choice.");
@@ -214,25 +216,47 @@ public class Main {
     }
 
     //option 4
-    private static void showShortestRoute(MyHashMap<String, Station> stationMap  , MyArrayList<Track> tracks) {
+    private static void showShortestRoute(MyHashMap<String, Station> stationMap  , MyArrayList<Track> trackList) {
         System.out.println("Some of my favorite routes are:");
         System.out.println("1. Deventer to Den Haag Centraal - for a day at the beach (DV - GVC)" );
         System.out.println("2. Deventer to Schiphol Airport - for a when the weather is bad (DV - SHL)");
         System.out.println("3. Deventer to Rotterdam Centraal - for a nice day out (DV - RTD)");
-        System.out.println("4. Deventer to Hurdegaryp - for visiting relatives (DV - HRY)");
+        System.out.println("4. Deventer to Hurdegaryp - for visiting relatives (DV - HDG)");
 
         System.out.print("Enter the station code of the starting station: ");
-        String startStationCode = scan.nextLine();
+        String startStationCode = scan.nextLine().toUpperCase();
 
         System.out.print("Enter the station code of the destination station: ");
-        String endStationCode = scan.nextLine();
+        String endStationCode = scan.nextLine().toUpperCase();
 
+        MyGraph<String> graph = new MyGraph<>();
+        for (Track track : trackList) {
+            graph.addEdgeBidirectional(track.getCode(), track.getNextCode(), track.getDistanceToNext());
+        }
 
+        SaxGraph.Estimator<String> estimator = (current, goal) -> {
+            Station currentStation = stationMap.get(current);
+            Station goalStation = stationMap.get(goal);
+
+            return Coordinate.haversineDistance(currentStation.getCoordinate(), goalStation.getCoordinate());
+        };
+
+        SaxList<SaxGraph.DirectedEdge<String>> path = graph.shortestPathAStar(startStationCode, endStationCode, estimator);
+
+        if (path == null || path.isEmpty()) {
+            System.out.println("No path found from " + startStationCode + " to " + endStationCode);
+            return;
+        }
+
+        String pathString = String.join(" --> ", graph.convertEdgesToNodes(path));
+
+        System.out.println("Shortest path from " + startStationCode + " to " + endStationCode + ": " + pathString);
+        System.out.println("With a distance of " + estimator.estimate(startStationCode, endStationCode) + " km.");
     }
 
     //option 6
-    private static void launchGraphicalRepresentation(MyArrayList<Station> stationList, MyArrayList<Track> tracks) {
-        Thread guiThread = new Thread(() -> RailNetworkVisualization.main(stationList, tracks));
+    private static void launchGraphicalRepresentation(MyArrayList<Station> stationList, MyArrayList<Track> trackList) {
+        Thread guiThread = new Thread(() -> RailNetworkVisualization.main(stationList, trackList));
         guiThread.start();
     }
 }

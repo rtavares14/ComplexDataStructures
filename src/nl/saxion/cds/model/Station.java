@@ -1,6 +1,7 @@
 package nl.saxion.cds.model;
 
 import nl.saxion.cds.data_structures.map.MyHashMap;
+import nl.saxion.cds.data_structures.solution.Coordinate;
 import nl.saxion.cds.data_structures.trees.MyBinarySearchTree;
 import nl.saxion.cds.data_structures.list.MyArrayList;
 
@@ -55,7 +56,7 @@ public class Station implements Comparable<Station> {
 
 
 
-    public static void readFromFileToHash(String filename,
+    public static void readFromFileToDataStructures(String filename,
                                           MyArrayList<Station> stationList,
                                           MyHashMap<String, Station> stationMap,
                                           MyBinarySearchTree<String, Station> stationTree) {
@@ -128,5 +129,9 @@ public class Station implements Comparable<Station> {
     @Override
     public int compareTo(Station other) {
         return this.type.compareTo(other.type);
+    }
+
+    public Coordinate getCoordinate() {
+        return new Coordinate(latitude, longitude);
     }
 }
