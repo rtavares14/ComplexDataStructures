@@ -11,9 +11,9 @@ import nl.saxion.cds.data_structures.solution.Coordinate;
 import java.awt.*;
 
 public class RailNetworkVisualization implements Runnable {
-    private static final int mapWidth = 1620 / 2;
-    private static final int mapHeight = (1920 / 2) + 30;
-    private static final double MIN_LAT = 50.66;
+    private static final int mapWidth = (int) (1620 / 2.6);
+    private static final int mapHeight = (int) ((1920 / 2.6) + 30);
+    private static final double MIN_LAT = 50.63;
     private static final double MAX_LAT = 53.56;
     private static final double MIN_LON = 3.31;
     private static final double MAX_LON = 7.25;
@@ -29,6 +29,11 @@ public class RailNetworkVisualization implements Runnable {
     public static int[] geoToPixel(double latitude, double longitude) {
         int pixelX = (int) ((longitude - MIN_LON) / (MAX_LON - MIN_LON) * mapWidth);
         int pixelY = (int) ((MAX_LAT - latitude) / (MAX_LAT - MIN_LAT) * mapHeight);
+
+        if (latitude < 51.5 && longitude > 5.5) {
+            pixelX += 11;
+        }
+
         return new int[]{pixelX, pixelY};
     }
 
@@ -153,6 +158,7 @@ public class RailNetworkVisualization implements Runnable {
 
                 SaxionApp.setBorderColor(Color.darkGray);
                 SaxionApp.drawLine(fromCoords[0], fromCoords[1], toCoords[0], toCoords[1]);
+                SaxionApp.sleep(0.001);
             }
         }
 
@@ -164,8 +170,10 @@ public class RailNetworkVisualization implements Runnable {
 
             SaxionApp.setBorderColor(Color.red);
             SaxionApp.setFill(Color.red);
-            SaxionApp.drawCircle(pixelCoords[0], pixelCoords[1], 4);
+            SaxionApp.drawCircle(pixelCoords[0], pixelCoords[1], 3);
+            SaxionApp.sleep(0.002);
         }
+
     }
 
     private void drawPath(SaxList<SaxGraph.DirectedEdge<String>> path) {
@@ -179,6 +187,7 @@ public class RailNetworkVisualization implements Runnable {
                 int[] fromCoords = geoToPixel(fromStation.getLatitude(), fromStation.getLongitude());
                 int[] toCoords = geoToPixel(toStation.getLatitude(), toStation.getLongitude());
                 SaxionApp.drawLine(fromCoords[0], fromCoords[1], toCoords[0], toCoords[1]);
+                SaxionApp.sleep(0.08);
             }
 
             // Highlight the starting station
