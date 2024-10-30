@@ -1,6 +1,5 @@
 package nl.saxion.cds.data_structures.graph;
 
-import nl.saxion.cds.collection.EmptyCollectionException;
 import nl.saxion.cds.collection.SaxGraph;
 import nl.saxion.cds.collection.SaxList;
 import nl.saxion.cds.data_structures.list.MyArrayList;
@@ -64,25 +63,6 @@ public class MyGraph<T extends Comparable<T>> implements SaxGraph<T> {
     public SaxGraph shortestPathsDijkstra(T startNode) {
         // Implement Dijkstra's algorithm here
         return null;
-    }
-
-    private class AStarNode implements Comparable<AStarNode> {
-        DirectedEdge<T> edge;
-        double g;
-        double h;
-        AStarNode parent;
-
-        AStarNode(DirectedEdge<T> edge, double g, double h, AStarNode parent) {
-            this.edge = edge;
-            this.g = g;
-            this.h = h;
-            this.parent = parent;
-        }
-
-        @Override
-        public int compareTo(AStarNode other) {
-            return Double.compare(this.g + this.h, other.g + other.h);
-        }
     }
     @Override
     public SaxList<DirectedEdge<T>> shortestPathAStar(T startNode, T endNode, Estimator<T> estimator) {
@@ -188,5 +168,24 @@ public class MyGraph<T extends Comparable<T>> implements SaxGraph<T> {
             adjacencyList.add(vertex, new MyArrayList<>());
         }
         return adjacencyList.get(vertex);
+    }
+
+    private class AStarNode implements Comparable<AStarNode> {
+        DirectedEdge<T> edge;
+        double g;
+        double h;
+        AStarNode parent;
+
+        AStarNode(DirectedEdge<T> edge, double g, double h, AStarNode parent) {
+            this.edge = edge;
+            this.g = g;
+            this.h = h;
+            this.parent = parent;
+        }
+
+        @Override
+        public int compareTo(AStarNode other) {
+            return Double.compare(this.g + this.h, other.g + other.h);
+        }
     }
 }

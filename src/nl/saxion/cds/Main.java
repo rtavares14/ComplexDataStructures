@@ -22,7 +22,7 @@ public class Main {
     static Scanner scan = new Scanner(System.in);
 
     private static boolean isGuiOpen = false;
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         MyArrayList<Station> stationList = new MyArrayList<>();
         MyHashMap<String, Station> stationMap = new MyHashMap<>();
         MyBinarySearchTree<String, Station> stationTree = new MyBinarySearchTree<>(stationCodeComparator);
@@ -77,7 +77,7 @@ public class Main {
 
                 case 6:
                     if (!isGuiOpen) {
-                        launchGraphicalRepresentation(stationList, trackList);
+                        launchGraphicalRepresentation(stationMap, trackList);
                         try {
                             Thread.sleep(2000);
                         } catch (InterruptedException e) {
@@ -216,9 +216,9 @@ public class Main {
     }
 
     //option 4
-    private static void showShortestRoute(MyHashMap<String, Station> stationMap  , MyArrayList<Track> trackList) {
+    private static void showShortestRoute(MyHashMap<String, Station> stationMap, MyArrayList<Track> trackList) throws InterruptedException {
         System.out.println("Some of my favorite routes are:");
-        System.out.println("1. Deventer to Den Haag Centraal - for a day at the beach (DV - GVC)" );
+        System.out.println("1. Deventer to Den Haag Centraal - for a day at the beach (DV - GVC)");
         System.out.println("2. Deventer to Schiphol Airport - for a when the weather is bad (DV - SHL)");
         System.out.println("3. Deventer to Rotterdam Centraal - for a nice day out (DV - RTD)");
         System.out.println("4. Deventer to Hurdegaryp - for visiting relatives (DV - HDG)");
@@ -242,6 +242,10 @@ public class Main {
         };
 
         SaxList<SaxGraph.DirectedEdge<String>> path = graph.shortestPathAStar(startStationCode, endStationCode, estimator);
+        double totalDistance = 0;
+        for (SaxGraph.DirectedEdge<String> edge : path) {
+            totalDistance += edge.weight();
+        }
 
         if (path == null || path.isEmpty()) {
             System.out.println("No path found from " + startStationCode + " to " + endStationCode);
@@ -251,12 +255,14 @@ public class Main {
         String pathString = String.join(" --> ", graph.convertEdgesToNodes(path));
 
         System.out.println("Shortest path from " + startStationCode + " to " + endStationCode + ": " + pathString);
-        System.out.println("With a distance of " + estimator.estimate(startStationCode, endStationCode) + " km.");
+        System.out.println("With a distance of " + totalDistance + " km.");
+
     }
 
     //option 6
-    private static void launchGraphicalRepresentation(MyArrayList<Station> stationList, MyArrayList<Track> trackList) {
-        Thread guiThread = new Thread(() -> RailNetworkVisualization.main(stationList, trackList));
+    private static void launchGraphicalRepresentation(MyHashMap<String,Station> stationMap, MyArrayList<Track> trackList) throws InterruptedException {
+        Thread guiThread = new Thread(() -> RailNetworkVisualization.main(stationMap, trackList));
         guiThread.start();
+        guiThread.sleep(1200);
     }
 }
