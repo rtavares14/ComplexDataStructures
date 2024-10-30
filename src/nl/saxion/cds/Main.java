@@ -255,7 +255,7 @@ public class Main {
         String pathString = String.join(" --> ", graph.convertEdgesToNodes(path));
 
         System.out.println("Shortest path from " + startStationCode + " to " + endStationCode + ": " + pathString);
-        System.out.println("With a distance of " + totalDistance + " km.");
+        System.out.println("With a distance of " + String.format("%.2f", totalDistance) + " km.");
 
     }
 
