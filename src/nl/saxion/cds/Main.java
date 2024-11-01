@@ -44,11 +44,7 @@ public class Main {
             System.out.println("3. Show all stations of a certain type");
             System.out.println("4. Determine the shortest route between two stations");
             System.out.println("5. Determine the minimum number of rail connections (MCST)");
-            //prim of kruskal alg
-            //min cost spanning tree
-            //dks alg
             System.out.println("6. Show rail network, routes, and MCST (Graphical representation)");
-            //min cost spanning tree
             //System.out.println("7. Close rail network window");
             System.out.println("0. Exit application");
             System.out.println("--------------------------------------------------------------------");
@@ -79,7 +75,7 @@ public class Main {
                     if (!isGuiOpen) {
                         launchGraphicalRepresentation(stationMap, trackList);
                         try {
-                            Thread.sleep(2000);
+                            Thread.sleep(1200);
                         } catch (InterruptedException e) {
                             System.err.println("Sleep down: " + e.getMessage());
                         }
