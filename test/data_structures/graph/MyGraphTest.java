@@ -2,11 +2,13 @@ package data_structures.graph;
 
 import nl.saxion.cds.collection.SaxList;
 import nl.saxion.cds.data_structures.graph.MyGraph;
+import nl.saxion.cds.data_structures.list.MyArrayList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 

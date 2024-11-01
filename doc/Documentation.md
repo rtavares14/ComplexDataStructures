@@ -3,7 +3,7 @@
 In total, I developed 8 algorithms being A* my favorite and nine data structures being the AVL tree and the Hashmap my favorites.
 
 ## My ArrayList
-**Classification**: `O(N)`
+**Classification**: `O(N)` because it has to iterate through the list to find the target value.
 
 ### Overview
 Since [My ArrayList](../src/nl/saxion/cds/data_structures/list/MyArrayList.java) implementation was the simplest among the data structures, as it is based on a straightforward list structure. While much of the core functionality was given, several methods required additional implementation, such as Linear Search, Binary Search, and QuickSort.
@@ -15,7 +15,7 @@ The [My ArrayList](../src/nl/saxion/cds/data_structures/list/MyArrayList.java) i
 <br>
 
 #### My binary search algorithm
-**Classification**: `O(log N)`
+**Classification**: `O(log N)` because it divides the search range in half repeatedly.
 
 **Implementation**:
 The binary search algorithm was inspired by the teacher’s pseudocode sheets but implemented in my own way to fit the structure of my list. This method divides the search range in half repeatedly, narrowing down to find the target value efficiently in sorted data.
@@ -23,7 +23,7 @@ The binary search algorithm was inspired by the teacher’s pseudocode sheets bu
 <br>
 
 #### My linear search algorithm
-**Classification**: `O(N)`
+**Classification**: `O(N)` because it has to iterate through the list to find the target value.
 
 **Implementation**:
 Inspired by the teacher’s examples, I developed my linear search to work effectively within my data structures. This method checks each element one by one, making it straightforward and useful for unsorted lists.
@@ -31,7 +31,7 @@ Inspired by the teacher’s examples, I developed my linear search to work effec
 <br>
 
 #### My QuickSort algorithm
-**Classification**: `O(N log N)` (average case)
+**Classification**: `O(N log N)` because it divides the list into smaller sections and sorts them recursively.
 
 **Implementation**:
 For QuickSort, I took inspiration from the provided materials but adjusted it to work with my specific doubly linked list structure. This algorithm uses a pivot to split the list and then recursively sorts each section. It’s optimized for my setup and works well within the structure.
@@ -39,7 +39,7 @@ For QuickSort, I took inspiration from the provided materials but adjusted it to
 ---
 
 ## My DoublyLinkedList
-**Classification**: `O(N)`
+**Classification**: `O(N)` because it has to iterate through the list to find the target value.
 
 ### Overview
 [My DoublyLinkedList](../src/nl/saxion/cds/data_structures/list/MyDoublyLinkedList.java) was another simple structure, so I built this one as well on my own. It’s a generic doubly linked list with nodes defined in my [DoublyLinkedList Node](../src/nl/saxion/cds/data_structures/list/MyDLLNode.java) class.
@@ -56,7 +56,7 @@ These additional methods make [My DoublyLinkedList](../src/nl/saxion/cds/data_st
 ---
 
 ## My HashMap
-**Classification**: `O(1)`
+**Classification**: `O(1)` because it uses a hash function to find the bucket index quickly.
 
 ### Overview
 Building [My HashMap](../src/nl/saxion/cds/data_structures/map/MyHashMap.java) was one of my favorite parts of this project! I watched a few YouTube videos to better understand hashmaps and how they work, also I say the class sheets. Two good videos that were especially helpful were:
@@ -80,7 +80,7 @@ Overall, this hashmap combines speed with an easy-to-understand key-value concep
 ---
 
 ## My BS Tree
-**Classification**: `O(log N)`
+**Classification**: `O(log N)` because it divides the data at each level to find the target value.
 
 ### Overview
 [My BS Tree](../src/nl/saxion/cds/data_structures/trees/MyBinarySearchTree.java) is a tree structure that keeps data sorted and allows quick searching. I followed videos and class notes for this, and it mostly worked as expected. The structure helps in quickly finding, adding, or removing items because the tree divides the data at each level.
@@ -100,7 +100,7 @@ Overall, [My BS Tree](../src/nl/saxion/cds/data_structures/trees/MyBinarySearchT
 
 ## My AVL Tree
 
-**Classification**: `O(log N)`
+**Classification**: `O(log N)` because it balances itself to keep operations fast.
 
 ### Overview
 [My AVL Tree](../src/nl/saxion/cds/data_structures/trees/MyAVLTree.java) is a balanced binary search tree, meaning it automatically keeps itself organized to ensure fast operations. I found balancing the tree challenging, especially getting the rotations right, which took me about 8 or 9  tries. I used online videos, class sheets, and tips from the teacher to figure it out, but eventually, it all worked.
@@ -119,12 +119,13 @@ Overall, [My AVL Tree](../src/nl/saxion/cds/data_structures/trees/MyAVLTree.java
 ---
 
 ## My MinHeap
-**Classification**: `O(log N)`
+**Classification**: `O(log N)` because it keeps the smallest item on top, which requires some shifting.
 
 ### Overview
 [My MinHeap](../src/nl/saxion/cds/data_structures/heap/MyMinHeap.java) is a data structure that lets me store elements in a way where I can quickly access the smallest (or largest) item, it was made my me with the help od videos and the class sheets. This makes it great for prioritizing tasks or managing data that needs to stay sorted. I made it flexible so that it can act as either a min-heap (smallest item on top) or a max-heap (largest item on top), based on a setting I choose when creating it.
 
 - [Video 1](https://www.youtube.com/watch?v=HqPJF2L5h9U&t)
+- [Video 2](https://www.youtube.com/watch?v=WCm3TqScBM8)
 
 #### Implementation Details
 - **Keeping Things in Order**: I added helper methods called bubbleUp and bubbleDown. After adding an item, bubbleUp moves it to the right spot if it's out of order. Similarly, when removing the top item, bubbleDown helps shift things around to fill the empty space and keep everything in the right order.
@@ -137,7 +138,7 @@ Overall, [My MinHeap](../src/nl/saxion/cds/data_structures/heap/MyMinHeap.java) 
 ---
 
 ## My Stack
-**Classification**: `O(1)`
+**Classification**: `O(1)` because it only changes the last element in the list.
 
 ### Overview
 [My Stack](../src/nl/saxion/cds/data_structures/stack/MyStack.java) is a simple data structure that follows the Last-In-First-Out (LIFO) principle, meaning the most recently added item is the first one removed. This structure is especially useful where you need to track a sequence of operations in reverse order. It was made with the help of the class sheets.
@@ -153,7 +154,7 @@ Overall, [My Stack](../src/nl/saxion/cds/data_structures/stack/MyStack.java) is 
 ---
 
 ## My Queue
-**Classification**: `O(1)`
+**Classification**: `O(1)` because it only changes the first and last elements in the list.
 
 ### Overview
 [My Queue](../src/nl/saxion/cds/data_structures/queue/MyQueue.java) is a First-In-First-Out (FIFO) data structure that’s useful for handling items in the order they were added. I implemented it using a doubly linked list for fast access to both ends. I made it with the help of the class sheets.
@@ -168,7 +169,7 @@ Overall, [My Queue](../src/nl/saxion/cds/data_structures/queue/MyQueue.java) is 
 ---
 
 ## My Graph
-**Classification**: `O(N)`
+**Classification**: `O(N)` because it has to explore all nodes and edges to find the target value.
 
 ### Overview
 
@@ -230,13 +231,23 @@ This option allows users to find a station using its code. I used [My HashMap](.
 - **Implementation**: In the `showStationInfoByName` method, the user inputs a station code, and the method retrieves the corresponding [Station](../src/nl/saxion/cds/model/Station.java) object from `stationMap`.
 - **Time Complexity**: **O(1)** on average, due to the efficient lookup of the hash map.
 
+- I chose to use a hashmap because it is the most efficient way to search for a station by its code. Since the station code is unique, the hashmap provides a fast way to retrieve the station object.
+- I also could have used a binary search tree, but it would have been less efficient for this specific task. The hashmap is the best choice for this scenario.
+
 # Station search based on the beginning of the name
 This option lets users search for stations by the beginning of their names. I implemented a linear search using [My ArrayList](../src/nl/saxion/cds/data_structures/list/MyArrayList.java).
 
 - **Implementation**: The `showStationInfoByPartialName` method prompts for a name prefix and iterates through the `stationsList` to find matches, which are collected in `matchingStations`.
 - **Time Complexity**: **O(N)**, where **N** is the number of stations, as it checks each station one by one.
 
+- I chose a linear search because the list is unsorted, and a linear search is the simplest way to find matches. It’s not the most efficient, but it works well for this task.
+- I could have used a binary search if the list was sorted, but since it’s not, a linear search is the best choice.
+
+- I shose 
+- I could have also used a hashmap, but it would have required a more complex implementation. The linear search is straightforward and effective for this scenario.
+
 ## Implementation shortest route
+
 
 ## Implementation minimum cost spanning tree
 

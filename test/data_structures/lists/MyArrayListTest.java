@@ -50,7 +50,7 @@ public class MyArrayListTest {
         MyArrayList<Object> myArrayList = new MyArrayList<>();
         assertTrue(myArrayList.isEmpty());
         assertEquals(0, myArrayList.size());
-        assertEquals("[ ]", myArrayList.toString());
+        assertEquals("[]", myArrayList.toString());
         assertFalse(myArrayList.contains("Hunter"));
     }
 
@@ -91,7 +91,7 @@ public class MyArrayListTest {
     void GivenSheetsList_WhenNoChanges_ConfirmInitialContent() {
         assertEquals(5, list.size());
         assertFalse(list.isEmpty());
-        assertEquals("[ Lugia Dratini Diglett Arcanine Dragonite ]", list.toString());
+        assertEquals("[Lugia, Dratini, Diglett, Arcanine, Dragonite]", list.toString());
     }
 
     @Test
@@ -106,7 +106,7 @@ public class MyArrayListTest {
         list.addFirst("Hunter");
         assertEquals(6, list.size());
         assertFalse(list.isEmpty());
-        assertEquals("[ Hunter Lugia Dratini Diglett Arcanine Dragonite ]", list.toString());
+        assertEquals("[Hunter, Lugia, Dratini, Diglett, Arcanine, Dragonite]", list.toString());
 
         assertThrows(ValueNotFoundException.class, () -> list.remove("huh?"));
     }
@@ -116,13 +116,13 @@ public class MyArrayListTest {
         list.addAt(4, "Hunter");
         assertEquals(6, list.size());
         assertFalse(list.isEmpty());
-        assertEquals("[ Lugia Dratini Diglett Arcanine Hunter Dragonite ]", list.toString());
+        assertEquals("[Lugia, Dratini, Diglett, Arcanine, Hunter, Dragonite]", list.toString());
     }
 
     @Test
     void GivenSheetsList_WhenRemovingElement_ConfirmChangesAreCorrect() {
         list.remove("Arcanine");
-        assertEquals("[ Lugia Dratini Diglett Dragonite ]", list.toString());
+        assertEquals("[Lugia, Dratini, Diglett, Dragonite]", list.toString());
         assertEquals(4, list.size());
         assertFalse(list.isEmpty());
     }
@@ -131,14 +131,14 @@ public class MyArrayListTest {
     void GivenSheetsList_WhenRemovingAllElement_ConfirmChangesAreCorrect() {
         list.remove("Dragonite");
         list.remove("Lugia");
-        assertEquals("[ Dratini Diglett Arcanine ]", list.toString());
+        assertEquals("[Dratini, Diglett, Arcanine]", list.toString());
         assertEquals(3, list.size());
 
         assertEquals("Dratini", list.removeFirst());
         assertEquals("Arcanine", list.removeLast());
         assertEquals("Diglett", list.removeFirst());
 
-        assertEquals("[ ]", list.toString());
+        assertEquals("[]", list.toString());
         assertEquals(0, list.size());
         assertTrue(list.isEmpty());
         assertThrows(EmptyCollectionException.class, list::removeFirst);
@@ -157,7 +157,7 @@ public class MyArrayListTest {
         list.addAt(5, "Gengar");
         list.addAt(7, "Mew");
 
-        assertEquals("[ Eevee Lugia Dratini Diglett Arcanine Gengar Dragonite Mew ]", list.toString());
+        assertEquals("[Eevee, Lugia, Dratini, Diglett, Arcanine, Gengar, Dragonite, Mew]", list.toString());
         assertEquals(8, list.size());
         assertFalse(list.isSorted(String::compareTo));
 
@@ -179,7 +179,7 @@ public class MyArrayListTest {
 
         assertEquals(5, list.size());
         assertFalse(list.isEmpty());
-        assertEquals("[ Lugia Dratini Diglett Arcanine Dragonite ]", list.toString());
+        assertEquals("[Lugia, Dratini, Diglett, Arcanine, Dragonite]", list.toString());
     }
 
     @Test
@@ -275,7 +275,7 @@ public class MyArrayListTest {
     void GivenSheetsList_WhenSortedUsingInsertionSort_ThenListIsSorted() {
         list.insertionSort(String::compareTo);
         assertTrue(list.isSorted(String::compareTo));
-        assertEquals("[ Arcanine Diglett Dragonite Dratini Lugia ]", list.toString());
+        assertEquals("[Arcanine, Diglett, Dragonite, Dratini, Lugia]", list.toString());
     }
 
     @Test
@@ -288,7 +288,7 @@ public class MyArrayListTest {
 
         reversedList.insertionSort(String::compareTo);
         assertTrue(reversedList.isSorted(String::compareTo));
-        assertEquals("[ Arcanine Arcanine Bulbasaur Charmander ]", reversedList.toString());
+        assertEquals("[Arcanine, Arcanine, Bulbasaur, Charmander]", reversedList.toString());
     }
 
     @Test
@@ -303,7 +303,7 @@ public class MyArrayListTest {
 
         listWithDuplicates.insertionSort(String::compareTo);
         assertTrue(listWithDuplicates.isSorted(String::compareTo));
-        assertEquals("[ arcanine arcanine bulbasaur bulbasaur charmander ]", listWithDuplicates.toString());
+        assertEquals("[arcanine, arcanine, bulbasaur, bulbasaur, charmander]", listWithDuplicates.toString());
     }
 
     @Test
@@ -319,7 +319,7 @@ public class MyArrayListTest {
         singleElementList.addLast("eevee");
         singleElementList.insertionSort(String::compareTo);
         assertEquals(1, singleElementList.size());
-        assertEquals("[ eevee ]", singleElementList.toString());
+        assertEquals("[eevee]", singleElementList.toString());
     }
 
     @Test

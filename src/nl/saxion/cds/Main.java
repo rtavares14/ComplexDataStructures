@@ -45,7 +45,6 @@ public class Main {
             System.out.println("4. Determine the shortest route between two stations");
             System.out.println("5. Determine the minimum number of rail connections (MCST)");
             System.out.println("6. Show rail network, routes, and MCST (Graphical representation)");
-            //System.out.println("7. Close rail network window");
             System.out.println("0. Exit application");
             System.out.println("--------------------------------------------------------------------");
             System.out.print("Enter your choice: ");
@@ -85,15 +84,6 @@ public class Main {
                         System.out.println("The Saxion Map is already open.");
                     }
                     break;
-                //case 7:
-                //    if (isGuiOpen) {
-                //        RailNetworkVisualization.close();
-                //        isGuiOpen = false;
-                //        System.out.println("Rail network window closed.");
-                //    } else {
-                //        System.out.println("Rail network window is not open.");
-                //    }
-                //    break;
                 case 0:
                     System.out.println("Exiting the application. Goodbye!");
                     menu = false;
@@ -106,17 +96,10 @@ public class Main {
         scan.close();
     }
 
-
-    //public static void close() {
-    //    SaxionApp.quit();
-    //    isGuiOpen = false;  // Mark GUI as closed
-    //}
-
     //option 1
     private static void showStationInfoByName(MyHashMap<String, Station> stationMap) {
-        Scanner scan = new Scanner(System.in);
         System.out.print("Enter the station code: ");
-        String stationCode = scan.nextLine();
+        String stationCode = scan.nextLine().toUpperCase();
 
         Station station = stationMap.get(stationCode);
 
@@ -165,32 +148,28 @@ public class Main {
 
     //option 3
     private static void showStationsByType(MyArrayList<Station> stationsList) {
-        String[] stationTypes = {
-                "Stop Trein Station",
-                "Facultatief Station",
-                "Mega Station",
-                "Intercity Station",
-                "Knooppunt Intercity Station",
-                "Knooppunt Stop Trein Station",
-                "Knooppunt Snel Trein Station",
-                "Snel Trein Station"
-        };
-
-        System.out.println("Stations type options:");
-        for (int i = 0; i < stationTypes.length; i++) {
-            System.out.println((i + 1) + ". " + stationTypes[i]);
+        MyArrayList<String> stationTypesList = new MyArrayList<>();
+        for (Station station : stationsList) {
+            if (!stationTypesList.contains(station.getType())) {
+                stationTypesList.addLast(station.getType());
+            }
         }
 
-        System.out.print("Chose option:");
+        System.out.println("Stations type options:");
+        for (int i = 0; i < stationTypesList.size(); i++) {
+            System.out.println((i + 1) + ". " + stationTypesList.get(i));
+        }
+
+        System.out.print("Choose option:");
         int choice = scan.nextInt();
         scan.nextLine();
 
-        if (choice < 1 || choice > stationTypes.length) {
+        if (choice < 1 || choice > stationTypesList.size()) {
             System.out.println("Invalid choice. Please try again.");
             return;
         }
 
-        String selectedType = stationTypes[choice - 1];
+        String selectedType = stationTypesList.get(choice - 1);
 
         MyArrayList<Station> matchingStations = new MyArrayList<>();
         for (Station station : stationsList) {
@@ -198,6 +177,8 @@ public class Main {
                 matchingStations.addLast(station);
             }
         }
+
+        matchingStations.quickSort(Comparator.comparing(Station::getName));
 
         if (matchingStations.size() == 0) {
             System.out.println("No stations found of type: " + selectedType);
@@ -212,7 +193,7 @@ public class Main {
     }
 
     //option 4
-    private static void showShortestRoute(MyHashMap<String, Station> stationMap, MyArrayList<Track> trackList) throws InterruptedException {
+    private static void showShortestRoute(MyHashMap<String, Station> stationMap, MyArrayList<Track> trackList) {
         System.out.println("Some of my favorite routes are:");
         System.out.println("1. Deventer to Den Haag Centraal - for a day at the beach (DV - GVC)");
         System.out.println("2. Deventer to Schiphol Airport - for a when the weather is bad (DV - SHL)");
@@ -238,6 +219,8 @@ public class Main {
         };
 
         SaxList<SaxGraph.DirectedEdge<String>> path = graph.shortestPathAStar(startStationCode, endStationCode, estimator);
+       // SaxList<String> path = graph.dijkstraPathToNodes(startStationCode, endStationCode);
+
         double totalDistance = 0;
         for (SaxGraph.DirectedEdge<String> edge : path) {
             totalDistance += edge.weight();

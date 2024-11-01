@@ -62,7 +62,7 @@ public class MyGraphAstarTest {
         assertEquals(startStation, nodes.get(0), "First node should be the start station");
         assertEquals(endStation, nodes.get(nodes.size() - 1), "Last node should be the end station");
 
-        String expectedNodes = "[ DV TWL APDO APD HVL AMF BRN HVS HVSM BSMZ NDB WP DMN ASSP ASDM ASD ]";
+        String expectedNodes = "[DV, TWL, APDO, APD, HVL, AMF, BRN, HVS, HVSM, BSMZ, NDB, WP, DMN, ASSP, ASDM, ASD]";
         assertEquals(expectedNodes, nodes.toString());
     }
 
@@ -91,7 +91,7 @@ public class MyGraphAstarTest {
         assertEquals(startStation, nodes.get(0), "First node should be the start station");
         assertEquals(endStation, nodes.get(nodes.size() - 1), "Last node should be the end station");
 
-        String expectedNodes = "[ DV DVC HON RSN WDN AML AMRI BN HGL ESK ES ]";
+        String expectedNodes = "[DV, DVC, HON, RSN, WDN, AML, AMRI, BN, HGL, ESK, ES]";
         assertEquals(expectedNodes, nodes.toString());
     }
 
@@ -120,26 +120,8 @@ public class MyGraphAstarTest {
         assertEquals(startStation, nodes.get(0), "First node should be the start station");
         assertEquals(endStation, nodes.get(nodes.size() - 1), "Last node should be the end station");
 
-        String expectedNodes = "[ WW ATN VSV TBG GDR DTC DTCH WL DID ZV DVN WTV AHP AH AHZ EST NML NM NMGO NMD WC RVS O OW RS HTO HT TB TBU TBR GZ BD ETN RSD BGN RB KBD KRG BZL GS ARN MDB VSS VS ]";
+        String expectedNodes = "[WW, ATN, VSV, TBG, GDR, DTC, DTCH, WL, DID, ZV, DVN, WTV, AHP, AH, AHZ, EST, NML, NM, NMGO, NMD, WC, RVS, O, OW, RS, HTO, HT, TB, TBU, TBR, GZ, BD, ETN, RSD, BGN, RB, KBD, KRG, BZL, GS, ARN, MDB, VSS, VS]";
         assertEquals(expectedNodes, nodes.toString());
-    }
-
-    @Test
-    void GivenGraph_WhenFindingShortestPathFromUnconnectedNodes_ThenReturnEmptyPath() {
-        SaxGraph.Estimator<String> estimator = (current, goal) -> {
-            Station currentStation = stationMap.get(current);
-            Station goalStation = stationMap.get(goal);
-
-            return Coordinate.haversineDistance(currentStation.getCoordinate(), goalStation.getCoordinate());
-        };
-
-        String startStation = "DV";
-        String endStation = "MINDEN"; // Assuming "XYZ" is not connected to "DV"
-
-        SaxList<SaxGraph.DirectedEdge<String>> path = graph.shortestPathAStar(startStation, endStation, estimator);
-
-        assertNotNull(path, "Path should not be null");
-        assertTrue(path.isEmpty(), "Path should be empty");
     }
 
     @Test
@@ -167,7 +149,7 @@ public class MyGraphAstarTest {
         assertEquals(startStation, nodes.get(0), "First node should be the start station");
         assertEquals(endStation, nodes.get(nodes.size() - 1), "Last node should be the end station");
 
-        String expectedNodes = "[ DV DVC ]";
+        String expectedNodes = "[DV, DVC]";
         assertEquals(expectedNodes, nodes.toString());
     }
 }

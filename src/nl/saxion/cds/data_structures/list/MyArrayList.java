@@ -159,14 +159,15 @@ public class MyArrayList<V> implements SaxList<V>, SaxSearchable<V>, SaxSortable
 
     @Override
     public String toString() {
-        var builder = new StringBuilder();
-        builder.append('[');
-        for (int i = 0; i < size; ++i) {
-            builder.append(' ');
-            builder.append(elements[i]);
+        StringBuilder sb = new StringBuilder("[");
+        for (int i = 0; i < this.size(); i++) {
+            sb.append(this.get(i));
+            if (i < this.size() - 1) {
+                sb.append(", ");  // Adds a comma and space between elements
+            }
         }
-        builder.append(" ]");
-        return builder.toString();
+        sb.append("]");
+        return sb.toString();
     }
 
     @Override
@@ -236,7 +237,7 @@ public class MyArrayList<V> implements SaxList<V>, SaxSearchable<V>, SaxSortable
 
     @Override
     public int linearSearch(V element) {
-        checkNull((V) element);
+        checkNull( element);
         for (int i = 0; i < size; ++i) {
             V currentElement = (V) elements[i];
             if (currentElement.equals(element)) {
