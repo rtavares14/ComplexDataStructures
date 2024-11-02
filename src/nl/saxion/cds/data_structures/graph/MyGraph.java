@@ -7,6 +7,7 @@ import nl.saxion.cds.data_structures.map.MyHashMap;
 import nl.saxion.cds.data_structures.trees.heaps.MyHeap;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class MyGraph<T extends Comparable<T>> implements SaxGraph<T> {
     private final MyHashMap<T, MyArrayList<DirectedEdge<T>>> adjacencyList;
@@ -60,10 +61,61 @@ public class MyGraph<T extends Comparable<T>> implements SaxGraph<T> {
     }
 
     @Override
-    public SaxGraph shortestPathsDijkstra(T startNode) {
-        // Implement Dijkstra's algorithm here
+    public SaxGraph<T> shortestPathsDijkstra(T startNode) {
+        MyGraph<T> resultGraph = new MyGraph<>();
+        MyHeap<SaxGraph.DirectedEdge<T>> openList = new MyHeap<>(true);
+        MyHashMap<T, SaxGraph.DirectedEdge<T>> closeList = new MyHashMap<>();
+
+        SaxGraph.DirectedEdge<T> startEdge = new DirectedEdge<>(startNode, startNode, 0);
+        openList.enqueue(startEdge);
+
+        while (!openList.isEmpty()) {
+            SaxGraph.DirectedEdge<T> currentEdge = openList.dequeue();
+
+            if (!closeList.contains(currentEdge.from())) {
+                closeList.add(currentEdge.from(), currentEdge);
+                resultGraph.addEdge(currentEdge.from(), currentEdge.to(),
+                        currentEdge.weight());
+
+                for (DirectedEdge<T> neighborEdge : getEdges(currentEdge.from())) {
+                    if (!closeList.contains(neighborEdge.to())) {
+                        SaxGraph.DirectedEdge<T> newEdge = new DirectedEdge<>(
+                                neighborEdge.to(), currentEdge.from(),
+                                neighborEdge.weight() + currentEdge.weight());
+                        openList.enqueue(newEdge);
+                    }
+                }
+            }
+        }
+        return resultGraph;
+    }
+
+    public SaxList<DirectedEdge<T>> shortestPathDijkstraPathPath(T startNode, T endNode) {
+        SaxGraph<T> graph = shortestPathsDijkstra(startNode);
+        SaxList<DirectedEdge<T>> reconstructedPath = new MyArrayList<>();
+        T currentNode = endNode;
+
+
+        while (!currentNode.equals(startNode)) {
+            SaxList<DirectedEdge<T>> edges = graph.getEdges(currentNode);
+            if (edges.isEmpty()) {
+                return new MyArrayList<>();
+            }
+            DirectedEdge<T> edge = edges.get(0);
+            DirectedEdge<T> reverserd = new DirectedEdge<>(edge.to(), edge.from(),
+                    edge.weight());
+            reconstructedPath.addFirst(reverserd);
+            currentNode = edge.from();
+        }
+        return reconstructedPath;
+    }
+
+    public SaxList<T> dijkstraPathToNodes(T startNode, T endNode) {
+        // SaxList<DirectedEdge<T>> edges = getDijkstraPath(startNode, endNode);
+        // return convertEdgesToNodes(edges);
         return null;
     }
+
     @Override
     public SaxList<DirectedEdge<T>> shortestPathAStar(T startNode, T endNode, Estimator<T> estimator) {
         MyHeap<AStarNode> openList = new MyHeap<>(true);
@@ -131,12 +183,7 @@ public class MyGraph<T extends Comparable<T>> implements SaxGraph<T> {
 
     @Override
     public Iterator<T> iterator() {
-
-        //breath serch here- traverse though nodes and get the lsit of it kinda
-        //a list of nodes in a breth serch and then i return the iterator
-        //retunt the i
-        
-        return adjacencyList.getKeys().iterator();
+        return new BFSIterator();
     }
 
     @Override
@@ -146,7 +193,7 @@ public class MyGraph<T extends Comparable<T>> implements SaxGraph<T> {
 
     @Override
     public int size() {
-        return adjacencyList.size(); // returns the number of unique vertices
+        return adjacencyList.size();
     }
 
     @Override
@@ -168,6 +215,47 @@ public class MyGraph<T extends Comparable<T>> implements SaxGraph<T> {
             adjacencyList.add(vertex, new MyArrayList<>());
         }
         return adjacencyList.get(vertex);
+    }
+
+    private class BFSIterator implements Iterator<T> {
+        private final MyHeap<T> queue;
+        private final MyHashMap<T, Boolean> visited;
+
+        public BFSIterator() {
+            this.queue = new MyHeap<>(true); // Min-heap used as a queue
+            this.visited = new MyHashMap<>();
+
+            // Start BFS from the first node if the graph is not empty
+            if (!adjacencyList.isEmpty()) {
+                T startNode = adjacencyList.getKeys().get(0);
+                queue.enqueue(startNode);
+                visited.add(startNode, true);  // Mark startNode as visited
+            }
+        }
+
+        @Override
+        public boolean hasNext() {
+            return !queue.isEmpty();
+        }
+
+        @Override
+        public T next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+
+            T current = queue.dequeue();
+
+            // Enqueue unvisited neighbors
+            for (DirectedEdge<T> edge : getEdges(current)) {
+                T neighbor = edge.to();
+                if (!visited.contains(neighbor)) {
+                    queue.enqueue(neighbor);
+                    visited.add(neighbor, true);  // Mark neighbor as visited
+                }
+            }
+            return current;
+        }
     }
 
     private class AStarNode implements Comparable<AStarNode> {

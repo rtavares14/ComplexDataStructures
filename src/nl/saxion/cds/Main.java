@@ -17,7 +17,6 @@ import java.util.*;
 public class Main {
 
     private static final Comparator<String> stationCodeComparator = Comparator.naturalOrder();
-    private static final Comparator<Track> distanceToNext = Comparator.comparingDouble(Track::getDistanceToNext);
 
     static Scanner scan = new Scanner(System.in);
 
@@ -218,13 +217,17 @@ public class Main {
             return Coordinate.haversineDistance(currentStation.getCoordinate(), goalStation.getCoordinate());
         };
 
-        SaxList<SaxGraph.DirectedEdge<String>> path = graph.shortestPathAStar(startStationCode, endStationCode, estimator);
-       // SaxList<String> path = graph.dijkstraPathToNodes(startStationCode, endStationCode);
+        //SaxList<SaxGraph.DirectedEdge<String>> path = graph.shortestPathAStar(startStationCode, endStationCode, estimator);
+        graph.shortestPathsDijkstra(endStationCode);
+
+        SaxList<SaxGraph.DirectedEdge<String>> path = graph.shortestPathDijkstraPathPath(startStationCode, endStationCode);
 
         double totalDistance = 0;
         for (SaxGraph.DirectedEdge<String> edge : path) {
             totalDistance += edge.weight();
         }
+
+        System.out.println(path.size());
 
         if (path == null || path.isEmpty()) {
             System.out.println("No path found from " + startStationCode + " to " + endStationCode);
@@ -232,6 +235,8 @@ public class Main {
         }
 
         String pathString = String.join(" --> ", graph.convertEdgesToNodes(path));
+        //String pathString = String.join(" --> ", graph.dijkstraPathToNodes(startStationCode, endStationCode));
+
 
         System.out.println("Shortest path from " + startStationCode + " to " + endStationCode + ": " + pathString);
         System.out.println("With a distance of " + String.format("%.2f", totalDistance) + " km.");

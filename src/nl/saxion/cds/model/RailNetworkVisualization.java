@@ -97,6 +97,11 @@ public class RailNetworkVisualization implements Runnable {
             }
         }
 
+        SaxionApp.printLine("Choose the algorithm to find the shortest path:");
+        SaxionApp.printLine("1. A* Algorithm");
+        SaxionApp.printLine("2. Dijkstra's Algorithm");
+        int algorithmChoice = SaxionApp.readInt();
+
         SaxionApp.clear();
 
         MyGraph<String> graph = new MyGraph<>();
@@ -104,14 +109,19 @@ public class RailNetworkVisualization implements Runnable {
             graph.addEdgeBidirectional(track.getCode(), track.getNextCode(), track.getDistanceToNext());
         }
 
-        SaxGraph.Estimator<String> estimator = (current, goal) -> {
-            Station currentStation = stations.get(current);
-            Station goalStation = stations.get(goal);
+        SaxList<SaxGraph.DirectedEdge<String>> path;
+        if (algorithmChoice == 1) {
+            SaxGraph.Estimator<String> estimator = (current, goal) -> {
+                Station currentStation = stations.get(current);
+                Station goalStation = stations.get(goal);
 
-            return Coordinate.haversineDistance(currentStation.getCoordinate(), goalStation.getCoordinate());
-        };
+                return Coordinate.haversineDistance(currentStation.getCoordinate(), goalStation.getCoordinate());
+            };
+            path = graph.shortestPathAStar(startStationCode, endStationCode, estimator);
+        } else {
+            path = graph.shortestPathDijkstraPathPath(startStationCode, endStationCode);
+        }
 
-        SaxList<SaxGraph.DirectedEdge<String>> path = graph.shortestPathAStar(startStationCode, endStationCode, estimator);
         double totalDistance = 0;
         for (SaxGraph.DirectedEdge<String> edge : path) {
             totalDistance += edge.weight();
@@ -131,8 +141,8 @@ public class RailNetworkVisualization implements Runnable {
         drawPath(path);
 
         SaxionApp.setTextDrawingColor(Color.white);
-        SaxionApp.drawText("Shortest path from " + startStationCode + " to " + endStationCode+":", 10, 10,18);
-        SaxionApp.drawText("With a distance of " + totalDistance + " km.", 10, 30,16);
+        SaxionApp.drawText("Shortest path from " + startStationCode + " to " + endStationCode + ":", 10, 10, 18);
+        SaxionApp.drawText("With a distance of " + String.format("%.2f", totalDistance) + " km.", 10, 30, 16);
         SaxionApp.pause();
         SaxionApp.clear();
     }
@@ -158,7 +168,7 @@ public class RailNetworkVisualization implements Runnable {
 
                 SaxionApp.setBorderColor(Color.darkGray);
                 SaxionApp.drawLine(fromCoords[0], fromCoords[1], toCoords[0], toCoords[1]);
-                SaxionApp.sleep(0.001);
+                SaxionApp.sleep(0.0007);
             }
         }
 
@@ -171,7 +181,7 @@ public class RailNetworkVisualization implements Runnable {
             SaxionApp.setBorderColor(Color.red);
             SaxionApp.setFill(Color.red);
             SaxionApp.drawCircle(pixelCoords[0], pixelCoords[1], 3);
-            SaxionApp.sleep(0.002);
+            SaxionApp.sleep(0.001);
         }
 
     }
@@ -187,7 +197,7 @@ public class RailNetworkVisualization implements Runnable {
                 int[] fromCoords = geoToPixel(fromStation.getLatitude(), fromStation.getLongitude());
                 int[] toCoords = geoToPixel(toStation.getLatitude(), toStation.getLongitude());
                 SaxionApp.drawLine(fromCoords[0], fromCoords[1], toCoords[0], toCoords[1]);
-                SaxionApp.sleep(0.08);
+                SaxionApp.sleep(0.05);
             }
 
             // Highlight the starting station

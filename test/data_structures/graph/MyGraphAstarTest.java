@@ -23,10 +23,12 @@ public class MyGraphAstarTest {
     MyHashMap<String, Station> stationMap = new MyHashMap<>();
     MyBinarySearchTree<String, Station> stationTree = new MyBinarySearchTree<>(stationCodeComparator);
     private MyGraph<String> graph;
+    private MyGraph<String> graph2;
 
     @BeforeEach
     void setUp() {
         graph = new MyGraph<>();
+        graph2 = new MyGraph<>();
 
 
         Station.readFromFileToDataStructures("resources/stations.csv", stationList, stationMap, stationTree);
@@ -48,6 +50,8 @@ public class MyGraphAstarTest {
 
         String startStation = "DV";
         String endStation = "ASD";
+
+
 
         SaxList<SaxGraph.DirectedEdge<String>> path = graph.shortestPathAStar(startStation, endStation, estimator);
 
@@ -151,5 +155,24 @@ public class MyGraphAstarTest {
 
         String expectedNodes = "[DV, DVC]";
         assertEquals(expectedNodes, nodes.toString());
+    }
+
+    @Test
+    void GivenDisconnectedGraph_WhenFindingPathBetweenDisconnectedNodes_ThenReturnEmptyPath() {
+        graph2.addEdge("A", "B", 1.0);
+        graph2.addEdge("B", "C", 1.0);
+
+        graph2.addEdge("X", "Y", 1.0);
+        graph2.addEdge("Y", "Z", 1.0);
+
+        SaxGraph.Estimator<String> estimator = (current, goal) -> 0.0;
+
+        String startNode = "A";
+        String endNode = "Z";
+
+        SaxList<SaxGraph.DirectedEdge<String>> path = graph2.shortestPathAStar(startNode, endNode, estimator);
+
+        assertNotNull(path, "Path should not be null");
+        assertTrue(path.isEmpty(), "Path should be empty as there is no route between A and Z");
     }
 }
