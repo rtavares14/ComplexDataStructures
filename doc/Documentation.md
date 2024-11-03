@@ -191,11 +191,6 @@ Overall [My Graph](../src/nl/saxion/cds/data_structures/graph/MyGraph.java) comb
 
 ---
 
-### My iterative depth first search algorithms
-Classification: O(N)
-
-Implementation:
-
 ### My iterative breadth first search algorithm
 Classification: O(N)
 
@@ -219,10 +214,14 @@ Implementation:
 # Technical design My Application
 I chose to do a simple menu in my console that will provide the user 6 options.
 My user has the opportunity to look by a station code using MyHashMap class by looking for the station code as the key.
-The user can also 
+The user can also look for all the station with the name will type or just some letter to check if theirs any matching stations.
+The user can also ask all the stations from a specific type.
+The user can also ask the shortest path from 2 given stations and chose the algorithm he wants to use to complete that option.
+The user can also request the Minimum Cost Spamin Tree (MCST) for the rail network.
+At the ens the user can ask to open the graph visualization that he can see the last 2 options.
 
 ## Class diagram and reading the data
-In here after a lof of thinking I decided to approach a method to read my data in this way. Since I used my Stations in several data structures (MyDoubllyLinkList, MyHashMao and MyBinnarrySerachtTree) I decided to create one single method that will read the file only once and give all my stations in the 3 different data structures.
+In here after a lof of thinking I decided to approach a method to read my data in this way. Since I used my Stations in several data structures (MyDoubllyLinkList, MyHashMap and MyBinnarrySerachtTree) I decided to create one single method that will read the file only once and give all my stations in the 3 different data structures.
 For my tracks data I simply used a method that will read the csv and give me all my station in MyArrayList structure since I only needed that.
 
 # Station search by station code
@@ -243,10 +242,12 @@ This option lets users search for stations by the beginning of their names. I im
 - I chose a linear search because the list is unsorted, and a linear search is the simplest way to find matches. It’s not the most efficient, but it works well for this task.
 - I could have used a binary search if the list was sorted, but since it’s not, a linear search is the best choice.
 
-- I shose 
+- I chose to use  
 - I could have also used a hashmap, but it would have required a more complex implementation. The linear search is straightforward and effective for this scenario.
 
 ## Implementation shortest route
+This option lets my user chose 2 stations and receive the shortest path between then. My user can choose between using A* algorithm and Dijkstra and the user can also visualize it.
+The implementation is made using [My Graph](../src/nl/saxion/cds/data_structures/graph/MyGraph.java) populated with my tracks stored in [My ArrayList](../src/nl/saxion/cds/data_structures/list/MyArrayList.java).
 
 
 ## Implementation minimum cost spanning tree

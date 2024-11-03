@@ -100,11 +100,14 @@ public class RailNetworkVisualization implements Runnable {
         SaxionApp.printLine("Choose the algorithm to find the shortest path:");
         SaxionApp.printLine("1. A* Algorithm");
         SaxionApp.printLine("2. Dijkstra's Algorithm");
+        SaxionApp.print("Enter your choice: ");
         int algorithmChoice = SaxionApp.readInt();
 
         SaxionApp.clear();
 
         MyGraph<String> graph = new MyGraph<>();
+        double totalDistance = 0;
+
         for (Track track : tracks) {
             graph.addEdgeBidirectional(track.getCode(), track.getNextCode(), track.getDistanceToNext());
         }
@@ -118,13 +121,12 @@ public class RailNetworkVisualization implements Runnable {
                 return Coordinate.haversineDistance(currentStation.getCoordinate(), goalStation.getCoordinate());
             };
             path = graph.shortestPathAStar(startStationCode, endStationCode, estimator);
+            for (SaxGraph.DirectedEdge<String> edge : path) {
+                totalDistance += edge.weight();
+            }
         } else {
-            path = graph.shortestPathDijkstraPathPath(startStationCode, endStationCode);
-        }
-
-        double totalDistance = 0;
-        for (SaxGraph.DirectedEdge<String> edge : path) {
-            totalDistance += edge.weight();
+            path = graph.getDijkstraPath(startStationCode, endStationCode);
+            totalDistance = path.get(path.size() - 1).weight();
         }
 
         if (path == null || path.isEmpty()) {
@@ -140,9 +142,12 @@ public class RailNetworkVisualization implements Runnable {
         // Draw the path
         drawPath(path);
 
+        String algorithm = algorithmChoice == 1 ? "A* Algorithm" : "Dijkstra's Algorithm";
         SaxionApp.setTextDrawingColor(Color.white);
         SaxionApp.drawText("Shortest path from " + startStationCode + " to " + endStationCode + ":", 10, 10, 18);
         SaxionApp.drawText("With a distance of " + String.format("%.2f", totalDistance) + " km.", 10, 30, 16);
+        SaxionApp.drawText("Using "+ algorithm, 10, 50, 14);
+        SaxionApp.drawText("Press any key to continue...", 10, 70, 12);
         SaxionApp.pause();
         SaxionApp.clear();
     }
@@ -215,8 +220,6 @@ public class RailNetworkVisualization implements Runnable {
     }
 
     private void showMCST() {
-        // Implement the logic to determine the minimum number of rail connections (MCST)
-        // and update the visualization accordingly.
         System.out.println("MCST functionality is not yet implemented.");
     }
 }

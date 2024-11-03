@@ -21,6 +21,7 @@ public class Main {
     static Scanner scan = new Scanner(System.in);
 
     private static boolean isGuiOpen = false;
+
     public static void main(String[] args) throws InterruptedException {
         MyArrayList<Station> stationList = new MyArrayList<>();
         MyHashMap<String, Station> stationMap = new MyHashMap<>();
@@ -130,7 +131,7 @@ public class Main {
         // Display matching stations
         System.out.println("Matching stations:");
         for (int i = 0; i < matchingStations.size(); i++) {
-            System.out.println((i + 1) + ". " + matchingStations.get(i).getName() + " ("+matchingStations.get(i).getCode()+")");
+            System.out.println((i + 1) + ". " + matchingStations.get(i).getName() + " (" + matchingStations.get(i).getCode() + ")");
         }
 
         System.out.print("Enter the number of the station you want to view: ");
@@ -187,7 +188,7 @@ public class Main {
         // Display matching stations
         System.out.println("Stations of type " + selectedType + ":");
         for (int i = 0; i < matchingStations.size(); i++) {
-            System.out.println((i + 1) + ". " + matchingStations.get(i).getName() + " ("+matchingStations.get(i).getCode()+")");
+            System.out.println((i + 1) + ". " + matchingStations.get(i).getName() + " (" + matchingStations.get(i).getCode() + ")");
         }
     }
 
@@ -210,24 +211,37 @@ public class Main {
             graph.addEdgeBidirectional(track.getCode(), track.getNextCode(), track.getDistanceToNext());
         }
 
-        SaxGraph.Estimator<String> estimator = (current, goal) -> {
-            Station currentStation = stationMap.get(current);
-            Station goalStation = stationMap.get(goal);
-
-            return Coordinate.haversineDistance(currentStation.getCoordinate(), goalStation.getCoordinate());
-        };
-
-        //SaxList<SaxGraph.DirectedEdge<String>> path = graph.shortestPathAStar(startStationCode, endStationCode, estimator);
-        graph.shortestPathsDijkstra(endStationCode);
-
-        SaxList<SaxGraph.DirectedEdge<String>> path = graph.shortestPathDijkstraPathPath(startStationCode, endStationCode);
+        System.out.println("Choose the algorithm to find the shortest path:");
+        System.out.println("1. A* Algorithm");
+        System.out.println("2. Dijkstra's Algorithm");
+        System.out.print("Chose your option: ");
+        int algorithmChoice = scan.nextInt();
 
         double totalDistance = 0;
-        for (SaxGraph.DirectedEdge<String> edge : path) {
-            totalDistance += edge.weight();
-        }
+        SaxList<SaxGraph.DirectedEdge<String>> path = null;
+        String algorithm = algorithmChoice == 1 ? "A* Algorithm" : "Dijkstra's Algorithm";
 
-        System.out.println(path.size());
+        if (algorithmChoice == 1) {
+            SaxGraph.Estimator<String> estimator = (current, goal) -> {
+                Station currentStation = stationMap.get(current);
+                Station goalStation = stationMap.get(goal);
+                return Coordinate.haversineDistance(currentStation.getCoordinate(), goalStation.getCoordinate());
+            };
+            path = graph.shortestPathAStar(startStationCode, endStationCode, estimator);
+
+            for (SaxGraph.DirectedEdge<String> edge : path) {
+                totalDistance += edge.weight();
+            }
+        } else if (algorithmChoice == 2) {
+            path = graph.getDijkstraPath(startStationCode, endStationCode);
+
+            if (path != null && !path.isEmpty()) {
+                totalDistance = path.get(path.size() - 1).weight();
+            }
+        } else {
+            System.out.println("Invalid choice. Please select either 1 or 2.");
+            return;
+        }
 
         if (path == null || path.isEmpty()) {
             System.out.println("No path found from " + startStationCode + " to " + endStationCode);
@@ -235,16 +249,12 @@ public class Main {
         }
 
         String pathString = String.join(" --> ", graph.convertEdgesToNodes(path));
-        //String pathString = String.join(" --> ", graph.dijkstraPathToNodes(startStationCode, endStationCode));
-
-
-        System.out.println("Shortest path from " + startStationCode + " to " + endStationCode + ": " + pathString);
+        System.out.println("Shortest path from " + startStationCode + " to " + endStationCode + " using "+algorithm+": " + pathString);
         System.out.println("With a distance of " + String.format("%.2f", totalDistance) + " km.");
-
     }
 
     //option 6
-    private static void launchGraphicalRepresentation(MyHashMap<String,Station> stationMap, MyArrayList<Track> trackList) throws InterruptedException {
+    private static void launchGraphicalRepresentation(MyHashMap<String, Station> stationMap, MyArrayList<Track> trackList) throws InterruptedException {
         Thread guiThread = new Thread(() -> RailNetworkVisualization.main(stationMap, trackList));
         guiThread.start();
         guiThread.sleep(1200);

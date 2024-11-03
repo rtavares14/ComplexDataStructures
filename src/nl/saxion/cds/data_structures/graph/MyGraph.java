@@ -90,7 +90,7 @@ public class MyGraph<T extends Comparable<T>> implements SaxGraph<T> {
         return resultGraph;
     }
 
-    public SaxList<DirectedEdge<T>> shortestPathDijkstraPathPath(T startNode, T endNode) {
+    public SaxList<DirectedEdge<T>> getDijkstraPath(T startNode, T endNode) {
         SaxGraph<T> graph = shortestPathsDijkstra(startNode);
         SaxList<DirectedEdge<T>> reconstructedPath = new MyArrayList<>();
         T currentNode = endNode;
@@ -102,19 +102,14 @@ public class MyGraph<T extends Comparable<T>> implements SaxGraph<T> {
                 return new MyArrayList<>();
             }
             DirectedEdge<T> edge = edges.get(0);
-            DirectedEdge<T> reverserd = new DirectedEdge<>(edge.to(), edge.from(),
+            DirectedEdge<T> reversed = new DirectedEdge<>(edge.to(), edge.from(),
                     edge.weight());
-            reconstructedPath.addFirst(reverserd);
-            currentNode = edge.from();
+            reconstructedPath.addFirst(reversed);
+            currentNode = edge.to();
         }
         return reconstructedPath;
     }
 
-    public SaxList<T> dijkstraPathToNodes(T startNode, T endNode) {
-        // SaxList<DirectedEdge<T>> edges = getDijkstraPath(startNode, endNode);
-        // return convertEdgesToNodes(edges);
-        return null;
-    }
 
     @Override
     public SaxList<DirectedEdge<T>> shortestPathAStar(T startNode, T endNode, Estimator<T> estimator) {
