@@ -16,13 +16,16 @@ import java.util.*;
 
 public class Main {
 
+    // Comparator for sorting station codes
     private static final Comparator<String> stationCodeComparator = Comparator.naturalOrder();
 
     static Scanner scan = new Scanner(System.in);
 
+    // Variable to keep track of whether the graphical representation is open
     private static boolean isGuiOpen = false;
 
     public static void main(String[] args) throws InterruptedException {
+        //My data structures to store the stations and tracks
         MyArrayList<Station> stationList = new MyArrayList<>();
         MyHashMap<String, Station> stationMap = new MyHashMap<>();
         MyBinarySearchTree<String, Station> stationTree = new MyBinarySearchTree<>(stationCodeComparator);
@@ -54,23 +57,25 @@ public class Main {
 
             switch (option) {
                 case 1:
+                    // Show information of a station based on its station code
                     showStationInfoByName(stationMap);
                     break;
                 case 2:
+                    // Show information of a station based on its name
                     showStationInfoByPartialName(stationList);
                     break;
                 case 3:
+                    // Show all stations of a certain type
                     showStationsByType(stationList);
                     break;
-
                 case 4:
+                    // Determine the shortest route between two stations (A* Algorithm) or (Dijkstra's Algorithm)
                     showShortestRoute(stationMap, trackList);
                     break;
-
                 case 5:
                     break;
-
                 case 6:
+                    // Show rail network, routes, and MCST (Graphical representation)
                     if (!isGuiOpen) {
                         launchGraphicalRepresentation(stationMap, trackList);
                         try {
@@ -97,6 +102,10 @@ public class Main {
     }
 
     //option 1
+    /**
+     * Show information of a station based on its station code
+     * @param stationMap The map of stations
+     */
     private static void showStationInfoByName(MyHashMap<String, Station> stationMap) {
         System.out.print("Enter the station code: ");
         String stationCode = scan.nextLine().toUpperCase();
@@ -111,6 +120,10 @@ public class Main {
     }
 
     //option 2
+    /**
+     * Show information of a station based on its name
+     * @param stationsList The list of stations
+     */
     private static void showStationInfoByPartialName(MyArrayList<Station> stationsList) {
         System.out.print("Enter the beginning of the station name: ");
         String searchQuery = scan.nextLine().toLowerCase();
@@ -147,6 +160,10 @@ public class Main {
     }
 
     //option 3
+    /**
+     * Show all stations of a certain type
+     * @param stationsList The list of stations
+     */
     private static void showStationsByType(MyArrayList<Station> stationsList) {
         MyArrayList<String> stationTypesList = new MyArrayList<>();
         for (Station station : stationsList) {
@@ -193,6 +210,11 @@ public class Main {
     }
 
     //option 4
+    /**
+     * Determine the shortest route between two stations
+     * @param stationMap The map of stations
+     * @param trackList The list of tracks
+     */
     private static void showShortestRoute(MyHashMap<String, Station> stationMap, MyArrayList<Track> trackList) {
         System.out.println("Some of my favorite routes are:");
         System.out.println("1. Deventer to Den Haag Centraal - for a day at the beach (DV - GVC)");
@@ -254,6 +276,12 @@ public class Main {
     }
 
     //option 6
+    /**
+     * Launch the graphical representation of the rail network
+     * @param stationMap The map of stations
+     * @param trackList The list of tracks
+     * @throws InterruptedException
+     */
     private static void launchGraphicalRepresentation(MyHashMap<String, Station> stationMap, MyArrayList<Track> trackList) throws InterruptedException {
         Thread guiThread = new Thread(() -> RailNetworkVisualization.main(stationMap, trackList));
         guiThread.start();

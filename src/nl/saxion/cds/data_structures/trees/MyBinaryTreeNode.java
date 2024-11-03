@@ -29,6 +29,9 @@ public class MyBinaryTreeNode<K extends Comparable<K>, V> {
         return left;
     }
 
+    /**
+     * Sets the left child of the node.
+     */
     public void setLeft(MyBinaryTreeNode<K, V> left) {
         this.left = left;
         updateHeight();
@@ -41,6 +44,9 @@ public class MyBinaryTreeNode<K extends Comparable<K>, V> {
         return right;
     }
 
+    /**
+     * Sets the right child of the node.
+     */
     public void setRight(MyBinaryTreeNode<K, V> right) {
         this.right = right;
         updateHeight();
@@ -74,6 +80,12 @@ public class MyBinaryTreeNode<K extends Comparable<K>, V> {
         this.key = key;
     }
 
+    /**
+     * Add a node to the tree rooted at this node.
+     *
+     * @param node       The node to add.
+     * @param comparator The comparator to compare keys.
+     */
     public void add(MyBinaryTreeNode<K, V> node, Comparator<K> comparator) {
         int cmp = comparator.compare(node.getKey(), this.getKey());
         if (cmp < 0) {
@@ -92,6 +104,14 @@ public class MyBinaryTreeNode<K extends Comparable<K>, V> {
         updateHeight();
     }
 
+    /**
+     * Remove the node with the given key from the tree rooted at this node.
+     *
+     * @param key        The key to remove.
+     * @param comparator The comparator to compare keys.
+     * @param parent     The parent of the current node.
+     * @return The value associated with the key, or null if the key is not found.
+     */
     public V remove(K key, Comparator<K> comparator, MyBinaryTreeNode<K, V> parent) {
         int cmp = comparator.compare(key, this.getKey());
 
@@ -115,6 +135,10 @@ public class MyBinaryTreeNode<K extends Comparable<K>, V> {
         }
     }
 
+    /**
+     * Remove the leaf node.
+     * Set the parent's reference to this node to null.
+     */
     private void removeLeafNode(MyBinaryTreeNode<K, V> parent) {
         if (parent != null) {
             if (parent.getLeft() == this) {
@@ -125,6 +149,10 @@ public class MyBinaryTreeNode<K extends Comparable<K>, V> {
         }
     }
 
+    /**
+     * Remove the node with a single child.
+     * Replace the node with its child.
+     */
     private void removeSingleChildNode(MyBinaryTreeNode<K, V> parent) {
         MyBinaryTreeNode<K, V> child = (left != null) ? left : right;
         if (parent != null) {
@@ -137,28 +165,33 @@ public class MyBinaryTreeNode<K extends Comparable<K>, V> {
         parent.updateHeight();
     }
 
+    /**
+     * Remove the node with two children.
+     * Replace the node with the minimum node in the right subtree.
+     */
     private void removeNodeWithTwoChildren(Comparator<K> comparator) {
         MyBinaryTreeNode<K, V> minNode = findMin(right);
 
-        // Replace the current node's key and value with the in-order successor
         this.key = minNode.getKey();
         this.value = minNode.getValue();
 
-        // Recursively remove the in-order successor from the right subtree
         right.remove(minNode.getKey(), comparator, this);
     }
 
+    /**
+     * Get the value associated with the given key.
+     *
+     * @param key The key to search for.
+     * @return The value associated with the key, or null if the key is not found.
+     */
     public V get(K key, Comparator<K> comparator) {
         int cmp = comparator.compare(key, this.getKey());
 
         if (cmp < 0) {
-            // Key is smaller, search left
             return (left != null) ? left.get(key, comparator) : null;
         } else if (cmp > 0) {
-            // Key is larger, search right
             return (right != null) ? right.get(key, comparator) : null;
         } else {
-            // Key matches, return the value
             return this.value;
         }
     }
@@ -171,6 +204,12 @@ public class MyBinaryTreeNode<K extends Comparable<K>, V> {
         return this.left == null && this.right == null;
     }
 
+    /**
+     * Finds the minimum node in the tree rooted at the given node.
+     *
+     * @param node The root of the tree to search in.
+     * @return The minimum node in the tree.
+     */
     public MyBinaryTreeNode<K, V> findMin(MyBinaryTreeNode<K, V> node) {
         if (node == null) return null;
         while (node.getLeft() != null) {
@@ -179,31 +218,36 @@ public class MyBinaryTreeNode<K extends Comparable<K>, V> {
         return node;
     }
 
+    /**
+     * Returns the dot representation of the tree rooted at this node.
+     *
+     * @return The dot representation of the tree.
+     */
     public String toDot() {
         StringBuilder dot = new StringBuilder();
         generateDot(dot); // Call without random to simplify
         return dot.toString();
     }
 
+    /**
+     * Generate the dot representation of the tree rooted at this node.
+     *
+     * @param dot The StringBuilder to append the dot representation to.
+     */
     private void generateDot(StringBuilder dot) {
-        // Start with the current node
         if (left != null) {
-            // If left child exists, connect and recurse
             dot.append(value).append(" -> ").append(left.getValue()).append(";\n");
             left.generateDot(dot);
         } else {
-            // Create a null left node representation
             String nullLeftNode = "nullL_" + value;
             dot.append(nullLeftNode).append(" [shape=point];\n")
                     .append(value).append(" -> ").append(nullLeftNode).append(";\n");
         }
 
         if (right != null) {
-            // If right child exists, connect and recurse
             dot.append(value).append(" -> ").append(right.getValue()).append(";\n");
             right.generateDot(dot);
         } else {
-            // Create a null right node representation
             String nullRightNode = "nullR_" + value;
             dot.append(nullRightNode).append(" [shape=point];\n")
                     .append(value).append(" -> ").append(nullRightNode).append(";\n");

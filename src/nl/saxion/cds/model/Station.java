@@ -23,43 +23,24 @@ public class Station implements Comparable<Station> {
     private double longitude;
 
     public Station(String code, String name, String country, String type, double latitude, double longitude) {
-        if (code == null || code.isBlank()) {
-            throw new IllegalArgumentException("Code cannot be null or blank.");
-        }
         this.code = code.trim();
-
-        if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("Name cannot be null or blank.");
-        }
         this.name = name.trim();
-
-        if (country == null || country.isBlank()) {
-            throw new IllegalArgumentException("Country cannot be null or blank.");
-        }
         this.country = country.trim().toUpperCase();
-
-        if (type == null || type.isBlank()) {
-            throw new IllegalArgumentException("Type cannot be null or blank.");
-        }
         this.type = type.trim();
-
-        if (latitude < -90 || latitude > 90) {
-            throw new IllegalArgumentException("Latitude must be between -90 and 90.");
-        }
         this.latitude = latitude;
-
-        if (longitude < -180 || longitude > 180) {
-            throw new IllegalArgumentException("Longitude must be between -180 and 180.");
-        }
         this.longitude = longitude;
     }
 
 
-
-    public static void readFromFileToDataStructures(String filename,
-                                          MyArrayList<Station> stationList,
-                                          MyHashMap<String, Station> stationMap,
-                                          MyBinarySearchTree<String, Station> stationTree) {
+    /**
+     * Reads the stations from a file and stores them in the given data structures.
+     *
+     * @param filename    The name of the file to read the stations from.
+     * @param stationList The list to store the stations in.
+     * @param stationMap  The map to store the stations in.
+     * @param stationTree The tree to store the stations in.
+     */
+    public static void readFromFileToDataStructures(String filename, MyArrayList<Station> stationList, MyHashMap<String, Station> stationMap, MyBinarySearchTree<String, Station> stationTree) {
 
         try (Scanner scan = new Scanner(new File(filename))) {
             if (scan.hasNextLine()) {
@@ -71,14 +52,11 @@ public class Station implements Comparable<Station> {
                 String[] parts = line.split(",");
 
                 if (parts.length < 6) {
-                    // Skip bad lines
                     continue;
                 }
 
                 String stationCode = parts[0];
-                Station station = new Station(parts[0], parts[1], parts[2], parts[3],
-                        Double.parseDouble(parts[4]),
-                        Double.parseDouble(parts[5]));
+                Station station = new Station(parts[0], parts[1], parts[2], parts[3], Double.parseDouble(parts[4]), Double.parseDouble(parts[5]));
 
                 stationList.addLast(station);
 
@@ -91,46 +69,84 @@ public class Station implements Comparable<Station> {
         }
     }
 
+    /**
+     * Returns the code of the station.
+     *
+     * @return The code of the station.
+     */
     public String getCode() {
         return code;
     }
 
+    /**
+     * Returns the name of the station.
+     *
+     * @return The name of the station.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Returns the country of the station.
+     *
+     * @return The country of the station.
+     */
     public String getCountry() {
         return country;
     }
 
+    /**
+     * Returns the type of the station.
+     *
+     * @return The type of the station.
+     */
     public String getType() {
         return type;
     }
 
+    /**
+     * Returns the latitude of the station.
+     *
+     * @return The latitude of the station.
+     */
     public double getLatitude() {
         return latitude;
     }
 
+    /**
+     * Returns the longitude of the station.
+     *
+     * @return The longitude of the station.
+     */
     public double getLongitude() {
         return longitude;
     }
 
+    /**
+     * @return A string representation of the station.
+     */
     @Override
     public String toString() {
-        return "Station information:" +
-                "\nStation code = " + code +
-                "\nName = " + name +
-                "\nCountry = " + country +
-                "\nType = " + type +
-                "\nLatitude = " + latitude +
-                "\nLongitude = " + longitude + "\n";
+        return "Station information:" + "\nStation code = " + code + "\nName = " + name + "\nCountry = " + country + "\nType = " + type + "\nLatitude = " + latitude + "\nLongitude = " + longitude + "\n";
     }
 
+    /**
+     * Compares this station to another station based on their types.
+     *
+     * @param other The other station to compare to.
+     * @return A negative integer, zero, or a positive integer as this station is less than, equal to, or greater than the other station.
+     */
     @Override
     public int compareTo(Station other) {
         return this.type.compareTo(other.type);
     }
 
+    /**
+     * Returns the coordinate of the station.
+     *
+     * @return The coordinate of the station.
+     */
     public Coordinate getCoordinate() {
         return new Coordinate(latitude, longitude);
     }

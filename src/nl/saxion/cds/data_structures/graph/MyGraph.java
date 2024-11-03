@@ -12,10 +12,18 @@ import java.util.NoSuchElementException;
 public class MyGraph<T extends Comparable<T>> implements SaxGraph<T> {
     private final MyHashMap<T, MyArrayList<DirectedEdge<T>>> adjacencyList;
 
+    /**
+     * Create a new graph.
+     * This method is used to create a new graph.
+     */
     public MyGraph() {
         this.adjacencyList = new MyHashMap<>();
     }
 
+    /**
+     * Add a vertex to the graph.
+     * This method is used to add a vertex to the graph.
+     */
     @Override
     public void addEdge(T fromValue, T toValue, double weight) {
         SaxList<DirectedEdge<T>> list = getOrCreateList(fromValue);
@@ -30,12 +38,20 @@ public class MyGraph<T extends Comparable<T>> implements SaxGraph<T> {
         list.addLast(newEdge);
     }
 
+    /**
+     * Add an edge between two vertices in both directions.
+     * This method is used to add an edge between two vertices in both directions.
+     */
     @Override
     public void addEdgeBidirectional(T fromValue, T toValue, double weight) {
         addEdge(fromValue, toValue, weight);
         addEdge(toValue, fromValue, weight);
     }
 
+    /**
+     * Get the edges for the given vertex.
+     * This method is used to get the edges for a given vertex.
+     */
     @Override
     public SaxList<DirectedEdge<T>> getEdges(T value) {
         if (!adjacencyList.contains(value)) {
@@ -49,6 +65,10 @@ public class MyGraph<T extends Comparable<T>> implements SaxGraph<T> {
         return saxEdges;
     }
 
+    /**
+     * Get the total weight of the graph.
+     * This method is used to get the total weight of the graph.
+     */
     @Override
     public double getTotalWeight() {
         double totalWeight = 0;
@@ -60,6 +80,10 @@ public class MyGraph<T extends Comparable<T>> implements SaxGraph<T> {
         return totalWeight;
     }
 
+    /**
+     * Get the shortest paths between all nodes using Dijkstra's algorithm.
+     * This method is used to get the shortest paths between all nodes using Dijkstra's algorithm.
+     */
     @Override
     public SaxGraph<T> shortestPathsDijkstra(T startNode) {
         MyGraph<T> resultGraph = new MyGraph<>();
@@ -90,6 +114,10 @@ public class MyGraph<T extends Comparable<T>> implements SaxGraph<T> {
         return resultGraph;
     }
 
+    /**
+     * Get the shortest path between two nodes using Dijkstra's algorithm.
+     * This method is used to get the shortest path between two nodes using Dijkstra's algorithm.
+     */
     public SaxList<DirectedEdge<T>> getDijkstraPath(T startNode, T endNode) {
         SaxGraph<T> graph = shortestPathsDijkstra(startNode);
         SaxList<DirectedEdge<T>> reconstructedPath = new MyArrayList<>();
@@ -110,7 +138,11 @@ public class MyGraph<T extends Comparable<T>> implements SaxGraph<T> {
         return reconstructedPath;
     }
 
-
+    /**
+     * An estimator for the A* algorithm.
+     * Method to estimate the distance between two nodes.
+     * This method is used to estimate the distance between two nodes.
+     */
     @Override
     public SaxList<DirectedEdge<T>> shortestPathAStar(T startNode, T endNode, Estimator<T> estimator) {
         MyHeap<AStarNode> openList = new MyHeap<>(true);
@@ -146,6 +178,10 @@ public class MyGraph<T extends Comparable<T>> implements SaxGraph<T> {
         return new MyArrayList<>();
     }
 
+    /**
+     * Reconstruct the path from the start node to the goal node.
+     * This method is used to reconstruct the path from the start node to the goal node.
+     */
     private SaxList<DirectedEdge<T>> reconstructPath(AStarNode goalNode) {
         MyArrayList<DirectedEdge<T>> path = new MyArrayList<>();
         AStarNode currentNode = goalNode;
@@ -157,6 +193,11 @@ public class MyGraph<T extends Comparable<T>> implements SaxGraph<T> {
         return path;
     }
 
+    /**
+     * Convert a list of edges to a list of nodes.
+     * This method is used to convert the result of shortestPathAStar to a list of nodes.
+     * The list of nodes is the path from the start node to the end node.
+     */
     public SaxList<T> convertEdgesToNodes(SaxList<DirectedEdge<T>> edges) {
         SaxList<T> nodes = new MyArrayList<>();
         for (DirectedEdge<T> edge : edges) {
@@ -176,21 +217,33 @@ public class MyGraph<T extends Comparable<T>> implements SaxGraph<T> {
         return null;
     }
 
+    /**
+     * Get an iterator that traverses the graph using a breadth-first search.
+     */
     @Override
     public Iterator<T> iterator() {
         return new BFSIterator();
     }
 
+    /**
+     * Check if the graph is empty.
+     */
     @Override
     public boolean isEmpty() {
         return adjacencyList.isEmpty();
     }
 
+    /**
+     * Get the number of vertices in the graph.
+     */
     @Override
     public int size() {
         return adjacencyList.size();
     }
 
+    /**
+     * Get a string representation of the graph in GraphViz format.
+     */
     @Override
     public String graphViz(String name) {
         StringBuilder sb = new StringBuilder();
@@ -205,6 +258,10 @@ public class MyGraph<T extends Comparable<T>> implements SaxGraph<T> {
         return sb.toString();
     }
 
+    /**
+     * Get the list of edges for the given vertex, or create a new list if it does not exist.
+     * This method is used to get the list of edges for a vertex, or create a new list if it does not exist.
+     */
     private MyArrayList<DirectedEdge<T>> getOrCreateList(T vertex) {
         if (!adjacencyList.contains(vertex)) {
             adjacencyList.add(vertex, new MyArrayList<>());
@@ -212,27 +269,38 @@ public class MyGraph<T extends Comparable<T>> implements SaxGraph<T> {
         return adjacencyList.get(vertex);
     }
 
+    /**
+     * An iterator that traverses the graph using a breadth-first search.
+     */
     private class BFSIterator implements Iterator<T> {
         private final MyHeap<T> queue;
         private final MyHashMap<T, Boolean> visited;
 
+        /**
+         * Create a new BFSIterator.
+         */
         public BFSIterator() {
-            this.queue = new MyHeap<>(true); // Min-heap used as a queue
+            this.queue = new MyHeap<>(true);
             this.visited = new MyHashMap<>();
 
-            // Start BFS from the first node if the graph is not empty
             if (!adjacencyList.isEmpty()) {
                 T startNode = adjacencyList.getKeys().get(0);
                 queue.enqueue(startNode);
-                visited.add(startNode, true);  // Mark startNode as visited
+                visited.add(startNode, true);
             }
         }
 
+        /**
+         * Check if there are more nodes to visit.
+         */
         @Override
         public boolean hasNext() {
             return !queue.isEmpty();
         }
 
+        /**
+         * Get the next node in the BFS traversal.
+         */
         @Override
         public T next() {
             if (!hasNext()) {
@@ -241,24 +309,34 @@ public class MyGraph<T extends Comparable<T>> implements SaxGraph<T> {
 
             T current = queue.dequeue();
 
-            // Enqueue unvisited neighbors
             for (DirectedEdge<T> edge : getEdges(current)) {
                 T neighbor = edge.to();
                 if (!visited.contains(neighbor)) {
                     queue.enqueue(neighbor);
-                    visited.add(neighbor, true);  // Mark neighbor as visited
+                    visited.add(neighbor, true);
                 }
             }
             return current;
         }
     }
 
+    /**
+     * A node in the A* algorithm.
+     */
     private class AStarNode implements Comparable<AStarNode> {
         DirectedEdge<T> edge;
         double g;
         double h;
         AStarNode parent;
 
+        /**
+         * Create a new AStarNode.
+         *
+         * @param edge   the edge to the node
+         * @param g      the cost from the start node to this node
+         * @param h      the estimated cost from this node to the goal node
+         * @param parent the parent node
+         */
         AStarNode(DirectedEdge<T> edge, double g, double h, AStarNode parent) {
             this.edge = edge;
             this.g = g;
@@ -266,6 +344,9 @@ public class MyGraph<T extends Comparable<T>> implements SaxGraph<T> {
             this.parent = parent;
         }
 
+        /**
+         * Compare two AStarNodes based on their f = g + h values.
+         */
         @Override
         public int compareTo(AStarNode other) {
             return Double.compare(this.g + this.h, other.g + other.h);

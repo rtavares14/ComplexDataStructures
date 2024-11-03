@@ -21,11 +21,22 @@ public class RailNetworkVisualization implements Runnable {
     private MyHashMap<String, Station> stations;
     private MyArrayList<Track> tracks;
 
+    /**
+     * Constructor to create a new RailNetworkVisualization object
+     * @param stationMap The map of stations
+     * @param tracks The list of tracks
+     */
     public RailNetworkVisualization(MyHashMap<String, Station> stationMap, MyArrayList<Track> tracks) {
         this.stations = stationMap;
         this.tracks = tracks;
     }
 
+    /**
+     * Convert the latitude and longitude to pixel coordinates
+     * @param latitude The latitude of the location
+     * @param longitude The longitude of the location
+     * @return The pixel coordinates
+     */
     public static int[] geoToPixel(double latitude, double longitude) {
         int pixelX = (int) ((longitude - MIN_LON) / (MAX_LON - MIN_LON) * mapWidth);
         int pixelY = (int) ((MAX_LAT - latitude) / (MAX_LAT - MIN_LAT) * mapHeight);
@@ -37,20 +48,35 @@ public class RailNetworkVisualization implements Runnable {
         return new int[]{pixelX, pixelY};
     }
 
+    /**
+     * Main method to start the application
+     * @param stationMap The map of stations
+     * @param tracks The list of tracks
+     */
     public static void main(MyHashMap<String, Station> stationMap, MyArrayList<Track> tracks) {
         SaxionApp.start(new RailNetworkVisualization(stationMap, tracks), mapWidth, mapHeight);
     }
 
+    /**
+     * Clear the drawing and set the background to black
+     */
     public static void clearDrawing() {
         SaxionApp.setBackgroundColor(Color.black);
         SaxionApp.drawImage("resources/Nederland.png", 0, 0, mapWidth, mapHeight - 30);
     }
 
+    /**
+     * Run the application
+     */
     @Override
     public void run() {
         displayMenu();
     }
 
+    /**
+     * Display the menu for the user
+     * And let the user choose between two options
+     */
     private void displayMenu() {
         while (true) {
             SaxionApp.printLine("----------------- MY TRAIN APLICATION MENU -----------------");
@@ -73,6 +99,11 @@ public class RailNetworkVisualization implements Runnable {
         }
     }
 
+    /**
+     * Show the shortest path between two stations
+     * Based on the user's input
+     * Using A* or Dijkstra's algorithm
+     */
     private void showShortestPath() {
         String startStationCode;
         String endStationCode;
@@ -152,6 +183,11 @@ public class RailNetworkVisualization implements Runnable {
         SaxionApp.clear();
     }
 
+    /**
+     * Draw the graph on the map
+     * Draw the tracks and stations in NL
+     * @param graph The graph to draw
+     */
     private void drawGraph(MyGraph<String> graph) {
         MyHashMap<String, Station> stationMap = new MyHashMap<>();
 
@@ -191,6 +227,11 @@ public class RailNetworkVisualization implements Runnable {
 
     }
 
+    /**
+     * Draw the path on the map
+     * And highlight the starting and ending stations
+     * @param path The path to draw
+     */
     private void drawPath(SaxList<SaxGraph.DirectedEdge<String>> path) {
         SaxionApp.setBorderColor(Color.yellow);
         SaxionApp.setFill(Color.yellow);

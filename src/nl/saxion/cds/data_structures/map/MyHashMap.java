@@ -28,6 +28,9 @@ public class MyHashMap<K, V> implements SaxHashMap<K, V> {
         }
     }
 
+    /**
+     * Constructor to initialize the map with the default capacity.
+     */
     public MyHashMap() {
         this.buckets = new MyDoublyLinkedList[INITIAL_CAPACITY];
         this.size = 0;
@@ -83,7 +86,7 @@ public class MyHashMap<K, V> implements SaxHashMap<K, V> {
     @Override
     public boolean contains(Object key) {
         if (key == null) {
-            return nullKeyEntry != null; // Check if the null key entry exists
+            return nullKeyEntry != null;
         }
 
         int index = getBucketIndex(key);
@@ -91,10 +94,10 @@ public class MyHashMap<K, V> implements SaxHashMap<K, V> {
 
         for (Entry<K, V> entry : bucket) {
             if (entry.key.equals(key)) {
-                return true; // Key found
+                return true;
             }
         }
-        return false; // Key not found
+        return false;
     }
 
 
@@ -117,9 +120,15 @@ public class MyHashMap<K, V> implements SaxHashMap<K, V> {
                 return entry.value;
             }
         }
-        return null; // Key not found
+        return null;
     }
 
+    /**
+     * Add the value which will be mapped to the key.
+     * @param key   key which is mapped to value
+     * @param value the value to add
+     * @throws DuplicateKeyException if the key is already part of the collection
+     */
     @Override
     public void add(K key, V value) throws DuplicateKeyException {
         if (key == null) {
@@ -132,7 +141,7 @@ public class MyHashMap<K, V> implements SaxHashMap<K, V> {
         }
 
         if (size >= buckets.length * LOAD_FACTOR_THRESHOLD) {
-            resize(); // Resize if exceeds threshold
+            resize();
         }
 
         int index = getBucketIndex(key);
@@ -144,16 +153,22 @@ public class MyHashMap<K, V> implements SaxHashMap<K, V> {
             }
         }
 
-        bucket.addLast(new Entry<>(key, value)); // Add to the end
+        bucket.addLast(new Entry<>(key, value));
         size++;
     }
 
+    /**
+     * Remove the key-value pair from the map.
+     * @param key The key to remove.
+     * @return The value associated with the key.
+     * @throws KeyNotFoundException if the key is not found
+     */
     @Override
     public V remove(Object key) throws KeyNotFoundException {
         if (key == null) {
             if (nullKeyEntry != null) {
                 V value = nullKeyEntry.value;
-                nullKeyEntry = null; // Remove null key entry
+                nullKeyEntry = null;
                 size--;
                 return value;
             }
@@ -165,14 +180,18 @@ public class MyHashMap<K, V> implements SaxHashMap<K, V> {
 
         for (Entry<K, V> entry : bucket) {
             if (entry.key.equals(key)) {
-                bucket.remove(entry); // Remove from bucket
+                bucket.remove(entry);
                 size--;
-                return entry.value; // Return removed value
+                return entry.value;
             }
         }
         throw new KeyNotFoundException("Key not found: " + key);
     }
 
+    /**
+     * Get a list of all the keys in the map.
+     * @return a list of all the keys in the map
+     */
     @Override
     public SaxList<K> getKeys() {
         MyDoublyLinkedList<K> keysList = new MyDoublyLinkedList<>();
@@ -190,10 +209,16 @@ public class MyHashMap<K, V> implements SaxHashMap<K, V> {
         return keysList;
     }
 
+    /**
+     * Get the index of the bucket for the key.
+     */
     private int getBucketIndex(Object key) {
-        return key == null ? 0 : Math.abs(key.hashCode()) % buckets.length; // Calculate index
+        return key == null ? 0 : Math.abs(key.hashCode()) % buckets.length;
     }
 
+    /**
+     * Resize the buckets array when the load factor exceeds the threshold.
+     */
     private void resize() {
         int newCapacity = buckets.length * 2;
         MyDoublyLinkedList<Entry<K, V>>[] newBuckets = new MyDoublyLinkedList[newCapacity];
@@ -202,22 +227,24 @@ public class MyHashMap<K, V> implements SaxHashMap<K, V> {
             newBuckets[i] = new MyDoublyLinkedList<>();
         }
 
-        // entry for the null key,put in the buckets
         if (nullKeyEntry != null) {
             newBuckets[0].addLast(nullKeyEntry);
         }
 
-        // Rehash all entries the new buckets
         for (MyDoublyLinkedList<Entry<K, V>> bucket : buckets) {
             for (Entry<K, V> entry : bucket) {
                 int newIndex = entry.key == null ? 0 : Math.abs(entry.key.hashCode()) % newCapacity;
-                newBuckets[newIndex].addLast(entry); // Ensure rehashing is correct
+                newBuckets[newIndex].addLast(entry);
             }
         }
 
-        this.buckets = newBuckets; // Update buckets reference
+        this.buckets = newBuckets;
     }
 
+    /**
+     * Get a list of all the values in the map.
+     * @return a list of all the values in the map
+     */
     public MyArrayList<V> values() {
         MyArrayList<V> valuesList = new MyArrayList<>();
 

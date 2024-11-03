@@ -26,6 +26,11 @@ public class MyAVLTree<K extends Comparable<K>, V> extends MyBinarySearchTree<K,
         this.root = balanceTree(this.root);
     }
 
+    /**
+     * Removes a key-value pair from the tree using the base class method, and balances the tree afterward.
+     *
+     * @param key The key to remove.
+     */
     private MyBinaryTreeNode<K, V> balanceTree(MyBinaryTreeNode<K, V> node) {
         if (node == null) return null;
 
@@ -54,6 +59,12 @@ public class MyAVLTree<K extends Comparable<K>, V> extends MyBinarySearchTree<K,
         return node;
     }
 
+    /**
+     * Rotates the node to the left.
+     *
+     * @param node The node to rotate.
+     * @return The new root of the subtree.
+     */
     private MyBinaryTreeNode<K, V> rotateLeft(MyBinaryTreeNode<K, V> node) {
         MyBinaryTreeNode<K, V> newRoot = node.getRight();
         node.setRight(newRoot.getLeft());
@@ -65,6 +76,12 @@ public class MyAVLTree<K extends Comparable<K>, V> extends MyBinarySearchTree<K,
         return newRoot;
     }
 
+    /**
+     * Rotates the node to the right.
+     *
+     * @param node The node to rotate.
+     * @return The new root of the subtree.
+     */
     private MyBinaryTreeNode<K, V> rotateRight(MyBinaryTreeNode<K, V> node) {
         MyBinaryTreeNode<K, V> newRoot = node.getLeft();
         node.setLeft(newRoot.getRight());
@@ -76,6 +93,12 @@ public class MyAVLTree<K extends Comparable<K>, V> extends MyBinarySearchTree<K,
         return newRoot;
     }
 
+    /**
+     * Returns the height of the node, or -1 if the node is null.
+     *
+     * @param node The node to get the height of.
+     * @return The height of the node.
+     */
     private int height(MyBinaryTreeNode<K, V> node) {
         return (node == null) ? -1 : node.getHeight();
     }

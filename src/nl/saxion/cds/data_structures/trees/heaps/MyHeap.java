@@ -10,7 +10,11 @@ public class MyHeap<T extends Comparable<T>> implements SaxHeap<T> {
     private final ArrayList<T> heap;
     private final boolean isMinHeap;
 
-    // Constructor
+    /**
+     * Constructor that initializes the heap with a comparator.
+     *
+     * @param isMinHeap true if the heap is a min heap, false if it is a max heap
+     */
     public MyHeap(boolean isMinHeap) {
         this.heap = new ArrayList<>();
         this.isMinHeap = isMinHeap;
@@ -81,17 +85,14 @@ public class MyHeap<T extends Comparable<T>> implements SaxHeap<T> {
             throw new EmptyCollectionException();
         }
 
-        // Store the root value to return
         T rootValue = heap.get(0);
 
-        // Move the last element to the root
         heap.set(0, heap.get(heap.size() - 1));
-        heap.remove(heap.size() - 1); // Remove the last element
+        heap.remove(heap.size() - 1);
 
-        // Restore the heap property by bubbling down
         bubbleDown(0);
 
-        return rootValue; // Return the original root value
+        return rootValue;
     }
 
     /**
@@ -107,6 +108,11 @@ public class MyHeap<T extends Comparable<T>> implements SaxHeap<T> {
         return heap.get(0);
     }
 
+    /**
+     * Restore the heap property by bubbling up the element at the given index.
+     *
+     * @param index the index of the element to bubble up
+     */
     private void bubbleUp(int index) {
         int parentIndex = (index - 1) / 2;
         if (index > 0 && compare(heap.get(index), heap.get(parentIndex))) {
@@ -115,6 +121,11 @@ public class MyHeap<T extends Comparable<T>> implements SaxHeap<T> {
         }
     }
 
+    /**
+     * Restore the heap property by bubbling down the element at the given index.
+     *
+     * @param index the index of the element to bubble down
+     */
     private void bubbleDown(int index) {
         int leftChildIndex = 2 * index + 1;
         int rightChildIndex = 2 * index + 2;
@@ -134,10 +145,23 @@ public class MyHeap<T extends Comparable<T>> implements SaxHeap<T> {
         }
     }
 
+    /**
+     * Compare two elements in the heap.
+     *
+     * @param a first element
+     * @param b second element
+     * @return true if the first element is smaller than the second element
+     */
     private boolean compare(T a, T b) {
         return isMinHeap ? a.compareTo(b) < 0 : a.compareTo(b) > 0;
     }
 
+    /**
+     * Swap two elements in the heap.
+     *
+     * @param i index of the first element
+     * @param j index of the second element
+     */
     private void swap(int i, int j) {
         T temp = heap.get(i);
         heap.set(i, heap.get(j));

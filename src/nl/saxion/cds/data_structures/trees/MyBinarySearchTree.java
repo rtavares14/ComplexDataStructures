@@ -22,6 +22,11 @@ public class MyBinarySearchTree<K extends Comparable<K>, V> implements SaxBinary
         this.comparator = comparator;
     }
 
+    /**
+     * Get the root of the tree.
+     *
+     * @return the root of the tree
+     */
     public MyBinaryTreeNode<K, V> getRoot() {
         return root;
     }
@@ -112,24 +117,19 @@ public class MyBinarySearchTree<K extends Comparable<K>, V> implements SaxBinary
             throw new KeyNotFoundException("Key not found: " + key);
         }
 
-        // Check if the root itself is the node to remove
         if (comparator.compare(key, root.getKey()) == 0) {
-            // Special case: Removing the root node
             V removedValue = root.getValue();
 
-            // Handle different cases of root removal
             if (root.isLeaf()) {
-                root = null;  // Root is a leaf, so tree becomes empty
+                root = null;
             } else if (root.getLeft() == null) {
-                root = root.getRight();  // Root has only a right child
+                root = root.getRight();
             } else if (root.getRight() == null) {
-                root = root.getLeft();  // Root has only a left child
+                root = root.getLeft();
             } else {
-                // Root has two children, find the in-order successor
                 MyBinaryTreeNode<K, V> minNode = root.findMin(root.getRight());
                 root.setKey(minNode.getKey());
                 root.setValue(minNode.getValue());
-                // Remove the in-order successor from the right subtree
                 root.getRight().remove(minNode.getKey(), comparator, root);
             }
 
@@ -137,7 +137,6 @@ public class MyBinarySearchTree<K extends Comparable<K>, V> implements SaxBinary
             return removedValue;
 
         } else {
-            // Normal case: Delegating to node's remove method
             V removedValue = root.remove(key, comparator, null);
             if (removedValue == null) {
                 throw new KeyNotFoundException("Key not found: " + key);
@@ -197,22 +196,24 @@ public class MyBinarySearchTree<K extends Comparable<K>, V> implements SaxBinary
         return sb.toString();
     }
 
+    /**
+     * Recursively add nodes to the provided StringBuilder in GraphViz format.
+     *
+     * @param node the current node being visited
+     * @param sb   the StringBuilder to add nodes to
+     */
     private void graphVizHelper(MyBinaryTreeNode<K, V> node, StringBuilder sb) {
         if (node != null) {
-            // Add the node even if it doesn't have any children (single node case)
             sb.append("\"").append(node.getKey()).append("\";\n");
 
-            // If the node has a left child, create the edge
             if (node.getLeft() != null) {
                 sb.append("\"").append(node.getKey()).append("\" -> \"").append(node.getLeft().getKey()).append("\";\n");
             }
 
-            // If the node has a right child, create the edge
             if (node.getRight() != null) {
                 sb.append("\"").append(node.getKey()).append("\" -> \"").append(node.getRight().getKey()).append("\";\n");
             }
 
-            // Recurse on the left and right children
             graphVizHelper(node.getLeft(), sb);
             graphVizHelper(node.getRight(), sb);
         }
@@ -225,10 +226,14 @@ public class MyBinarySearchTree<K extends Comparable<K>, V> implements SaxBinary
         inorderRecursive(root);
     }
 
+    /**
+     * Recursively print an in-order traversal of the tree.
+     *
+     * @param node the current node being visited
+     */
     private void inorderRecursive(MyBinaryTreeNode<K, V> node) {
         if (node != null) {
             inorderRecursive(node.getLeft());
-            //System.out.println(node.getKey() + ": " + node.getValue());
             inorderRecursive(node.getRight());
         }
     }

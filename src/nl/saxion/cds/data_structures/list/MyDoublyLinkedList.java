@@ -10,26 +10,41 @@ public class MyDoublyLinkedList<T> implements SaxList<T>, Iterable<T> {
     private MyDLLNode<T> head,tail;
     private int size;
 
+    /**
+     * Constructor to initialize an empty list.
+     */
     public MyDoublyLinkedList() {
         head = tail = null;
         size = 0;
     }
 
+    /**
+     * Returns the first element in the list without removing it.
+     *
+     * @return the first element or null if the list is empty
+     */
     @Override
     public boolean contains(T value) {
         MyDLLNode<T> current = head;
         while (current != null) {
             if (current.getValue() == null && value == null) {
-                return true; // Both are null
+                return true;
             }
             if (current.getValue() != null && current.getValue().equals(value)) {
-                return true; // Match found
+                return true;
             }
             current = current.getNext();
         }
-        return false; // No match found
+        return false;
     }
 
+    /**
+     * Returns the element at the specified position in this list.
+     *
+     * @param index the index of the element to be returned
+     * @return the element at the specified position in this list
+     * @throws IndexOutOfBoundsException if the index is out of range
+     */
     @Override
     public T get(int index) throws IndexOutOfBoundsException {
         if (index < 0 || index >= size) {
@@ -43,6 +58,11 @@ public class MyDoublyLinkedList<T> implements SaxList<T>, Iterable<T> {
         return current.getValue();
     }
 
+    /**
+     * Adds the specified element at the end of this list.
+     *
+     * @param value the element to be inserted
+     */
     @Override
     public void addLast(T value) {
         MyDLLNode<T> newMyDLLNode = new MyDLLNode<>(value);
@@ -63,6 +83,11 @@ public class MyDoublyLinkedList<T> implements SaxList<T>, Iterable<T> {
         ++size;
     }
 
+    /**
+     * Adds the specified element at the beginning of this list.
+     *
+     * @param value the element to be inserted
+     */
     @Override
     public void addFirst(T value) {
         MyDLLNode<T> newMyDLLNode = new MyDLLNode<>(value);
@@ -84,6 +109,13 @@ public class MyDoublyLinkedList<T> implements SaxList<T>, Iterable<T> {
         ++size;
     }
 
+    /**
+     * Adds the specified element at the specified position in this list.
+     *
+     * @param index the index at which the element is to be inserted
+     * @param value the element to be inserted
+     * @throws IndexOutOfBoundsException if the index is out of range
+     */
     @Override
     public void addAt(int index, T value) throws IndexOutOfBoundsException {
         if (index > size || index < 0){
@@ -114,6 +146,13 @@ public class MyDoublyLinkedList<T> implements SaxList<T>, Iterable<T> {
         }
     }
 
+    /**
+     * Sets the element at the specified position in this list.
+     *
+     * @param index the index of the element to be set
+     * @param value the new value of the element at the specified position
+     * @throws IndexOutOfBoundsException if the index is out of range
+     */
     @Override
     public void set(int index, T value) throws IndexOutOfBoundsException {
         if (index < 0 || index >= size) {
@@ -127,6 +166,12 @@ public class MyDoublyLinkedList<T> implements SaxList<T>, Iterable<T> {
         current.setValue(value);
     }
 
+    /**
+     * Removes the last element from this list.
+     *
+     * @return the element that was removed from the list
+     * @throws EmptyCollectionException if the list is empty
+     */
     @Override
     public T removeLast() throws EmptyCollectionException {
         if (isEmpty()) throw new EmptyCollectionException();
@@ -145,6 +190,12 @@ public class MyDoublyLinkedList<T> implements SaxList<T>, Iterable<T> {
         return value;
     }
 
+    /**
+     * Removes the first element from this list.
+     *
+     * @return the element that was removed from the list
+     * @throws EmptyCollectionException if the list is empty
+     */
     @Override
     public T removeFirst() throws EmptyCollectionException {
         if (isEmpty()) throw new EmptyCollectionException();
@@ -163,6 +214,13 @@ public class MyDoublyLinkedList<T> implements SaxList<T>, Iterable<T> {
         return value;
     }
 
+    /**
+     * Removes the element at the specified position in this list.
+     *
+     * @param index the index of the element to be removed
+     * @return the element previously at the specified position
+     * @throws IndexOutOfBoundsException if the index is out of range
+     */
     @Override
     public T removeAt(int index) throws IndexOutOfBoundsException {
         if (index < 0 || index >= size) {
@@ -189,6 +247,12 @@ public class MyDoublyLinkedList<T> implements SaxList<T>, Iterable<T> {
         }
     }
 
+    /**
+     * Removes the first occurrence of the specified element from this list, if it is present.
+     *
+     * @param value element to be removed from this list, if present
+     * @throws ValueNotFoundException if the value is not found in the list
+     */
     @Override
     public void remove(T value) throws ValueNotFoundException {
         MyDLLNode<T> current = head;
@@ -213,6 +277,12 @@ public class MyDoublyLinkedList<T> implements SaxList<T>, Iterable<T> {
         throw new ValueNotFoundException("Value not found in the list");
     }
 
+    /**
+     * Removes all occurrences of the specified element from this list, if it is present.
+     *
+     * @param value element to be removed from this list, if present
+     * @throws ValueNotFoundException if the value is not found in the list
+     */
     public void removeAll(T value) throws ValueNotFoundException {
         MyDLLNode<T> current = head;
         boolean found = false;
@@ -243,6 +313,13 @@ public class MyDoublyLinkedList<T> implements SaxList<T>, Iterable<T> {
             throw new ValueNotFoundException("Value not found in the list");
         }
     }
+
+    /**
+     * Removes the last occurrence of the specified element from this list, if it is present.
+     *
+     * @param value element to be removed from this list, if present
+     * @throws ValueNotFoundException if the value is not found in the list
+     */
     public void removeLastOccurrence(T value) throws ValueNotFoundException {
         MyDLLNode<T> current = tail;
 
@@ -266,6 +343,11 @@ public class MyDoublyLinkedList<T> implements SaxList<T>, Iterable<T> {
         throw new ValueNotFoundException("Value not found in the list");
     }
 
+    /**
+     * Returns an iterator over the elements in this list.
+     *
+     * @return an iterator over the elements in this list
+     */
     @Override
     public Iterator<T> iterator() {
         return new Iterator<>() {
@@ -285,16 +367,32 @@ public class MyDoublyLinkedList<T> implements SaxList<T>, Iterable<T> {
         };
     }
 
+    /**
+     * Returns true if the list is empty.
+     *
+     * @return true if the list is empty
+     */
     @Override
     public boolean isEmpty() {
         return head == null;
     }
 
+    /**
+     * Returns the size of the list.
+     *
+     * @return the size of the list
+     */
     @Override
     public int size() {
         return size;
     }
 
+    /**
+     * Returns a string representation of the list in GraphViz format.
+     *
+     * @param name the name of the graph
+     * @return a string representation of the list in GraphViz format
+     */
     @Override
     public String graphViz(String name) {
         StringBuilder result = new StringBuilder();
@@ -325,6 +423,11 @@ public class MyDoublyLinkedList<T> implements SaxList<T>, Iterable<T> {
         return result.toString();
     }
 
+    /**
+     * Returns a string representation of the list.
+     *
+     * @return a string representation of the list
+     */
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
