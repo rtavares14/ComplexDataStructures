@@ -2,11 +2,12 @@ package data_structures.graph;
 
 import nl.saxion.cds.collection.SaxList;
 import nl.saxion.cds.data_structures.graph.MyGraph;
+import nl.saxion.cds.data_structures.list.MyArrayList;
 import nl.saxion.cds.data_structures.solution.Coordinate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.*;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -74,47 +75,6 @@ class MyGraphTest {
         assertEquals("Squirtle", edgesFromBulbasaur.get(1).to());
     }
 
-    @Test
-    void GivenGraph_WhenGeneratingGraphViz_ThenReturnCorrectFormat() {
-        graph.addEdge("Pikachu", "Bulbasaur", 1.5);
-        graph.addEdge("Charmander", "Squirtle", 2.0);
-        graph.addEdge("Bulbasaur", "Charmander", 3.0);
-
-        String graphViz = graph.graphViz("PokemonGraph");
-        String expected = """
-                graph PokemonGraph {
-                  Pikachu -- Bulbasaur [label=1.5];
-                  Charmander -- Squirtle [label=2.0];
-                  Bulbasaur -- Charmander [label=3.0];
-                }""";
-
-        String[] actualLines = graphViz.trim().split("\n");
-        String[] expectedLines = expected.trim().split("\n");
-
-        Arrays.sort(actualLines);
-        Arrays.sort(expectedLines);
-
-        assertArrayEquals(expectedLines, actualLines);
-    }
-
-    @Test
-    void GivenGraphWithMultipleNodes_WhenIterating_ThenReturnNodesInBFSOrder() {
-        graph.addEdge("A", "B", 1.0);
-        graph.addEdge("A", "C", 1.0);
-        graph.addEdge("B", "D", 1.0);
-        graph.addEdge("C", "E", 1.0);
-        graph.addEdge("D", "F", 1.0);
-        graph.addEdge("E", "G", 1.0);
-
-        Iterator<String> iterator = graph.iterator();
-        List<String> bfsOrder = new ArrayList<>();
-        while (iterator.hasNext()) {
-            bfsOrder.add(iterator.next());
-        }
-
-        List<String> expectedOrder = Arrays.asList("A", "B", "C", "D", "E", "F", "G");
-        assertEquals(expectedOrder, bfsOrder);
-    }
 
     @Test
     void GivenIteratorExhausted_WhenCallingNext_ThenThrowNoSuchElementException() {

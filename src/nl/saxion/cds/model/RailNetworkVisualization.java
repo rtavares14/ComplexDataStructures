@@ -10,6 +10,7 @@ import nl.saxion.cds.data_structures.solution.Coordinate;
 
 import java.awt.*;
 
+
 public class RailNetworkVisualization implements Runnable {
     private static final int mapWidth = (int) (1620 / 2.6);
     private static final int mapHeight = (int) ((1920 / 2.6) + 30);
