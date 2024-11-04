@@ -192,24 +192,57 @@ Overall [My Graph](../src/nl/saxion/cds/data_structures/graph/MyGraph.java) comb
 ---
 
 ### My iterative breadth first search algorithm
-Classification: O(N)
+Classification: `O(N)` because it has to explore all nodes and edges to find the target value.
 
-Implementation:
+### Overview
+[My Graph](../src/nl/saxion/cds/data_structures/graph/MyGraph.java) is an implementation of the breadth-first search (BFS) technique for traversing or searching through a graph. BFS explores all neighbor nodes at the present depth prior to moving on to nodes at the next depth level. This method is useful for finding the shortest path in unweighted graphs. I used the class sheets to help me understand and how to implement it.
+
+#### Implementation Details
+- **Queue**: I used a queue to keep track of the nodes to visit, ensuring that the algorithm explores all nodes at the current depth before moving on to the next level.
+- **Visited Nodes**: I used a hash set to keep track of visited nodes, preventing the algorithm from revisiting nodes and getting stuck in loops.
+
+Overall, [My Graph](../src/nl/saxion/cds/data_structures/graph/MyGraph.java) is a powerful tool for exploring graphs and finding the shortest path in unweighted networks.
+
+- **Tests**: I tested [My Graph](../src/nl/saxion/cds/data_structures/graph/MyGraph.java) in [My Graph Test](../test/data_structures/graph/MyGraphTest.java) to make sure everything worked as expected.
+
 
 ### My Dijkstra algorithm
-Classification: O(N log N)
+Classification: `O(N log N)` due to the priority queue.
 
-Implementation:
+### Overview
+[My Dijkstra](../src/nl/saxion/cds/data_structures/graph/MyGraph.java) is an implementation of the Dijkstra algorithm, which finds the shortest path from a starting node to all other nodes in a weighted graph. This algorithm is efficient and accurate, making it a popular choice for pathfinding tasks. I used the class sheets to help me understand and how to implement it.
+
+- [Video 1](https://www.youtube.com/watch?v=bZkzH5x0SKU)
+
+#### Implementation Details
+- **Priority Queue**: I used a priority queue to keep track of the nodes to visit, ensuring that the algorithm explores the nodes with the lowest cost first.
+- **Relaxation**: I used a relaxation technique to update the cost of reaching each node, ensuring that the shortest path is found.
+
+- **Tests**: I tested [My Dijkstra](../src/nl/saxion/cds/data_structures/graph/MyGraph.java) in [My Graph Dijkstra Test](../test/data_structures/graph/MyGraphDijkstraTest.java) to make sure everything worked as expected.
+
 
 ### My A* algorithm
-Classification: O(N log N)
+Classification: `O(N log N)` due to the priority queue.
 
-Implementation:
+### Overview
+[My A*](../src/nl/saxion/cds/data_structures/graph/MyGraph.java) implements the A* pathfinding algorithm, which finds the shortest path from a starting node to a target node in a weighted graph. This implementation uses a heuristic to guide the search process, making it efficient. I made it with the help of the class sheets and toke a lot of knowledge from some videos.
+
+- [Video 1](https://www.youtube.com/watch?v=-L-WgKMFuhE)
+- [Video 2](https://www.youtube.com/watch?v=i0x5fj4PqP4)
+- [Site 1](https://www.geeksforgeeks.org/a-search-algorithm/)
+
+#### Implementation Details
+- **Open and Closed Lists**: It uses a priority queue for open nodes and a hash map for closed nodes.
+- **Node Processing**: Nodes are evaluated based on the sum of their actual cost from the start node and the estimated cost to the goal. The path is reconstructed once the goal is reached.
+
+Overall, [My A*](../src/nl/saxion/cds/data_structures/graph/MyGraph.java) is a powerful pathfinding algorithm that balances efficiency and accuracy.
+
+- **Tests**: I tested [My A*](../src/nl/saxion/cds/data_structures/graph/MyGraph.java) in [My Graph A* Test](../test/data_structures/graph/MyGraphAstarTest.java) to make sure everything worked as expected.
 
 ### My MCST algorithm
 Classification: O(N log N)
 
-Implementation:
+Implementation: unfortunately I was not able to implement this algorithm fully.
 
 # Technical design My Application
 I've designed a simple console menu with six options for the user to explore and analyze a rail network. Here’s a quick rundown of what each option does:
@@ -233,28 +266,38 @@ I've designed a simple console menu with six options for the user to explore and
     - After running either the shortest path or MCST options, the user can choose this option to open a graphical visualization of the network.
 
 ## Class diagram and reading the data
+**Class Diagram**: In this class diagram, the design showcases a comprehensive custom data structure library, covering essential structures like binary search trees, linked lists, heaps, and hash maps, alongside a graph implementation with algorithms for pathfinding. Each class serves a specific role, allowing efficient data management and traversal.
+
+![picture](../doc/class_diagram.png)
+
+
+- **MyBinaryTreeNode** and **MyBinarySearchTree** provide the foundation for tree-based data structures.
+   - **MyBinaryTreeNode** holds each node’s key, value, and pointers to child nodes, while **MyBinarySearchTree** manages the tree structure, supporting standard binary search tree operations like insertion, deletion, and retrieval.
+   - Additionally, **MyAVLTree**, a subclass of **MyBinarySearchTree**, introduces self-balancing capabilities with rotation methods, ensuring that the tree remains balanced for optimal performance.
+
+- **MyArrayList** and **MyDoublyLinkedList** represent list structures.
+   - **MyArrayList** is a resizable array that allows for random access and efficient element sorting.
+   - **MyDoublyLinkedList** is a linked list that supports bi-directional traversal and insertion at both ends, thanks to its use of **MyDLNode**.
+
+- **MyHeap** and **MyHashMap** add more specialized data structures.
+   - **MyHeap** likely serves as a min-heap or max-heap for priority-based operations, ideal for pathfinding algorithms.
+   - **MyHashMap**, on the other hand, uses a custom hashing mechanism to store key-value pairs, facilitating fast data retrieval by hash.
+
+- The **MyGraph** class is particularly notable, as it implements a graph structure with support for various algorithms like A* and Dijkstra’s for finding shortest paths.
+   - It interacts with **Coordinate** for location-based data (latitude and longitude), likely assisting in distance calculations through the Haversine formula.
+   - This class also integrates with custom data structures like **MyHeap** and **MyHashMap** for efficient graph traversal and pathfinding.
+
+- **BFSIterator** represents a breadth-first search iterator, allowing traversal of the graph in a breadth-first manner.
+- **AStarNode** encapsulates nodes with heuristic data for the A* algorithm.
+- **Coordinate** stores latitude and longitude data for geographical calculations.
+- **MyDLLNode** is a node for the doubly linked list, providing pointers to the previous and next nodes.
+- **MyHashMapEntry** represents an entry in the hash map, containing a key-value pair.
+- **MyHeapNode** is a node for the heap structure, likely holding priority data for heap operations.
+- **MyQueue** and **MyStack** are queue and stack structures, respectively, for managing data in a FIFO or LIFO manner.
+
+**Reading the Data**: 
 In here after a lof of thinking I decided to approach a method to read my data in this way. Since I used my Stations in several data structures (MyDoubllyLinkList, MyHashMap and MyBinnarrySerachtTree) I decided to create one single method that will read the file only once and give all my stations in the 3 different data structures.
 For my tracks data I simply used a method that will read the csv and give me all my station in MyArrayList structure since I only needed that.
-
-I've designed a simple console menu with six options for the user to explore and analyze a rail network. Here’s a quick rundown of what each option does:
-
-1. **Find Station by Code**
-   - Allows the user to enter a station code and get information about that station. This search uses the `MyHashMap` class, where the station code is used as the key.
-
-2. **Search Stations by Name**
-   - Lets the user enter a station name or just a few letters to find all matching stations. This is useful if they know part of a station’s name but not the exact name.
-
-3. **List Stations by Type**
-   - The user can specify a station type, and this option will list all stations that match that type.
-
-4. **Find Shortest Path Between Two Stations**
-   - The user can enter two station names to find the shortest path between them. They also get to choose which algorithm the system should use for finding this path.
-
-5. **Generate Minimum Cost Spanning Tree (MCST)**
-   - This option calculates the Minimum Cost Spanning Tree for the rail network, helping the user understand the most efficient way to connect all stations with minimal cost.
-
-6. **View Graph Visualization**
-   - After running either the shortest path or MCST options, the user can choose this option to open a graphical visualization of the network.
 
 # Station search by station code
 This option allows users to find a station using its code. I used [My HashMap](../src/nl/saxion/cds/data_structures/map/MyHashMap.java) for quick retrieval.
@@ -274,14 +317,20 @@ This option lets users search for stations by the beginning of their names. I im
 - I chose a linear search because the list is unsorted, and a linear search is the simplest way to find matches. It’s not the most efficient, but it works well for this task.
 - I could have used a binary search if the list was sorted, but since it’s not, a linear search is the best choice.
 
-- I chose to use  
+- I chose to use HashMap with the name of the station as the key and the station object as the value. This way, I can quickly retrieve the station object by its name.
 - I could have also used a hashmap, but it would have required a more complex implementation. The linear search is straightforward and effective for this scenario.
 
 ## Implementation shortest route
 This option lets my user chose 2 stations and receive the shortest path between then. My user can choose between using A* algorithm and Dijkstra and the user can also visualize it.
 The implementation is made using [My Graph](../src/nl/saxion/cds/data_structures/graph/MyGraph.java) populated with my tracks stored in [My ArrayList](../src/nl/saxion/cds/data_structures/list/MyArrayList.java).
-
+The user can choose between A* and Dijkstra algorithm to find the shortest path between the two stations.
+Then the user can choose to visualize the path in a graphic representation.
 
 ## Implementation minimum cost spanning tree
+This option lets my user visualize the minimum cost spanning tree of the rail network. The implementation is made using [My Graph](../src/nl/saxion/cds/data_structures/graph/MyGraph.java) populated with my tracks stored in [My ArrayList](../src/nl/saxion/cds/data_structures/list/MyArrayList.java).
+Unfortunately I was not able to implement this option fully.
 
 ## Implementation graphic representation(s)
+This option lets my user open a Saxion App that will show the graphic representation of the rail network. The implementation is made using [My Graph](../src/nl/saxion/cds/data_structures/graph/MyGraph.java) populated with my tracks stored in [My ArrayList](../src/nl/saxion/cds/data_structures/list/MyArrayList.java).
+My user in this small app can see the stations and the tracks between them.
+My user can also see the shortest path between two stations and the minimum cost spanning tree.
