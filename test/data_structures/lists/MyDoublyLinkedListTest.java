@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class MyDoublyLinkedListTest {
     //given when then
     @Test
-    public void GivenANewEmptyList_WhenIsCreated_ThenIsEmpty() {
+    void GivenANewEmptyList_WhenIsCreated_ThenIsEmpty() {
         MyDoublyLinkedList<String> list = new MyDoublyLinkedList<>();
         assertEquals(0, list.size());
         assertTrue(list.isEmpty());
@@ -20,7 +20,7 @@ public class MyDoublyLinkedListTest {
     }
 
     @Test
-    public void GivenANewEmptyList_WhenAddedNewInformation_ThenIsNotEmpty() {
+    void GivenANewEmptyList_WhenAddedNewInformation_ThenIsNotEmpty() {
         MyDoublyLinkedList<String> list = new MyDoublyLinkedList<>();
         list.addFirst("Froakie");
         list.addFirst("Chespin");
@@ -32,7 +32,7 @@ public class MyDoublyLinkedListTest {
     }
 
     @Test
-    public void GivenAnListWithData_WhenSearchForData_ThenDataWillBeGiven() {
+    void GivenAnListWithData_WhenSearchForData_ThenDataWillBeGiven() {
         MyDoublyLinkedList<String> list = new MyDoublyLinkedList<>();
         list.addFirst("Litten");
         list.addFirst("Rowlet");
@@ -42,7 +42,7 @@ public class MyDoublyLinkedListTest {
     }
 
     @Test
-    public void GivenAnListWithData_WhenSearchForNoData_ThenDataWillBeGiven() {
+    void GivenAnListWithData_WhenSearchForNoData_ThenDataWillBeGiven() {
         MyDoublyLinkedList<String> list = new MyDoublyLinkedList<>();
         list.addFirst("Litten");
         list.addFirst("Rowlet");
@@ -52,14 +52,14 @@ public class MyDoublyLinkedListTest {
     }
 
     @Test
-    public void GivenAnEmptyList_WhenSearchingForValue_ThenReturnFalse() {
+    void GivenAnEmptyList_WhenSearchingForValue_ThenReturnFalse() {
         MyDoublyLinkedList<String> list = new MyDoublyLinkedList<>();
         boolean result = list.contains("Greninja");
         assertFalse(result);  // Covers the empty list case
     }
 
     @Test
-    public void GivenAListWithElements_WhenSearchingForContainedValue_ThenReturnTrue() {
+    void GivenAListWithElements_WhenSearchingForContainedValue_ThenReturnTrue() {
         MyDoublyLinkedList<String> list = new MyDoublyLinkedList<>();
         list.addLast("Charizard");
         list.addLast("Blaziken");
@@ -70,7 +70,7 @@ public class MyDoublyLinkedListTest {
     }
 
     @Test
-    public void GivenAListWithElements_WhenSearchingForNonContainedValue_ThenReturnFalse() {
+    void GivenAListWithElements_WhenSearchingForNonContainedValue_ThenReturnFalse() {
         MyDoublyLinkedList<String> list = new MyDoublyLinkedList<>();
         list.addLast("Talonflame");
         list.addLast("Greninja");
@@ -81,7 +81,7 @@ public class MyDoublyLinkedListTest {
     }
 
     @Test
-    public void GivenAList_WhenGetFirstElement_ThenReturnCorrectElement() {
+    void GivenAList_WhenGetFirstElement_ThenReturnCorrectElement() {
         MyDoublyLinkedList<String> list = new MyDoublyLinkedList<>();
         list.addLast("Solgaleo");
         list.addLast("Lunala");
@@ -91,7 +91,7 @@ public class MyDoublyLinkedListTest {
     }
 
     @Test
-    public void GivenAList_WhenGetMiddleElement_ThenReturnCorrectElement() {
+    void GivenAList_WhenGetMiddleElement_ThenReturnCorrectElement() {
         MyDoublyLinkedList<String> list = new MyDoublyLinkedList<>();
         list.addLast("Cinderace");
         list.addLast("Rillaboom");
@@ -101,7 +101,7 @@ public class MyDoublyLinkedListTest {
     }
 
     @Test
-    public void GivenAList_WhenGetLastElement_ThenReturnCorrectElement() {
+    void GivenAList_WhenGetLastElement_ThenReturnCorrectElement() {
         MyDoublyLinkedList<String> list = new MyDoublyLinkedList<>();
         list.addLast("Togekiss");
         list.addLast("Garchomp");
@@ -111,7 +111,7 @@ public class MyDoublyLinkedListTest {
     }
 
     @Test
-    public void GivenAList_WhenGetWithInvalidIndex_ThenThrowException() {
+    void GivenAList_WhenGetWithInvalidIndex_ThenThrowException() {
         MyDoublyLinkedList<String> list = new MyDoublyLinkedList<>();
         list.addLast("Lucario");
         list.addLast("Greninja");
@@ -120,7 +120,7 @@ public class MyDoublyLinkedListTest {
     }
 
     @Test
-    public void GivenAList_WhenGetWithNegativeIndex_ThenThrowException() {
+    void GivenAList_WhenGetWithNegativeIndex_ThenThrowException() {
         MyDoublyLinkedList<String> list = new MyDoublyLinkedList<>();
         list.addLast("Zygarde");
         list.addLast("Xerneas");
@@ -129,7 +129,7 @@ public class MyDoublyLinkedListTest {
     }
 
     @Test
-    public void GivenAList_WhenAddAtSpecificIndex_ThenValueIsInserted() {
+    void GivenAList_WhenAddAtSpecificIndex_ThenValueIsInserted() {
         MyDoublyLinkedList<String> list = new MyDoublyLinkedList<>();
         list.addLast("Hoopa");
         list.addLast("Volcanion");
@@ -139,7 +139,7 @@ public class MyDoublyLinkedListTest {
     }
 
     @Test
-    public void GivenAList_WhenSetElementAtIndex_ThenElementIsUpdated() {
+    void GivenAList_WhenSetElementAtIndex_ThenElementIsUpdated() {
         MyDoublyLinkedList<String> list = new MyDoublyLinkedList<>();
         list.addLast("Yveltal");
         list.addLast("Zygarde");
@@ -151,7 +151,7 @@ public class MyDoublyLinkedListTest {
     }
 
     @Test
-    public void GivenAList_WhenRemoveFirstElement_ThenListUpdatesCorrectly() throws EmptyCollectionException {
+    void GivenAList_WhenRemoveFirstElement_ThenListUpdatesCorrectly() throws EmptyCollectionException {
         MyDoublyLinkedList<String> list = new MyDoublyLinkedList<>();
         list.addLast("Dedenne");
         list.addLast("Hawlucha");
@@ -161,7 +161,7 @@ public class MyDoublyLinkedListTest {
     }
 
     @Test
-    public void GivenAList_WhenRemoveLastElement_ThenListUpdatesCorrectly() throws EmptyCollectionException {
+    void GivenAList_WhenRemoveLastElement_ThenListUpdatesCorrectly() throws EmptyCollectionException {
         MyDoublyLinkedList<String> list = new MyDoublyLinkedList<>();
         list.addLast("Zeraora");
         list.addLast("Marshadow");
@@ -171,7 +171,7 @@ public class MyDoublyLinkedListTest {
     }
 
     @Test
-    public void GivenAList_WhenRemoveElementAtIndex_ThenElementIsRemoved() {
+    void GivenAList_WhenRemoveElementAtIndex_ThenElementIsRemoved() {
         MyDoublyLinkedList<String> list = new MyDoublyLinkedList<>();
         list.addLast("Gardevoir");
         list.addLast("Gallade");
@@ -182,7 +182,7 @@ public class MyDoublyLinkedListTest {
     }
 
     @Test
-    public void GivenAList_WhenRemoveElementByValue_ThenElementIsRemoved() throws ValueNotFoundException {
+    void GivenAList_WhenRemoveElementByValue_ThenElementIsRemoved() throws ValueNotFoundException {
         MyDoublyLinkedList<String> list = new MyDoublyLinkedList<>();
         list.addLast("Dragapult");
         list.addLast("Hatterene");
@@ -193,7 +193,7 @@ public class MyDoublyLinkedListTest {
     }
 
     @Test
-    public void GivenAList_WhenRemoveNonExistingElement_ThenThrowValueNotFoundException() {
+    void GivenAList_WhenRemoveNonExistingElement_ThenThrowValueNotFoundException() {
         MyDoublyLinkedList<String> list = new MyDoublyLinkedList<>();
         list.addLast("Noivern");
         list.addLast("Florges");
@@ -202,7 +202,7 @@ public class MyDoublyLinkedListTest {
     }
 
     @Test
-    public void GivenAList_WhenIteratingThroughList_ThenAllElementsAreVisited() {
+    void GivenAList_WhenIteratingThroughList_ThenAllElementsAreVisited() {
         MyDoublyLinkedList<String> list = new MyDoublyLinkedList<>();
         list.addLast("Zacian");
         list.addLast("Zamazenta");
@@ -216,7 +216,7 @@ public class MyDoublyLinkedListTest {
     }
 
     @Test
-    public void GivenAListWithElements_WhenRemoveFirstElement_ThenRemoveFirstIsCalled() throws ValueNotFoundException {
+    void GivenAListWithElements_WhenRemoveFirstElement_ThenRemoveFirstIsCalled() throws ValueNotFoundException {
         MyDoublyLinkedList<String> list = new MyDoublyLinkedList<>();
         list.addLast("Togekiss");
         list.addLast("Goodra");
@@ -229,7 +229,7 @@ public class MyDoublyLinkedListTest {
     }
 
     @Test
-    public void GivenAListWithElements_WhenRemoveLastElement_ThenRemoveLastIsCalled() throws ValueNotFoundException {
+    void GivenAListWithElements_WhenRemoveLastElement_ThenRemoveLastIsCalled() throws ValueNotFoundException {
         MyDoublyLinkedList<String> list = new MyDoublyLinkedList<>();
         list.addLast("Noivern");
         list.addLast("Talonflame");
@@ -242,7 +242,7 @@ public class MyDoublyLinkedListTest {
     }
 
     @Test
-    public void GivenAListWithElements_WhenRemoveAtFirstIndex_ThenRemoveFirstIsCalled() {
+    void GivenAListWithElements_WhenRemoveAtFirstIndex_ThenRemoveFirstIsCalled() {
         MyDoublyLinkedList<String> list = new MyDoublyLinkedList<>();
         list.addLast("Espeon");
         list.addLast("Umbreon");
@@ -254,7 +254,7 @@ public class MyDoublyLinkedListTest {
     }
 
     @Test
-    public void GivenAListWithElements_WhenRemoveAtLastIndex_ThenElementIsRemoved() {
+    void GivenAListWithElements_WhenRemoveAtLastIndex_ThenElementIsRemoved() {
         MyDoublyLinkedList<String> list = new MyDoublyLinkedList<>();
         list.addLast("Eevee");
         list.addLast("Flareon");
@@ -266,7 +266,7 @@ public class MyDoublyLinkedListTest {
     }
 
     @Test
-    public void GivenAListWithElements_WhenRemoveAtInvalidIndex_ThenIndexOutOfBoundsExceptionIsThrown() {
+    void GivenAListWithElements_WhenRemoveAtInvalidIndex_ThenIndexOutOfBoundsExceptionIsThrown() {
         MyDoublyLinkedList<String> list = new MyDoublyLinkedList<>();
         list.addLast("Pikachu");
         list.addLast("Charmander");
@@ -276,7 +276,7 @@ public class MyDoublyLinkedListTest {
     }
 
     @Test
-    public void GivenAListWithMoreThanOneElement_WhenAddFirst_ThenNewNodeBecomesHeadAndListSizeIncreases() {
+    void GivenAListWithMoreThanOneElement_WhenAddFirst_ThenNewNodeBecomesHeadAndListSizeIncreases() {
         MyDoublyLinkedList<String> list = new MyDoublyLinkedList<>();
 
         list.addFirst("Pikachu");
@@ -288,7 +288,7 @@ public class MyDoublyLinkedListTest {
     }
 
     @Test
-    public void GivenAList_WhenAddAtZeroIndex_ThenElementIsInsertedAtStartAndListSizeIncreases() {
+    void GivenAList_WhenAddAtZeroIndex_ThenElementIsInsertedAtStartAndListSizeIncreases() {
         MyDoublyLinkedList<String> list = new MyDoublyLinkedList<>();
         list.addLast("Pikachu");
         list.addLast("Charmander");
@@ -300,7 +300,7 @@ public class MyDoublyLinkedListTest {
     }
 
     @Test
-    public void GivenAList_WhenAddAtLastIndex_ThenElementIsAppendedAndListSizeIncreases() {
+    void GivenAList_WhenAddAtLastIndex_ThenElementIsAppendedAndListSizeIncreases() {
         MyDoublyLinkedList<String> list = new MyDoublyLinkedList<>();
         list.addLast("Squirtle");
         list.addLast("Jigglypuff");
@@ -312,7 +312,7 @@ public class MyDoublyLinkedListTest {
     }
 
     @Test
-    public void GivenAList_WhenAddAtMiddleIndex_ThenNewNodeIsInsertedCorrectlyAndListSizeIncreases() {
+    void GivenAList_WhenAddAtMiddleIndex_ThenNewNodeIsInsertedCorrectlyAndListSizeIncreases() {
         MyDoublyLinkedList<String> list = new MyDoublyLinkedList<>();
         list.addLast("Charmander");
         list.addLast("Bulbasaur");
@@ -325,7 +325,7 @@ public class MyDoublyLinkedListTest {
     }
 
     @Test
-    public void GivenAList_WhenAddAtInvalidIndex_ThenIndexOutOfBoundsExceptionIsThrown() {
+    void GivenAList_WhenAddAtInvalidIndex_ThenIndexOutOfBoundsExceptionIsThrown() {
         MyDoublyLinkedList<String> list = new MyDoublyLinkedList<>();
         list.addLast("Snorlax");
         list.addLast("Meowth");
@@ -335,7 +335,7 @@ public class MyDoublyLinkedListTest {
     }
 
     @Test
-    public void GivenAListWithMultipleOccurrences_WhenRemoveLastOccurrence_ThenOnlyLastOccurrenceIsRemoved() throws ValueNotFoundException {
+    void GivenAListWithMultipleOccurrences_WhenRemoveLastOccurrence_ThenOnlyLastOccurrenceIsRemoved() throws ValueNotFoundException {
         MyDoublyLinkedList<String> list = new MyDoublyLinkedList<>();
         list.addLast("Pikachu");
         list.addLast("Bulbasaur");
@@ -352,7 +352,7 @@ public class MyDoublyLinkedListTest {
     }
 
     @Test
-    public void GivenAListWithMultipleOccurrences_WhenRemoveAll_ThenAllOccurrencesAreRemoved() throws ValueNotFoundException {
+    void GivenAListWithMultipleOccurrences_WhenRemoveAll_ThenAllOccurrencesAreRemoved() throws ValueNotFoundException {
         MyDoublyLinkedList<String> list = new MyDoublyLinkedList<>();
         list.addLast("Squirtle");
         list.addLast("Squirtle");
@@ -366,7 +366,7 @@ public class MyDoublyLinkedListTest {
     }
 
     @Test
-    public void GivenAList_WhenRemoveLastOccurrenceForNonExistingValue_ThenThrowValueNotFoundException() {
+    void GivenAList_WhenRemoveLastOccurrenceForNonExistingValue_ThenThrowValueNotFoundException() {
         MyDoublyLinkedList<String> list = new MyDoublyLinkedList<>();
         list.addLast("Bulbasaur");
         list.addLast("Charmander");
@@ -375,7 +375,7 @@ public class MyDoublyLinkedListTest {
     }
 
     @Test
-    public void GivenAList_WhenRemoveAllForNonExistingValue_ThenThrowValueNotFoundException() {
+    void GivenAList_WhenRemoveAllForNonExistingValue_ThenThrowValueNotFoundException() {
         MyDoublyLinkedList<String> list = new MyDoublyLinkedList<>();
         list.addLast("Bulbasaur");
         list.addLast("Charmander");
@@ -384,7 +384,7 @@ public class MyDoublyLinkedListTest {
     }
 
     @Test
-    public void GivenAList_WhenRemoveAllForMiddleValue_ThenCorrectlyRemoveMiddleNode() throws ValueNotFoundException {
+    void GivenAList_WhenRemoveAllForMiddleValue_ThenCorrectlyRemoveMiddleNode() throws ValueNotFoundException {
         MyDoublyLinkedList<String> list = new MyDoublyLinkedList<>();
         list.addLast("Pikachu");
         list.addLast("Charmander");
@@ -401,7 +401,7 @@ public class MyDoublyLinkedListTest {
     }
 
     @Test
-    public void GivenAListWithThreeElements_WhenRemoveLastOccurrenceOfMiddleElement_ThenMiddleElementIsRemoved() throws ValueNotFoundException {
+    void GivenAListWithThreeElements_WhenRemoveLastOccurrenceOfMiddleElement_ThenMiddleElementIsRemoved() throws ValueNotFoundException {
         MyDoublyLinkedList<String> list = new MyDoublyLinkedList<>();
         list.addLast("Pikachu");
         list.addLast("Bulbasaur"); // This is the middle element we'll remove
@@ -420,7 +420,7 @@ public class MyDoublyLinkedListTest {
     }
 
     @Test
-    public void testGraphVizSinglePokemon() {
+    void testGraphVizSinglePokemon() {
         MyDoublyLinkedList<String> pokemonList = new MyDoublyLinkedList<>();
         pokemonList.addLast("Pikachu");
 
@@ -433,7 +433,7 @@ public class MyDoublyLinkedListTest {
     }
 
     @Test
-    public void GivenAListWithThreeElements_WhenGraphVizIsCalled_ThenCorrectNextAndPreviousEdgesAreGenerated() {
+    void GivenAListWithThreeElements_WhenGraphVizIsCalled_ThenCorrectNextAndPreviousEdgesAreGenerated() {
         MyDoublyLinkedList<String> list = new MyDoublyLinkedList<>();
         list.addLast("Pikachu");
         list.addLast("Bulbasaur");
@@ -453,7 +453,7 @@ public class MyDoublyLinkedListTest {
     }
 
     @Test
-    public void GivenAList_WhenSetAtInvalidIndex_ThenIndexOutOfBoundsExceptionIsThrown() {
+    void GivenAList_WhenSetAtInvalidIndex_ThenIndexOutOfBoundsExceptionIsThrown() {
         MyDoublyLinkedList<String> list = new MyDoublyLinkedList<>();
         list.addLast("Bulbasaur");
         list.addLast("Charmander");
@@ -464,7 +464,7 @@ public class MyDoublyLinkedListTest {
     }
 
     @Test
-    public void testRemoveLast_OneElementList() throws EmptyCollectionException {
+    void testRemoveLast_OneElementList() throws EmptyCollectionException {
         MyDoublyLinkedList<String> list = new MyDoublyLinkedList<>();
         list.addLast("Pikachu");
 
@@ -474,7 +474,7 @@ public class MyDoublyLinkedListTest {
     }
 
     @Test
-    public void testRemoveFirst_OneElementList() throws EmptyCollectionException {
+    void testRemoveFirst_OneElementList() throws EmptyCollectionException {
         MyDoublyLinkedList<String> list = new MyDoublyLinkedList<>();
         list.addLast("Charmander");
 
@@ -484,7 +484,7 @@ public class MyDoublyLinkedListTest {
     }
 
     @Test
-    public void testRemoveLastOccurrence_RemoveFirst() throws ValueNotFoundException, EmptyCollectionException {
+    void testRemoveLastOccurrence_RemoveFirst() throws ValueNotFoundException, EmptyCollectionException {
         MyDoublyLinkedList<String> list = new MyDoublyLinkedList<>();
         list.addLast("Charmander");
         list.addLast("Pikachu");

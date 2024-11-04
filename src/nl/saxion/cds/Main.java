@@ -73,6 +73,8 @@ public class Main {
                     showShortestRoute(stationMap, trackList);
                     break;
                 case 5:
+                    // Determine the minimum number of rail connections (MCST)
+                    determineMCST(stationMap, trackList);
                     break;
                 case 6:
                     // Show rail network, routes, and MCST (Graphical representation)
@@ -273,6 +275,29 @@ public class Main {
         String pathString = String.join(" --> ", graph.convertEdgesToNodes(path));
         System.out.println("Shortest path from " + startStationCode + " to " + endStationCode + " using "+algorithm+": " + pathString);
         System.out.println("With a distance of " + String.format("%.2f", totalDistance) + " km.");
+    }
+
+    private static void determineMCST(MyHashMap<String, Station> stationMap, MyArrayList<Track> trackList) {
+        MyGraph<String> graph = new MyGraph<>();
+        for (Track track : trackList) {
+            graph.addEdgeBidirectional(track.getCode(), track.getNextCode(), track.getDistanceToNext());
+        }
+
+        SaxGraph<String> mst = graph.minimumCostSpanningTree();
+
+        double totalWeight = 0;
+        int edgeCount = 0;
+        for (String vertex : stationMap.getKeys()) {
+            SaxList<SaxGraph.DirectedEdge<String>> edges = mst.getEdges(vertex);
+            for (SaxGraph.DirectedEdge<String> edge : edges) {
+                totalWeight += edge.weight();
+                edgeCount++;
+            }
+        }
+
+
+        System.out.println("Minimum Cost Spanning Tree (MCST) contains " + edgeCount + " edges for " + stationMap.size() + " nodes.");
+        System.out.println("Total weight of MCST is " + totalWeight + " km.");
     }
 
     //option 6

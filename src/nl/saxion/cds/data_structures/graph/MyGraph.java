@@ -212,10 +212,47 @@ public class MyGraph<T extends Comparable<T>> implements SaxGraph<T> {
     }
 
     @Override
-    public SaxGraph minimumCostSpanningTree() {
-        // Implement Minimum Cost Spanning Tree algorithm
-        return null;
+    public SaxGraph<T> minimumCostSpanningTree() {
+        //Variation on Dijkstra :
+        //- Select any node as root
+        //- The priority queue is filled with nodes that are neighbors
+        //of this node;
+        //the priority is the weight of the connecting edge (low
+        //weight is high priority)
+        //NOTE: NOT the total cost (like with Dijkstra)
+        //- Always remove the front node v from the priority queue
+        //and add it to the tree, while update the priority queue with
+        //all neighbors w of v,
+        //if weight(v,w) < current w.weight
+
+        MyGraph<T> resultGraph = new MyGraph<>();
+        MyHeap<SaxGraph.DirectedEdge<T>> openList = new MyHeap<>(true);
+        MyHashMap<T, SaxGraph.DirectedEdge<T>> closeList = new MyHashMap<>();
+
+        T startNode = adjacencyList.getKeys().get(0);
+        closeList.add(startNode, new DirectedEdge<>(startNode, startNode, 0));
+        openList.enqueue(new DirectedEdge<>(startNode, startNode, 0));
+
+        while (!openList.isEmpty()) {
+            SaxGraph.DirectedEdge<T> currentEdge = openList.dequeue();
+            T currentNode = currentEdge.to();
+
+            if (!closeList.contains(currentNode)) {
+                closeList.add(currentNode, currentEdge);
+                resultGraph.addEdge(currentEdge.from(), currentEdge.to(),
+                        currentEdge.weight());
+
+                for (DirectedEdge<T> neighborEdge : getEdges(currentNode)) {
+                    if (!closeList.contains(neighborEdge.to())) {
+                        openList.enqueue(neighborEdge);
+                    }
+                }
+            }
+        }
+        return resultGraph;
     }
+
+
 
     /**
      * Get an iterator that traverses the graph using a breadth-first search.

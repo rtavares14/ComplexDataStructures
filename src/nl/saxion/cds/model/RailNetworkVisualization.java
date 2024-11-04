@@ -224,7 +224,6 @@ public class RailNetworkVisualization implements Runnable {
             SaxionApp.drawCircle(pixelCoords[0], pixelCoords[1], 3);
             SaxionApp.sleep(0.001);
         }
-
     }
 
     /**
@@ -261,6 +260,9 @@ public class RailNetworkVisualization implements Runnable {
     }
 
     private void showMCST() {
-        System.out.println("MCST functionality is not yet implemented.");
+        clearDrawing();
+        drawGraph(new MyGraph<>());
+        SaxionApp.pause();
+        SaxionApp.clear();
     }
 }

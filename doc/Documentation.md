@@ -212,17 +212,49 @@ Classification: O(N log N)
 Implementation:
 
 # Technical design My Application
-I chose to do a simple menu in my console that will provide the user 6 options.
-My user has the opportunity to look by a station code using MyHashMap class by looking for the station code as the key.
-The user can also look for all the station with the name will type or just some letter to check if theirs any matching stations.
-The user can also ask all the stations from a specific type.
-The user can also ask the shortest path from 2 given stations and chose the algorithm he wants to use to complete that option.
-The user can also request the Minimum Cost Spamin Tree (MCST) for the rail network.
-At the ens the user can ask to open the graph visualization that he can see the last 2 options.
+I've designed a simple console menu with six options for the user to explore and analyze a rail network. Here’s a quick rundown of what each option does:
+
+1. **Find Station by Code**
+    - Allows the user to enter a station code and get information about that station. This search uses the `MyHashMap` class, where the station code is used as the key.
+
+2. **Search Stations by Name**
+    - Lets the user enter a station name or just a few letters to find all matching stations. This is useful if they know part of a station’s name but not the exact name.
+
+3. **List Stations by Type**
+    - The user can specify a station type, and this option will list all stations that match that type.
+
+4. **Find Shortest Path Between Two Stations**
+    - The user can enter two station names to find the shortest path between them. They also get to choose which algorithm the system should use for finding this path.
+
+5. **Generate Minimum Cost Spanning Tree (MCST)**
+    - This option calculates the Minimum Cost Spanning Tree for the rail network, helping the user understand the most efficient way to connect all stations with minimal cost.
+
+6. **View Graph Visualization**
+    - After running either the shortest path or MCST options, the user can choose this option to open a graphical visualization of the network.
 
 ## Class diagram and reading the data
 In here after a lof of thinking I decided to approach a method to read my data in this way. Since I used my Stations in several data structures (MyDoubllyLinkList, MyHashMap and MyBinnarrySerachtTree) I decided to create one single method that will read the file only once and give all my stations in the 3 different data structures.
 For my tracks data I simply used a method that will read the csv and give me all my station in MyArrayList structure since I only needed that.
+
+I've designed a simple console menu with six options for the user to explore and analyze a rail network. Here’s a quick rundown of what each option does:
+
+1. **Find Station by Code**
+   - Allows the user to enter a station code and get information about that station. This search uses the `MyHashMap` class, where the station code is used as the key.
+
+2. **Search Stations by Name**
+   - Lets the user enter a station name or just a few letters to find all matching stations. This is useful if they know part of a station’s name but not the exact name.
+
+3. **List Stations by Type**
+   - The user can specify a station type, and this option will list all stations that match that type.
+
+4. **Find Shortest Path Between Two Stations**
+   - The user can enter two station names to find the shortest path between them. They also get to choose which algorithm the system should use for finding this path.
+
+5. **Generate Minimum Cost Spanning Tree (MCST)**
+   - This option calculates the Minimum Cost Spanning Tree for the rail network, helping the user understand the most efficient way to connect all stations with minimal cost.
+
+6. **View Graph Visualization**
+   - After running either the shortest path or MCST options, the user can choose this option to open a graphical visualization of the network.
 
 # Station search by station code
 This option allows users to find a station using its code. I used [My HashMap](../src/nl/saxion/cds/data_structures/map/MyHashMap.java) for quick retrieval.
