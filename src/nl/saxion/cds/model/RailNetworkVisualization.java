@@ -152,7 +152,7 @@ public class RailNetworkVisualization implements Runnable {
         SaxionApp.clear();
 
         // Display matching stations
-        SaxionApp.printLine(matchingStations.size() + " stations found :");
+        SaxionApp.printLine(matchingStations.size() + " stations found of type: \n" + selectedType);
 
         clearDrawing();
         drawGraph(new MyGraph<>());

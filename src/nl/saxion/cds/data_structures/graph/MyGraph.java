@@ -225,26 +225,32 @@ public class MyGraph<T extends Comparable<T>> implements SaxGraph<T> {
         //all neighbors w of v,
         //if weight(v,w) < current w.weight
 
+        //Create a new graph
+        //that will contain the minimum cost spanning tree
+
         MyGraph<T> resultGraph = new MyGraph<>();
         MyHeap<SaxGraph.DirectedEdge<T>> openList = new MyHeap<>(true);
         MyHashMap<T, SaxGraph.DirectedEdge<T>> closeList = new MyHashMap<>();
 
+        //Select any node as root
         T startNode = adjacencyList.getKeys().get(0);
-        closeList.add(startNode, new DirectedEdge<>(startNode, startNode, 0));
-        openList.enqueue(new DirectedEdge<>(startNode, startNode, 0));
+        SaxGraph.DirectedEdge<T> startEdge = new DirectedEdge<>(startNode, startNode, 0);
+        openList.enqueue(startEdge);
 
         while (!openList.isEmpty()) {
             SaxGraph.DirectedEdge<T> currentEdge = openList.dequeue();
-            T currentNode = currentEdge.to();
 
-            if (!closeList.contains(currentNode)) {
-                closeList.add(currentNode, currentEdge);
+            if (!closeList.contains(currentEdge.from())) {
+                closeList.add(currentEdge.from(), currentEdge);
                 resultGraph.addEdge(currentEdge.from(), currentEdge.to(),
                         currentEdge.weight());
 
-                for (DirectedEdge<T> neighborEdge : getEdges(currentNode)) {
+                for (DirectedEdge<T> neighborEdge : getEdges(currentEdge.from())) {
                     if (!closeList.contains(neighborEdge.to())) {
-                        openList.enqueue(neighborEdge);
+                        SaxGraph.DirectedEdge<T> newEdge = new DirectedEdge<>(
+                                neighborEdge.to(), currentEdge.from(),
+                                neighborEdge.weight());
+                        openList.enqueue(newEdge);
                     }
                 }
             }
