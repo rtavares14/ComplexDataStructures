@@ -9,7 +9,7 @@ import nl.saxion.cds.collection.SaxGraph;
 import nl.saxion.cds.data_structures.solution.Coordinate;
 
 import java.awt.*;
-
+import java.util.Comparator;
 
 public class RailNetworkVisualization implements Runnable {
     private static final int mapWidth = (int) (1620 / 2.6);
@@ -43,7 +43,7 @@ public class RailNetworkVisualization implements Runnable {
         int pixelY = (int) ((MAX_LAT - latitude) / (MAX_LAT - MIN_LAT) * mapHeight);
 
         if (latitude < 51.5 && longitude > 5.5) {
-            pixelX += 11;
+            pixelX += 14;
         }
 
         return new int[]{pixelX, pixelY};
@@ -80,24 +80,94 @@ public class RailNetworkVisualization implements Runnable {
      */
     private void displayMenu() {
         while (true) {
-            SaxionApp.printLine("----------------- MY TRAIN APLICATION MENU -----------------");
-            SaxionApp.printLine("---------------------- BETTER THAN NS ----------------------");
-            SaxionApp.printLine("1. See the shortest path between two stations");
-            SaxionApp.printLine("2. Determine the minimum number of rail connections (MCST)");
+            SaxionApp.printLine("--------------------- MY TRAIN APLICATION MENU ---------------------");
+            SaxionApp.printLine("-------------------------- BETTER THAN NS --------------------------");
+            SaxionApp.printLine("1. Show all stations of a certain type");
+            SaxionApp.printLine("2. See the shortest path between two stations");
+            SaxionApp.printLine("3. Determine the minimum number of rail connections (MCST)");
             SaxionApp.print("Enter your choice: ");
             int choice = SaxionApp.readInt();
 
             switch (choice) {
                 case 1:
-                    showShortestPath();
+                    showStationByType();
                     break;
                 case 2:
+                    showShortestPath();
+                    break;
+                case 3:
                     showMCST();
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }
         }
+    }
+
+    /**
+     * Show all stations of a certain type
+     * Based on the user's input
+     */
+    private void showStationByType() {
+        MyArrayList<String> stationTypesList = new MyArrayList<>();
+        for (Station station : stations.values()) {
+            // Only stations in NL
+            if (station.getCountry().equals("NL")) {
+                if (!stationTypesList.contains(station.getType())) {
+                    stationTypesList.addLast(station.getType());
+                }
+            }
+        }
+
+        SaxionApp.printLine("Stations type options:");
+        for (int i = 0; i < stationTypesList.size(); i++) {
+            SaxionApp.printLine((i + 1) + ". " + stationTypesList.get(i));
+        }
+
+        SaxionApp.print("Choose option:");
+        int choice = SaxionApp.readInt();
+
+        if (choice < 1 || choice > stationTypesList.size()) {
+            SaxionApp.printLine("Invalid choice. Please try again.");
+            return;
+        }
+
+        String selectedType = stationTypesList.get(choice - 1);
+
+        MyArrayList<Station> matchingStations = new MyArrayList<>();
+        for (Station station : stations.values()) {
+            if (station.getCountry().equals("NL") && station.getType().replace(" ", "").equalsIgnoreCase(selectedType.replace(" ", ""))) {
+                matchingStations.addLast(station);
+            }
+        }
+
+        matchingStations.quickSort(Comparator.comparing(Station::getName));
+
+        if (matchingStations.size() == 0) {
+            SaxionApp.printLine("No stations found of type: " + selectedType);
+            return;
+        }
+
+        SaxionApp.pause();
+        SaxionApp.clear();
+
+        // Display matching stations
+        SaxionApp.printLine(matchingStations.size() + " stations found :");
+
+        clearDrawing();
+        drawGraph(new MyGraph<>());
+
+        // Draw matching stations
+        for (Station station : matchingStations) {
+            int[] pixelCoords = geoToPixel(station.getLatitude(), station.getLongitude());
+            SaxionApp.setBorderColor(Color.green);
+            SaxionApp.setFill(Color.green);
+            SaxionApp.drawCircle(pixelCoords[0], pixelCoords[1], 3);
+            SaxionApp.sleep(0.001);
+        }
+
+        SaxionApp.pause();
+        SaxionApp.clear();
     }
 
     /**

@@ -1,6 +1,5 @@
 package nl.saxion.cds;
 
-import nl.saxion.app.SaxionApp;
 import nl.saxion.cds.collection.SaxGraph;
 import nl.saxion.cds.collection.SaxList;
 import nl.saxion.cds.data_structures.graph.MyGraph;
